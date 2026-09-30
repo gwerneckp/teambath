@@ -1,12 +1,21 @@
 """The client's flows against mocked HTTP, answered with the real (scrubbed) pages."""
 
-from datetime import date
+from datetime import date, datetime
 from urllib.parse import parse_qs
 
 import pytest
 import responses
 
-from teambath import Activity, ActivityType, LoginError, TeamBath, TeamBathError
+from teambath import (
+    Activity,
+    ActivityType,
+    Booking,
+    LoginError,
+    PaidBookingError,
+    Slot,
+    TeamBath,
+    TeamBathError,
+)
 
 URL = "https://bookings.teambath.com/Connect/"
 HOME, LOGIN = URL + "memberHomePage.aspx", URL + "MRMLogin.aspx"
@@ -178,3 +187,115 @@ def test_account(rsps, pages, tb):
 def test_other_site_url():
     tb = TeamBath("a@b.c", "1", url="https://leisure.example.com/Connect")
     assert tb.url == "https://leisure.example.com/Connect/"
+
+
+# ---------------------------------------------------------------- booking
+
+GRID, CLASS = URL + "mrmProductStatus.aspx", URL + "mrmClassStatus.aspx"
+CONFIRM, BOOKED = URL + "mrmConfirmBooking.aspx", URL + "mrmBookingConfirmed.aspx"
+BOOKINGS, CANCEL = URL + "mrmViewMyBookings.aspx?showOption=1", URL + "mrmConfirmMove.aspx"
+COURT = Slot("SQUASHFREE2", datetime(2026, 10, 1, 7, 0), None, "Squash Court 1", True, None,
+             "Available")
+SWIM = Slot("SFIT50MR109544", datetime(2026, 10, 1, 18, 0), 60, None, True, 5, "Available")
+BOOKING = Booking("SQUASHFREE2", "Squash Students", datetime(2026, 10, 5, 10, 45), 45,
+                  "Confirmed")
+
+
+def open_grid(rsps, pages):
+    """Home -> search -> the squash grid for 1 Oct."""
+    logged_in(rsps, pages)
+    rsps.post(HOME, body=pages.html("home"))
+    rsps.post(HOME, body=pages.html("activity_grid"))
+
+
+def test_book_a_free_court(rsps, pages, tb):
+    open_grid(rsps, pages)
+    rsps.post(GRID, body=pages.html("confirm_free"))
+    rsps.post(CONFIRM, status=302, headers={"Location": BOOKED})
+    rsps.get(BOOKED, body=pages.html("booked"))
+
+    booking = tb.book(COURT)
+    assert booking == Booking("SQUASHFREE2", "Squash Students", datetime(2026, 10, 1, 7, 0), 45,
+                              "Confirmed")
+    click, book = posts(rsps)[2:]
+    assert click["ctl00$MainContent$grdResourceView$ctl02$ctl00"] == "07:00"  # Court 1, 07:00
+    assert book["__EVENTTARGET"] == "ctl00$MainContent$btnBasket"
+
+
+def test_book_refuses_a_paid_slot_and_backs_out(rsps, pages, tb):
+    logged_in(rsps, pages)
+    rsps.post(HOME, body=pages.html("home"))
+    rsps.post(HOME, body=pages.html("class"))
+    rsps.post(CLASS, body=pages.html("confirm_paid"))
+    rsps.post(CONFIRM, body=pages.html("home"))  # the Cancel button
+
+    with pytest.raises(PaidBookingError, match="costs £9.50"):
+        tb.book(SWIM)
+    click, back_out = posts(rsps)[2:]
+    assert click["ctl00$MainContent$ClassStatus$ctrl0$btnBook"] == "Book"
+    assert click["ctl00$MainContent$ClassStatus$ctrl0$hMemberIncluded"] == "true"
+    assert back_out["ctl00$MainContent$btnCancel"] == "Cancel"
+    assert "ctl00$MainContent$btnBasket" not in (back_out["__EVENTTARGET"], *back_out)
+
+
+def test_book_passes_on_the_sites_refusal(rsps, pages, tb):
+    open_grid(rsps, pages)
+    rsps.post(GRID, body=pages.html("confirm_refused"))
+    with pytest.raises(TeamBathError, match="not permitted to book"):
+        tb.book(COURT)
+
+
+def test_book_a_taken_slot(rsps, pages, tb):
+    open_grid(rsps, pages)
+    taken = Slot("SQUASHFREE2", datetime(2026, 10, 1, 10, 45), None, "Squash Court 1", True,
+                 None, "Available")  # it was free when we looked, but not any more
+    with pytest.raises(TeamBathError, match="isn't available .Not Available."):
+        tb.book(taken)
+    assert len(posts(rsps)) == 2  # searched and opened the grid, clicked nothing
+
+
+def test_book_that_does_not_go_through(rsps, pages, tb):
+    open_grid(rsps, pages)
+    rsps.post(GRID, body=pages.html("confirm_free"))
+    rsps.post(CONFIRM, body=pages.html("confirm_free"))  # back on the confirm page
+    with pytest.raises(TeamBathError, match="did not go through"):
+        tb.book(COURT)
+
+
+def test_bookings(rsps, pages, tb):
+    rsps.get(BOOKINGS, body=pages.html("bookings"))
+    assert tb.bookings() == [BOOKING]
+
+
+def test_cancel(rsps, pages, tb):
+    rsps.get(BOOKINGS, body=pages.html("bookings"))
+    rsps.post(BOOKINGS, body=pages.html("cancel_confirm"))
+    rsps.post(CANCEL, status=302, headers={"Location": BOOKINGS})
+    rsps.get(BOOKINGS, body=pages.html("bookings_empty"))
+
+    tb.cancel(BOOKING)
+    click, confirm = posts(rsps)
+    assert click["__EVENTTARGET"] == "ctl00$MainContent$rptMain$ctl01$gvBookings$ctl02$ctl01"
+    assert confirm["ctl00$MainContent$btnConfirm"] == "Confirm"
+
+
+def test_cancel_something_not_booked(rsps, pages, tb):
+    rsps.get(BOOKINGS, body=pages.html("bookings_empty"))
+    with pytest.raises(TeamBathError, match="No booking of Squash Students at Mon 05 Oct 10:45"):
+        tb.cancel(BOOKING)
+
+
+def test_cancel_refuses_a_paid_booking(rsps, pages, tb):
+    rsps.get(BOOKINGS, body=pages.html("bookings"))
+    rsps.post(BOOKINGS, body=pages.html("cancel_confirm").replace("Total £0.00", "Total £9.50"))
+    with pytest.raises(PaidBookingError, match="£9.50"):
+        tb.cancel(BOOKING)
+    assert len(posts(rsps)) == 1  # never confirmed
+
+
+def test_cancel_that_does_not_stick(rsps, pages, tb):
+    rsps.get(BOOKINGS, body=pages.html("bookings"))
+    rsps.post(BOOKINGS, body=pages.html("cancel_confirm"))
+    rsps.post(CANCEL, body=pages.html("bookings"))
+    with pytest.raises(TeamBathError, match="still booked"):
+        tb.cancel(BOOKING)

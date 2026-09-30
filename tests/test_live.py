@@ -3,7 +3,7 @@
     TEAMBATH_EMAIL=... TEAMBATH_PIN=... uv run pytest -m live
 
 These check the site still looks the way the parsers expect, whatever is on today.
-They never book anything, and never try a wrong PIN (that could lock the account).
+They never book or cancel anything, and never try a wrong PIN (that could lock the account).
 """
 
 import os
@@ -32,6 +32,10 @@ def test_account(tb):
     account = tb.account()
     assert account.email.lower() == tb.email.lower()
     assert account.member_id.isdigit() and account.first_name
+
+
+def test_bookings(tb):
+    assert all(b.activity_id and b.start and b.status for b in tb.bookings())
 
 
 def test_activity_types(tb):
