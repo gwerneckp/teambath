@@ -18,6 +18,7 @@ Issues = "https://github.com/gwerneckp/teambath/issues"
 
 [dependency-groups]
 dev = ["pytest>=8", "responses>=0.25", "ruff>=0.6"]
+media = ["playwright>=1.40"]
 
 [build-system]
 requires = ["hatchling"]

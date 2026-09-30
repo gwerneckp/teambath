@@ -1,0 +1,388 @@
+<!doctype html>
+<!--
+  teambath README animation. Every frame is a pure function of time: render(t).
+  Rendered to video by render_media.py (Playwright screenshots + ffmpeg).
+  Open this file in a browser to preview it live.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=JetBrains+Mono:wght@500;700&display=block" rel="stylesheet">
+<style>
+  :root {
+    --navy: #08132e; --blue: #3b6fd8; --deep: #1c3f94; --gold: #f2b632; --gold-light: #ffe29a;
+    --green: #3ddc84; --coral: #ff6b6b; --lilac: #a99bff; --white: #f5f7fa; --muted: #8fa3c8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--navy); }
+  #stage {
+    position: relative; width: 1280px; height: 720px; overflow: hidden;
+    background: radial-gradient(ellipse 90% 80% at 50% 38%, #1b3a86 0%, #10245a 45%, var(--navy) 100%);
+    font-family: "Nunito", system-ui, sans-serif; color: var(--white);
+  }
+  canvas, #court { position: absolute; inset: 0; }
+  .abs { position: absolute; will-change: transform, opacity; }
+  .logo { display: block; filter: drop-shadow(0 16px 36px rgba(242, 182, 50, .35)); }
+  .word { font-weight: 900; letter-spacing: -2px; line-height: 1; }
+  .word .bath { color: var(--gold); }
+  .mono { font-family: "JetBrains Mono", monospace; font-weight: 700; }
+
+  /* ---- title + end card ---- */
+  .card { left: 0; right: 0; display: flex; flex-direction: column; align-items: center; }
+  #title { top: 112px; }
+  #title .word { font-size: 96px; margin-top: 10px; }
+  #tag { font-weight: 800; font-size: 30px; color: var(--muted); margin-top: 12px; }
+  #tag b { color: var(--white); }
+  #pills { display: flex; gap: 16px; margin-top: 34px; }
+  .pill {
+    font-weight: 800; font-size: 23px; padding: 10px 20px; border-radius: 999px;
+    color: var(--navy); box-shadow: 0 6px 0 rgba(0,0,0,.25); white-space: nowrap;
+  }
+  #ball { left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 55%, #c88a12);
+          box-shadow: 0 0 24px rgba(242, 182, 50, .7); }
+  #end { top: 140px; }
+  #end .word { font-size: 88px; margin-top: 8px; }
+  #end .url { margin-top: 26px; font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 22px;
+              color: var(--navy); background: var(--gold); padding: 10px 22px; border-radius: 12px;
+              box-shadow: 0 6px 0 rgba(0,0,0,.25); }
+  #end .sub { margin-top: 20px; font-weight: 800; font-size: 22px; color: var(--muted); }
+
+  /* ---- demo scene ---- */
+  #label { left: 0; right: 0; top: 62px; text-align: center; font-weight: 900; font-size: 48px; }
+  #label .hl { color: var(--gold); }
+  #term {
+    left: 140px; top: 146px; width: 1000px; height: 440px; border-radius: 18px;
+    background: #0a1430; border: 1.5px solid #2a4380;
+    box-shadow: 0 30px 80px rgba(0,0,0,.5); overflow: hidden;
+  }
+  #term .bar { height: 44px; background: #0f1d42; display: flex; align-items: center; padding: 0 18px;
+               gap: 9px; border-bottom: 1px solid #1e3366; }
+  #term .dot { width: 13px; height: 13px; border-radius: 50%; }
+  #term .ttl { flex: 1; text-align: center; font-family: "JetBrains Mono", monospace; font-size: 15px;
+               color: var(--muted); margin-right: 60px; }
+  #body { padding: 22px 32px; font-family: "JetBrains Mono", monospace; font-size: 22px; line-height: 1.55;
+          white-space: pre; font-variant-ligatures: none; }
+  .ps { color: var(--lilac); } .dim { color: #6c80ad; } .ok { color: var(--green); }
+  .gold { color: var(--gold); } .kw { color: var(--coral); } .str { color: #9be29b; } .fn { color: #7fb2ff; }
+  .err { color: var(--coral); font-weight: 700; }
+  .tagx { font-size: 16px; color: var(--navy); background: var(--green); padding: 1px 8px; border-radius: 6px; }
+  .caret { display: inline-block; width: 11px; height: 24px; background: var(--gold); vertical-align: -5px; margin-left: 2px; }
+
+  /* the court grid */
+  .grid { display: inline-grid; grid-template-columns: 96px repeat(20, 37px); gap: 5px; margin-top: 10px;
+          font-family: "Nunito", sans-serif; white-space: normal; }
+  .grid .ct { font-weight: 800; font-size: 17px; color: var(--muted); align-self: center; }
+  .grid .c { height: 34px; border-radius: 7px; }
+  .grid .free { background: var(--green); box-shadow: 0 0 14px rgba(61, 220, 132, .45); }
+  .grid .taken { background: #1d2c55; }
+  .axis { display: flex; justify-content: space-between; margin: 8px 0 0 101px; width: 832px;
+          font-size: 15px; color: var(--dim, #6c80ad); }
+  .count { font-family: "Nunito", sans-serif; font-weight: 900; font-size: 30px; }
+
+  /* week bars, swim pips, stamps */
+  .barrow { display: flex; align-items: center; gap: 14px; height: 37px; font-family: "Nunito", sans-serif;
+            font-weight: 800; font-size: 22px; white-space: normal; }
+  .barrow .d { width: 52px; color: var(--muted); }
+  .barrow .b { height: 26px; border-radius: 8px; background: linear-gradient(90deg, var(--blue), var(--green)); }
+  .pips { display: inline-flex; gap: 10px; vertical-align: middle; margin-left: 12px; }
+  .pip { width: 26px; height: 26px; border-radius: 50%; background: var(--green); box-shadow: 0 0 12px rgba(61,220,132,.6); }
+  .pip.off { background: #1d2c55; box-shadow: none; }
+  #stamp { left: 0; right: 0; top: 408px; display: flex; justify-content: center; pointer-events: none; }
+  #stamp div { font-weight: 900; font-size: 60px; letter-spacing: 2px; padding: 8px 34px; border-radius: 20px;
+               border: 7px solid currentColor; background: rgba(8, 19, 46, .82); }
+  #steps { left: 0; right: 0; top: 614px; display: flex; justify-content: center; gap: 10px; }
+  #steps i { width: 30px; height: 8px; border-radius: 4px; background: #24407f; }
+  #flash { inset: 0; background: #fff; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx" width="1280" height="720"></canvas>
+  <svg id="court" viewBox="0 0 1280 720"></svg>
+
+  <div id="title" class="abs card">
+    <img id="logo" class="logo" src="../logo.svg" width="160" height="160" alt="">
+    <div class="word">team<span class="bath">bath</span></div>
+    <div id="tag">Team Bath bookings, <b>in Python.</b></div>
+    <div id="pills">
+      <div class="pill" style="background:var(--gold)">🐍 Python</div>
+      <div class="pill" style="background:var(--green)">🎾 Free courts</div>
+      <div class="pill" style="background:var(--lilac)">🏊 Class spaces</div>
+      <div class="pill" style="background:var(--coral)">✅ Book in one line</div>
+    </div>
+  </div>
+  <div id="ball" class="abs"></div>
+
+  <div id="label" class="abs"></div>
+  <div id="term" class="abs">
+    <div class="bar">
+      <i class="dot" style="background:#ff5f57"></i><i class="dot" style="background:#febc2e"></i>
+      <i class="dot" style="background:#28c840"></i><div class="ttl">python3 — teambath</div>
+    </div>
+    <div id="body"></div>
+  </div>
+  <div id="stamp" class="abs"><div id="stampText"></div></div>
+  <div id="steps" class="abs"></div>
+
+  <div id="end" class="abs card">
+    <img id="endlogo" class="logo" src="../logo.svg" width="140" height="140" alt="">
+    <div class="word">team<span class="bath">bath</span></div>
+    <div class="url">pip install git+https://github.com/gwerneckp/teambath</div>
+    <div class="sub">Made at the University of Bath 🎓</div>
+  </div>
+  <div id="flash" class="abs"></div>
+</div>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const outCubic = (p) => 1 - Math.pow(1 - p, 3);
+const inCubic = (p) => p * p * p;
+const outBack = (p) => { const c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const set = (el, { x = 0, y = 0, s = 1, r = 0, o = 1 }) => {
+  el.style.transform = `translate(${x}px, ${y}px) scale(${s}) rotate(${r}deg)`;
+  el.style.opacity = o;
+};
+const type = (text, p) => text.slice(0, Math.round(text.length * clamp(p)));
+const line = (html, u, at) => (u >= at ? html : "");
+const caret = (u) => `<span class="caret" style="opacity:${Math.floor(u * 14) % 2 ? 0 : 1}"></span>`;
+// A typed Python prompt. `code` is plain text; `html` is the same code with syntax colours.
+const py = (code, html, u, a, b) => {
+  if (u < a) return "";
+  const done = u >= b;
+  return `<span class="ps">&gt;&gt;&gt;</span> ${done ? html : type(code, seg(u, a, b))}${done ? "" : caret(u)}\n`;
+};
+const cont = (html, u, at) => line(`<span class="ps">...</span> ${html}\n`, u, at);
+
+// Real data: the Squash Students grid for Thu 1 Oct 2026 (tests/fixtures/activity_grid.html).
+const GRID = ["11111010100111010000", "11111110011110110000",
+              "11111110011111110000", "11111110110111100000"];
+const TIMES = ["07:00", "10:00", "13:00", "16:00", "19:00", "21:15"];
+
+// ---------------------------------------------------------------- the demos
+// len: seconds on screen. body(u): terminal HTML at progress u in [0, 1]. stamp: optional big badge.
+const demos = [
+  { len: 1.3, label: 'Log in with your <span class="hl">PIN</span>', body: (u) =>
+      py("from teambath import TeamBath",
+         `<span class="kw">from</span> teambath <span class="kw">import</span> TeamBath`, u, 0.02, 0.22) +
+      py('tb = TeamBath("abc123@bath.ac.uk", "1234")',
+         `tb = <span class="fn">TeamBath</span>(<span class="str">"abc123@bath.ac.uk"</span>, <span class="str">"1234"</span>)`, u, 0.26, 0.58) +
+      py("tb.login()", `tb.<span class="fn">login</span>()`, u, 0.62, 0.74) +
+      line(`<span class="dim"># ✓ logged in</span>\n`, u, 0.8),
+  },
+  { len: 1.5, label: 'What\'s on <span class="hl">tomorrow?</span>', body: (u) => {
+    let s = py('tb.search(tomorrow, type="squash")',
+               `tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"squash"</span>)`, u, 0.02, 0.3);
+    s += line(`[Activity(id=<span class="str">'SQUASHPAY1'</span>,  name=<span class="str">'Squash P.A.Y.G'</span>, ...),\n`, u, 0.36);
+    s += line(` Activity(id=<span class="str">'SQUASHSTAFF'</span>, name=<span class="str">'Squash Staff'</span>, ...),\n`, u, 0.42);
+    s += line(` Activity(id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>, ...)]  <span class="tagx">free</span>\n`, u, 0.48);
+    return s;
+  }},
+  { len: 2.4, label: 'Every court. <span class="hl">Every slot.</span>', body: (u) => {
+    let s = py('slots = tb.availability("SQUASHFREE2", tomorrow)',
+               `slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, tomorrow)`, u, 0.02, 0.24);
+    if (u < 0.28) return s;
+    // cells pop in as a diagonal wave
+    let free = 0, cells = "";
+    GRID.forEach((row, r) => {
+      cells += `<div class="ct">Court ${r + 1}</div>`;
+      [...row].forEach((v, c) => {
+        const p = seg(u, 0.3 + (c + r * 2) * 0.012, 0.42 + (c + r * 2) * 0.012);
+        if (p >= 1 && v === "1") free++;
+        const sc = 0.2 + 0.8 * outBack(p);
+        cells += `<div class="c ${v === "1" ? "free" : "taken"}" style="transform:scale(${sc});opacity:${clamp(p * 2)}"></div>`;
+      });
+    });
+    s += `<div class="grid">${cells}</div>`;
+    s += `<div class="axis">${TIMES.map((x) => `<span>${x}</span>`).join("")}</div>`;
+    s += line(`\n<span class="dim">&gt;&gt;&gt;</span> <span class="count"><span class="ok">${free}</span> free slots</span>`, u, 0.34);
+    return s;
+  }},
+  { len: 2.0, label: 'The whole week in <span class="hl">one loop</span>', body: (u) => {
+    let s = py("for d in week:", `<span class="kw">for</span> d <span class="kw">in</span> week:`, u, 0.02, 0.1);
+    s += cont(`    slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, d)`, u, 0.14);
+    s += cont(`    <span class="fn">print</span>(<span class="str">f"{d:%a}"</span>, <span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots))`, u, 0.2);
+    [["Thu", 51], ["Fri", 42], ["Sat", 50], ["Sun", 33], ["Mon", 51]].forEach(([d, n], i) => {
+      const p = outCubic(seg(u, 0.3 + i * 0.08, 0.55 + i * 0.08));
+      if (u < 0.3 + i * 0.08) return;
+      s += `<div class="barrow"><span class="d">${d}</span><span class="b" style="width:${n * 12 * p}px"></span><span>${Math.round(n * p)}</span></div>`;
+    });
+    return s;
+  }},
+  { len: 1.5, label: 'Swim spaces, <span class="hl">live</span>', body: (u) => {
+    let s = py('[swim] = tb.availability("SFIT50MR18897", tomorrow)',
+               `[swim] = tb.<span class="fn">availability</span>(<span class="str">"SFIT50MR18897"</span>, tomorrow)`, u, 0.02, 0.3);
+    s += py("swim.start, swim.spaces", `swim.start, swim.spaces`, u, 0.34, 0.46);
+    s += line(`(datetime.datetime(2026, 10, 1, 18, 0), <span class="gold">5</span>)\n`, u, 0.5);
+    if (u >= 0.56) {
+      const pips = [0, 1, 2, 3, 4, 5].map((i) => {
+        const p = outBack(seg(u, 0.58 + i * 0.04, 0.7 + i * 0.04));
+        return `<i class="pip ${i < 5 ? "" : "off"}" style="transform:scale(${p})"></i>`;
+      }).join("");
+      s += `\n<span style="font-family:Nunito;font-weight:800;font-size:26px">🏊 Swimfit 18:00 fast lane</span><span class="pips">${pips}</span>`;
+    }
+    return s;
+  }},
+  { len: 1.8, label: 'Book it. <span class="hl">One line.</span>', stamp: ["✓ BOOKED", "var(--green)", 0.45], body: (u) =>
+      py("tb.book(slots[0])", `tb.<span class="fn">book</span>(slots[<span class="gold">0</span>])`, u, 0.02, 0.2) +
+      line(`Booking(activity_id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>,\n        start=datetime.datetime(2026, 10, 1, 7, 0),\n        duration=<span class="gold">45</span>, status=<span class="str">'Confirmed'</span>)\n`, u, 0.3),
+  },
+  { len: 1.6, label: 'Costs money? <span class="hl">Nope.</span>', stamp: ["£0 CHARGED", "var(--gold)", 0.5], body: (u) =>
+      py("tb.book(calisthenics[0])", `tb.<span class="fn">book</span>(calisthenics[<span class="gold">0</span>])`, u, 0.02, 0.2) +
+      line(`<span class="err">PaidBookingError</span>: CLASSGYM1W400 at Mon 05 Oct 17:30 costs £9.50.\nPaid bookings aren't supported.\n`, u, 0.3) +
+      line(`<span class="dim"># backed out: nothing booked, nothing charged</span>\n`, u, 0.4),
+  },
+];
+
+const DEMO_START = 1.2;
+let acc = DEMO_START;
+demos.forEach((d) => { d.a = acc; acc += d.len; d.b = acc; });
+const END_START = acc;
+const DURATION = END_START + 1.9;
+const BOOKED = demos[5];
+$("#steps").innerHTML = demos.map(() => "<i></i>").join("");
+
+// ---------------------------------------------------------------- background
+// A squash court from above, drawn as a line sketch.
+const court = (() => {
+  const svg = $("#court");
+  svg.innerHTML = `<g fill="none" stroke="#7fb2ff" stroke-linecap="round" stroke-width="2.5">
+    <path d="M150 40 H1130 V690 H150 Z"/><path d="M150 400 H1130"/><path d="M640 400 V690"/>
+    <path d="M150 560 H310 V400"/><path d="M1130 560 H970 V400"/></g>`;
+  const paths = [...svg.querySelectorAll("path")];
+  paths.forEach((p) => { p.dataset.len = p.getTotalLength(); p.style.strokeDasharray = p.dataset.len; });
+  return (p, o) => {
+    paths.forEach((path, k) => { path.style.strokeDashoffset = path.dataset.len * (1 - outCubic(seg(p, k * .1, 1))); });
+    svg.style.opacity = o;
+  };
+})();
+
+// Rays + confetti bursts on a canvas. Deterministic pseudo-random so every render is identical.
+const fx = (() => {
+  const ctx = $("#fx").getContext("2d");
+  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const colors = ["#f2b632", "#3ddc84", "#ff6b6b", "#a99bff", "#7fb2ff", "#ffe29a"];
+  const bits = Array.from({ length: 110 }, () => ({
+    a: rnd() * 6.28, v: 380 + rnd() * 520, sw: 20 + rnd() * 40,
+    ph: rnd() * 6.28, w: 7 + rnd() * 9, h: 3 + rnd() * 5, c: colors[Math.floor(rnd() * 6)], spin: 3 + rnd() * 8,
+  }));
+  return (t, raysO, bursts) => {
+    ctx.clearRect(0, 0, 1280, 720);
+    if (raysO > 0) {
+      ctx.save(); ctx.translate(640, 260); ctx.rotate(t * 0.12);
+      for (let i = 0; i < 24; i++) {
+        ctx.rotate(Math.PI / 12);
+        ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(900, -55); ctx.lineTo(900, 55); ctx.closePath();
+        ctx.fillStyle = `rgba(127, 178, 255, ${0.04 * raysO})`; ctx.fill();
+      }
+      ctx.restore();
+    }
+    // bursts explode outwards from (x, y), then fall
+    for (const [t0, x0, y0, o] of bursts) {
+      const dt = t - t0;
+      if (dt < 0 || o <= 0) continue;
+      ctx.globalAlpha = o;
+      for (const b of bits) {
+        const x = x0 + Math.cos(b.a) * b.v * dt * Math.exp(-dt * 1.6) + Math.sin(dt * 4 + b.ph) * b.sw * dt;
+        const y = y0 + Math.sin(b.a) * b.v * dt * Math.exp(-dt * 1.6) + 520 * dt * dt;
+        if (y > 740) continue;
+        ctx.save(); ctx.translate(x, y); ctx.rotate(dt * b.spin + b.ph);
+        ctx.fillStyle = b.c; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); ctx.restore();
+      }
+    }
+    ctx.globalAlpha = 1;
+  };
+})();
+
+// ---------------------------------------------------------------- one frame
+function render(t) {
+  const loopOut = inCubic(seg(t, DURATION - 0.22, DURATION));   // fade so the loop restarts cleanly
+
+  // a ball flies in and bounces on the logo, which pops
+  const bp = seg(t, 0, 0.42), hit = 0.42;
+  const bx = -40 + (640 - 17 + 40) * bp, by = 60 + 150 * bp - 260 * Math.sin(Math.PI * bp);
+  const after = seg(t, hit, hit + 0.5);
+  set($("#ball"), { x: t < hit ? bx : 623 + 520 * after, y: t < hit ? by : 196 - 330 * Math.sin(Math.PI * after * 0.8) + 300 * after * after,
+                    o: (t < 0.02 ? 0 : 1) * (1 - seg(t, hit + 0.35, hit + 0.5)) });
+
+  // title: 0 → 1.2s
+  const out = inCubic(seg(t, 1.0, 1.18));
+  const pop = seg(t, hit - 0.04, hit + 0.26);
+  set($("#logo"), { s: t < hit - 0.04 ? 0 : outBack(pop), r: (1 - pop) * -25, o: seg(t, hit - 0.04, hit + 0.04) });
+  set($("#title .word"), { y: 30 * (1 - outCubic(seg(t, 0.48, 0.7))), o: seg(t, 0.48, 0.62) });
+  set($("#tag"), { y: 20 * (1 - outCubic(seg(t, 0.56, 0.76))), o: seg(t, 0.56, 0.7) });
+  [...document.querySelectorAll(".pill")].forEach((el, i) => {
+    const p = seg(t, 0.62 + i * 0.06, 0.8 + i * 0.06);
+    set(el, { y: 26 * (1 - outCubic(p)), s: 0.6 + 0.4 * outBack(p), r: (i % 2 ? 3 : -3) * (1 - p), o: clamp(p * 3) });
+  });
+  set($("#title"), { y: -120 * out, s: 1 - 0.1 * out, o: 1 - out });
+
+  // demos
+  const termIn = outCubic(seg(t, 1.12, 1.34)), termOut = inCubic(seg(t, END_START - 0.05, END_START + 0.2));
+  const cur = demos.findIndex((d) => t >= d.a && t < d.b);
+  const d = demos[cur === -1 ? (t < DEMO_START ? 0 : demos.length - 1) : cur];
+  const u = clamp((t - d.a) / d.len);
+  // a little camera shake when a stamp lands
+  let shake = 0;
+  if (d.stamp) { const k = seg(u, d.stamp[2], d.stamp[2] + 0.12); shake = k > 0 && k < 1 ? Math.sin(k * 40) * 10 * (1 - k) : 0; }
+  set($("#term"), { x: shake, y: 90 * (1 - termIn) + 60 * termOut, s: 0.94 + 0.06 * termIn - 0.06 * termOut,
+                    o: termIn * (1 - termOut) });
+  set($("#steps"), { o: termIn * (1 - termOut) });
+  $("#label").innerHTML = d.label;
+  $("#body").innerHTML = d.body(u);
+  const labelIn = outBack(seg(u, 0, 0.14)), labelOut = inCubic(seg(u, 0.93, 1));
+  set($("#label"), { y: 24 * (1 - labelIn) - 20 * labelOut, s: 0.9 + 0.1 * labelIn,
+                     o: termIn * clamp(labelIn) * (1 - labelOut) * (1 - termOut) });
+  $("#body").style.opacity = 1 - labelOut * 0.9;
+  [...document.querySelectorAll("#steps i")].forEach((el, i) => {
+    el.style.background = i === cur ? "#f2b632" : i < cur ? "#8a6a1f" : "#24407f";
+  });
+
+  // stamp
+  if (d.stamp) {
+    const [text, color, at] = d.stamp;
+    const p = seg(u, at, at + 0.14);
+    $("#stampText").textContent = text;
+    $("#stampText").style.color = color;
+    set($("#stamp"), { s: u < at ? 0 : 2.4 - 1.4 * outCubic(p), r: -8, o: (u < at ? 0 : clamp(p * 3)) * (1 - labelOut) });
+  } else {
+    set($("#stamp"), { o: 0 });
+  }
+  const flashAt = BOOKED.a + BOOKED.len * BOOKED.stamp[2];
+  set($("#flash"), { o: 0.35 * (1 - seg(t, flashAt, flashAt + 0.18)) * (t >= flashAt ? 1 : 0) });
+
+  // end card
+  const e = t - END_START;
+  set($("#endlogo"), { s: outBack(seg(e, 0.1, 0.4)), r: (1 - seg(e, 0.1, 0.4)) * 20, o: seg(e, 0.1, 0.2) * (1 - loopOut) });
+  set($("#end .word"), { y: 24 * (1 - outCubic(seg(e, 0.18, 0.42))), o: seg(e, 0.18, 0.32) * (1 - loopOut) });
+  set($("#end .url"), { y: 20 * (1 - outCubic(seg(e, 0.3, 0.52))), s: 0.8 + 0.2 * outBack(seg(e, 0.3, 0.52)),
+                        o: seg(e, 0.3, 0.42) * (1 - loopOut) });
+  set($("#end .sub"), { o: seg(e, 0.45, 0.6) * (1 - loopOut) });
+
+  // background
+  const bgIn = seg(t, 0, 0.25);
+  court(seg(t, 0.05, 0.9), (0.16 * bgIn + 0.1 * seg(e, 0, 0.4)) * (1 - loopOut));
+  fx(t, bgIn * (1 - loopOut), [
+    [hit, 640, 200, 1 - seg(t, 1.3, 1.6)],
+    [flashAt, 640, 330, 1 - seg(t, BOOKED.b, BOOKED.b + 0.3)],
+    [END_START + 0.25, 640, 210, 1 - loopOut],
+  ]);
+}
+
+window.DURATION = DURATION;
+window.render = render;
+window.ready = Promise.all([document.fonts.ready,
+  ...[...document.images].map((img) => img.decode().catch(() => {}))]).then(() => true);
+
+// Live preview when opened directly in a browser.
+if (!navigator.webdriver) {
+  const start = performance.now();
+  const tick = () => { render(((performance.now() - start) / 1000) % DURATION); requestAnimationFrame(tick); };
+  window.ready.then(tick);
+}
+</script>
+</body>
+</html>
