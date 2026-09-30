@@ -9,6 +9,10 @@ is replaced by fake values, and so are other people's details (email addresses, 
 names and bios). Hidden form state (__VIEWSTATE, which can encode personal details too) is
 blanked, and inline scripts are dropped to keep the files small.
 It makes one deliberately failed login, with PIN 0000, to capture the error page.
+
+It never books. The booking pages (confirm_*, booked, bookings, cancel_confirm,
+bookings_empty) were captured once, on 30 Sep 2026, by booking a free squash court and
+cancelling it straight away, and scrubbed with Capture.save.
 """
 
 from __future__ import annotations
