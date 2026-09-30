@@ -16,29 +16,17 @@ teambath is built around **Team Bath's booking site**. New features come from wh
 - [x] **`bookings()`**: your upcoming bookings
 - [x] **`book(slot)`** for a court slot or a class session. It checks the price first and refuses anything that isn't free (`PaidBookingError`), and passes the site's refusals through (not eligible, one per day...)
 - [x] **`cancel(booking)`** for free bookings
-- [ ] An opt-in live test that books a free student slot and cancels it straight away
-- [ ] **Paid bookings.** Not supported: they go through the basket and checkout, which should stay in the browser. Maybe one day, read-only (see what's in your basket).
 
 ## Next (0.3): CLI and MCP
 
 - [ ] A `teambath` command, e.g. `teambath search squash --date tomorrow`, `teambath slots SQUASHFREE2 thu`, `teambath bookings`, with `--json` for scripts and agents
 - [ ] An optional MCP server (`[mcp]` extra) with read-only tools first, and booking and cancelling as separate, explicit tools
 
-## Later
+## 1.0: stable release
 
-- [ ] Find when the booking windows open (midnight, or a rolling window) and document it per activity
-- [ ] Watch a slot and tell you, or book it, when it's released or someone cancels, within the site's rules
-- [ ] Export your bookings to a calendar (`.ics`)
-- [ ] `availability()` for courses and holiday camps (`kind="courses"`)
-- [ ] Basket and invoices, read-only
+- [ ] A stable, documented API
+- [ ] Published on PyPI
 
-## Maybe / needs thought
+## Not in scope
 
-- Making it easier to point at other Gladstone Connect sites. It's a fork away today; only worth it if people ask.
-- Changing PIN and contact preferences. Rarely needed, and risky to automate.
-
-## Not planned
-
-- Paying for anything. Payments stay in the browser.
-- Getting around Team Bath's rules (booking limits, eligibility, windows) or grabbing slots faster than a person could.
-- Crawling the site or hammering it with requests.
+- Paid bookings, the basket and payments. They stay on the website.
