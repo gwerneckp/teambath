@@ -8,7 +8,7 @@
 
 <p align="center">
   <a href="https://github.com/gwerneckp/teambath/blob/main/assets/demo.mp4">
-    <img src="https://raw.githubusercontent.com/gwerneckp/teambath/main/assets/demo.gif" alt="teambath demo: log in, search tomorrow's squash, every court and slot lighting up, a week of free courts in one loop, swim spaces in a pool lane, a booking printed as a ticket, and the ticket torn up on cancel." width="720">
+    <img src="https://raw.githubusercontent.com/gwerneckp/teambath/main/assets/demo.gif" alt="teambath demo, set on a squash court: the floodlights come on as you log in, search results dealt as trading cards, every free court slot bouncing in as a ball, a week of tear-off calendar pages, a three-lane swim race, a booking printed as a ticket and torn up on cancel, while a loading browser window loses 7-0." width="720">
   </a>
   <br>
   <sub>▶️ <a href="https://github.com/gwerneckp/teambath/blob/main/assets/demo.mp4">Watch the video</a></sub>
