@@ -61,6 +61,13 @@ def test_submission_includes_only_the_clicked_button(page):
     assert data["go"] == "Go" and data["name"] == "Sam"
 
 
+def test_click(page):
+    assert page.click("go", {"name": "Sam"}) == "next page"
+    [(url, data)] = page.client.posts
+    assert url == "https://site.test/Connect/next.aspx"
+    assert (data["go"], data["name"]) == ("Go", "Sam") and "__EVENTTARGET" in data
+
+
 def test_postback_target(page):
     assert page.postback_target(page.soup.find(id="lnk")) == "ctl00$Main$lnk"
     with pytest.raises(ValueError):

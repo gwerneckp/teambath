@@ -63,6 +63,10 @@ class Page:
         data["__EVENTARGUMENT"] = argument
         return self.client.post(self.action(), data)
 
+    def click(self, button: str, fields: dict | None = None) -> Page:
+        """Click the submit button named `button`, after setting `fields`."""
+        return self.client.post(self.action(), self.submission(button, fields))
+
     def submission(self, button: str, fields: dict | None = None) -> dict[str, str]:
         """The data sent by clicking the submit button named `button`, after setting `fields`."""
         data = self.form_data()
