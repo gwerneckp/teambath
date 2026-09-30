@@ -2,7 +2,7 @@
 
 teambath is built around **Team Bath's booking site**. New features come from what Bath students actually do on it, and are tested there. The guiding rule is **stay small**: one `TeamBath` class, plain dataclasses, two dependencies. The foundations come first (a clean read-only library with real-page tests), and only then the things built on top of them.
 
-## Now (0.1): read-only, working at Team Bath
+## Done (0.1): read-only, working at Team Bath
 
 - [x] Log in with email and PIN, and log in again automatically when the session expires
 - [x] Activity types, and search by day and type
@@ -11,14 +11,15 @@ teambath is built around **Team Bath's booking site**. New features come from wh
 - [x] Offline tests against real, scrubbed pages from the site, plus opt-in live tests
 - [x] A capture script to refresh the test pages when the site changes
 
-## Next (0.2): your bookings, then booking
+## Now (0.2): free bookings
 
-- [ ] **`bookings()`**: your upcoming bookings. The page needs a real booking before its markup can be captured, so this is first.
-- [ ] **Book** a court slot or a class session (`book(slot)`), with clear errors for the site's rules: full, outside the booking window, one session per day, not eligible.
-- [ ] **Cancel** a booking.
-- [ ] Live tests for booking and cancelling that clean up after themselves, e.g. book a free student slot and cancel it straight away. They'd be opt-in, since they change real state.
+- [x] **`bookings()`**: your upcoming bookings
+- [x] **`book(slot)`** for a court slot or a class session. It checks the price first and refuses anything that isn't free (`PaidBookingError`), and passes the site's refusals through (not eligible, one per day...)
+- [x] **`cancel(booking)`** for free bookings
+- [ ] An opt-in live test that books a free student slot and cancels it straight away
+- [ ] **Paid bookings.** Not supported: they go through the basket and checkout, which should stay in the browser. Maybe one day, read-only (see what's in your basket).
 
-## Then (0.3): CLI and MCP
+## Next (0.3): CLI and MCP
 
 - [ ] A `teambath` command, e.g. `teambath search squash --date tomorrow`, `teambath slots SQUASHFREE2 thu`, `teambath bookings`, with `--json` for scripts and agents
 - [ ] An optional MCP server (`[mcp]` extra) with read-only tools first, and booking and cancelling as separate, explicit tools

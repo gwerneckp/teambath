@@ -29,13 +29,14 @@ for day in range(6):                                # today + the 5 days you can
 
 The same works for pitches, the MUGA, tennis courts, and swim and fitness classes, where you get the spaces left instead of a grid.
 
-The site has no API, so teambath logs in the way the login form does and reads the same pages you would. It's **read-only** for now: it looks, and never books, cancels or pays. Booking is next on the [roadmap](ROADMAP.md).
+The site has no API, so teambath logs in the way the login form does and reads the same pages you would. It can book and cancel too, as long as the booking is free. Anything that costs money is left to you and the website.
 
 ## What it can do
 
 - **Log in** with your email and PIN, and again by itself when the session expires.
 - **Search what's on** on any day, for everything or for one type (Squash, Swimming 50m Pool, Badminton...).
 - **Check availability** of any activity: every court × time slot, or each class session and its spaces left.
+- **Book and cancel** free slots, and list your bookings.
 - **Read your account details.**
 
 ## Install
@@ -91,10 +92,13 @@ tb.account()
 | `activity_types()` | `ActivityType(id, name)`, one per type in the site's dropdown |
 | `search(day=today, type=None)` | `Activity(id, name, kind, type, description, status)` for everything on the site's list that day |
 | `availability(activity, day=today)` | `Slot(activity_id, start, duration, resource, available, spaces, status)`, one per bookable time |
+| `book(slot)` | Books a free slot and returns the `Booking` |
+| `bookings()` | `Booking(activity_id, name, start, duration, status)` for each upcoming booking |
+| `cancel(booking)` | Cancels a free booking |
 | `account()` | `Account(member_id, first_name, last_name, email, birth_date, mobile, address)` |
 | `login()` | Logs in now, or raises `LoginError` |
 
-Results are plain dataclasses. Errors are `TeamBathError`, or its subclass `LoginError` for login problems.
+Results are plain dataclasses. Errors are `TeamBathError`, with the subclasses `LoginError` and `PaidBookingError`.
 
 ### Courts vs classes
 
@@ -107,6 +111,21 @@ Good to know:
 
 - Most things come in three flavours: **Students** (free with your Sports Pass), **P.A.Y.G.** and **Staff**. As a student you want the Students one, e.g. `SQUASHFREE2`.
 - "Not Available" means taken *or* not released yet. The site doesn't say which.
+
+### Booking
+
+```python
+tomorrow = date.today() + timedelta(days=1)
+slot = next(s for s in tb.availability("SQUASHFREE2", tomorrow) if s.available)
+
+booking = tb.book(slot)     # Booking(name='Squash Students', start=datetime(...), duration=45, ...)
+tb.bookings()               # [booking]
+tb.cancel(booking)          # changed your mind
+```
+
+**Only free bookings are supported.** Before booking, teambath checks the price the site shows. If it's anything but £0.00, it backs out and raises `PaidBookingError`, so nothing is booked or charged. Watch out: P.A.Y.G. courts aren't the only paid ones. Some fitness classes cost money too (Calisthenics was £9.50).
+
+If the site says no (not eligible, one booking a day already used, slot just taken), you get a `TeamBathError` with the site's own message.
 
 ### How far ahead can you book?
 
@@ -126,7 +145,7 @@ It depends on the activity. This is what the site showed on 30 Sep 2026. The boo
 ```bash
 uv sync
 uv run pytest                                               # offline tests, no account needed
-TEAMBATH_EMAIL=... TEAMBATH_PIN=... uv run pytest -m live   # read-only checks against the real site
+TEAMBATH_EMAIL=... TEAMBATH_PIN=... uv run pytest -m live   # read-only checks against the real site (never books)
 uv run ruff check src tests
 ```
 
