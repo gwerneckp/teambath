@@ -4,46 +4,39 @@
 
 <h1 align="center">teambath</h1>
 
-<p align="center"><b>Team Bath sports bookings, programmable.</b> Free courts, class spaces and more, from Python.</p>
+<p align="center"><b>Find a free court at Team Bath without clicking through the booking site.</b></p>
 
-Use the University of Bath's sports booking site, [bookings.teambath.com](https://bookings.teambath.com/Connect/memberHomePage.aspx), from Python. See what's on, which squash or badminton courts are free, and how many spaces a swim or fitness class has left, with the email and PIN you already use to log in.
+Want a squash court this week? On [bookings.teambath.com](https://bookings.teambath.com/Connect/memberHomePage.aspx) that means log in, search, open the activity, and check the grid, one day at a time. Then do it all again for badminton. The free student slots only open 5 days ahead, so you end up doing this a lot.
 
-The site has no API, so teambath logs in the way the login form does and reads the same pages your browser would.
+teambath does that clicking for you, from Python:
 
 ```python
-from datetime import date
+from datetime import date, timedelta
 from teambath import TeamBath
 
-tb = TeamBath("abc123@bath.ac.uk", "1234")          # your email and 4-digit PIN
+tb = TeamBath("abc123@bath.ac.uk", "1234")          # the email and PIN you log in with
 
-for slot in tb.availability("SQUASHFREE2", date(2026, 10, 1)):
-    if slot.available:
-        print(f"{slot.start:%H:%M}  {slot.resource}")
-# 07:00  Squash Court 1
-# 07:00  Squash Court 2
+for day in range(6):                                # today + the 5 days you can book
+    d = date.today() + timedelta(days=day)
+    free = [s for s in tb.availability("SQUASHFREE2", d) if s.available]
+    print(f"{d:%a %d %b}: {len(free)} free", *sorted({f"{s.start:%H:%M}" for s in free})[:4])
+# Wed 30 Sep: 0 free
+# Thu 01 Oct: 51 free 07:00 07:45 08:30 09:15
+# Fri 02 Oct: 42 free 07:00 07:45 08:30 09:15
+# Sat 03 Oct: 50 free 09:15 10:00 10:45 11:30
 # ...
 ```
 
-> [!NOTE]
-> **Made for Team Bath.**
-> I built teambath for myself as a student at the [University of Bath](https://www.teambath.com). Team Bath is where it's tested, and Team Bath is what it's designed around.
->
-> The booking site runs on Gladstone Connect, which many UK leisure centres and universities also use, so `TeamBath(..., url="https://your-site/Connect/")` may well work elsewhere. teambath reads HTML pages, though, so it may only partly work on another site, and it can break at Team Bath too when the site changes. If you're on another Gladstone site, the best route is to **fork it**: the site-specific parts all live in one file (see [How it works](#how-it-works)).
+The same works for pitches, the MUGA, tennis courts, and swim and fitness classes, where you get the spaces left instead of a grid.
 
-| Site | Platform | Status |
-|---|---|---|
-| Team Bath (University of Bath) | Gladstone Connect | ✅ Tested: login, activity types, search, class spaces, court grids, account |
-| *yours?* | | [open an issue](../../issues) or fork |
+The site has no API, so teambath logs in the way the login form does and reads the same pages you would. It's **read-only** for now: it looks, and never books, cancels or pays. Booking is next on the [roadmap](ROADMAP.md).
 
 ## What it can do
 
-- **Log in** with your email and PIN. It logs in again by itself when the session expires.
-- **List activity types** (Squash, Swimming 50m Pool, Badminton...).
-- **Search what's on** on any day, optionally for one type.
-- **See availability**: every court × time slot for courts and pitches, or the sessions and spaces left for classes.
+- **Log in** with your email and PIN, and again by itself when the session expires.
+- **Search what's on** on any day, for everything or for one type (Squash, Swimming 50m Pool, Badminton...).
+- **Check availability** of any activity: every court × time slot, or each class session and its spaces left.
 - **Read your account details.**
-
-It's **read-only** for now: it never books, cancels or pays for anything. Booking is next on the [roadmap](ROADMAP.md).
 
 ## Install
 
@@ -161,7 +154,11 @@ Each method starts from a fresh home page, so calls never depend on each other. 
 | Reading results, slots and grids | `parse.py` | Medium: mostly uses the site's own `data-qa-id` test attributes, which are steadier than the visible text |
 | Account details | `parse.py` | Medium: read by the field labels |
 
-Everything about the site's markup is in `parse.py`, so that's the file to change when the site changes (or to adapt for another Gladstone site).
+Everything about the site's markup is in `parse.py`, so that's the file to change when the site changes.
+
+Because it reads HTML, a redesign of the booking site can break it. Only Team Bath is tested. The live tests (below) are the quickest way to find out whether it still works.
+
+**On another Gladstone Connect site?** Lots of UK leisure centres and universities run the same software, so `TeamBath(email, pin, url="https://your-site/Connect/")` might just work. If it doesn't, fork it and adjust `parse.py`. [CONTRIBUTING.md](CONTRIBUTING.md) has the details.
 
 ## Security and fair use
 
