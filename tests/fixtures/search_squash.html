@@ -1,0 +1,961 @@
+
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head id="ctl00_Head1"><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link id="ctl00_FaviconLink" rel="shortcut icon" href="images/Icons/favicon.ico" type="image/x-icon" /><title>
+	
+    Online Booking
+
+</title>
+    <!--[if IE 6]>
+        <style type="text/css">
+        img, { behavior: url("/Connect/PNGFIX/iepngfix.htc") }
+        </style>
+        <![endif]-->
+
+    <!-- Load Global Styles -->
+    <link href="Scripts/Vendor/jQuery/jquery-ui.min.css" rel="stylesheet" type="text/css" /><link href="Styles/fonts/fontello/css/fontello.css" rel="stylesheet" type="text/css" /><link href="Styles/fonts/fontello/css/animation.css" rel="stylesheet" type="text/css" /><style type='text/css'>
+#rightcolumn
+{
+display:block !important;
+}
+</style>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+
+    <!-- If browser doesn't support input type="date", load files for jQuery UI Date Picker -->
+    
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src='/Connect/Scripts/Vendor/Bootstrap/bootstrap.min.js'></script>
+
+    <!-- If browser doesn't support input type="date", initialize date picker widget -->
+    
+
+    
+<!-- THIS IS BLANK ON PURPOSE --><link href="App_Themes/Default/Less/Css/Theme.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/MediaOverride.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/Override.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/PrintOverride.css" type="text/css" rel="stylesheet" /><link href="/Connect/WebResource.axd?d=q_ToWuCX7tqVzo_TIL62ROTQEtXy2rZOPB84n8Gr7nWyu7ImpGHabzcj5icCdpnhl5yFjEYe0Lmp1Y3scI7ABGpzLH0KAn_8LIBKeBIe1K2biMAepZZ1-a4ZfEZyOmtXD32ZquhdNno6QIhEaaKWVvT_H_MhHu2QJbw7Tgn_BqI1&amp;t=637533306700000000" type="text/css" rel="stylesheet" /></head>
+
+<body>
+    
+    <form method="post" action="./memberHomePage.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="" />
+</div>
+
+
+
+
+<script src="/Connect/WebResource.axd?d=xuv4GX2npZEFfrXqmEEum8-G_k3KLXNTacA_R5NB14VnGSFQJHRwjHBsdR0W5CxCxTm7IWjIQQF5Jx5RRMDKIkQKCcyQF4tigSX0-LxOYrI1&amp;t=639202632265548063" type="text/javascript"></script>
+
+
+<script src="/Connect/ScriptResource.axd?d=QN8TDR__iwUhn4kGzmzOqfvLs4uaX6JwMlCGcyIBwS6reYI9VrKWdVdKU6UEYXESVHZMyNUq3BvMl2XJdB08B11XLGW9Wq6k1JYnkvVjQrZHj4z-g2tmpDMO3HWzQbtMJY6HZKBpAJxmx2kWV64ZB7JLNwYWvDYLM3GdarmIhZQ1&amp;t=4623e90" type="text/javascript"></script>
+
+
+<script src="/Connect/ScriptResource.axd?d=hR9oQkqJjBDNPfw3KxV3eRtOnIcqIICQCqZ1Vbnkf7Rhxn4uOo8b0qS9Q0hI1all6cWYfpO3inXRom89g7m4Ex9fO9iypKi8SP4ZGjTp3IfdbdBZzZx_E1s7xSexzMb-zDIqHiI9P3cpNnk0GT7cfdxIiP28d1rRDEZ9nwdtTZo1&amp;t=fffffffff7f39b88" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=Zs1lmEIk1LL4V01jUYqdw-3SEo_UTW35mJt1108dMS-ChxfJoX4e3b6dlxOps5QdKGdQ1vH4A67V56yCD-abe-SyfgcESQc_PyCnDALr_2QoxJd1RN39VjOah1XSieX4Y_8klqBG6BszP0cBgURHDV6za8edZcJ2IDjNP1l5MpaywJOqIb7nWhgkck5C6EWL0&amp;t=fffffffff7f39b88" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=yW-VlEXdB-UDpVMqHAWIDeNzOzj9NsJsWKpXOjoUfaolcHIKFWEMw3NnuuY0n38wAOPQcF32iCboxVnAImpuGsP8sxOqNyj-DIc_mw3a9NuR2kKbpYeo25LD9BQdBVUcV7ipmbwV2d8l74f8bg2MQg2&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=GZTmHH_6-r-MUWUVIVpI7fvkgha5xnEQppGmz3N75-CNdm9-wS4v5NlkELFhBZ3sPgzfBElVqyofAQpwnr5fHIu-6MknF4EnWaeFSMzI3wR4KGK5uYuIuwkVXkhVv9fe0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=mvAelx64GwsAy1x0SGHhNsbTyMWSUFmC-WeT9nrPWkxinrDsBW5iyBOb1q8niDjZRjnEgPW1icX2bHohbnWjv162ZIJPJ-YkQsRHGHIs0l9RVJzAjIBG-UMuLk6JapHv0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=XS3JUsXKzFwCfwO7aqJh3oqc3xxi6HsuSuHiouZJU4fIdk4n1fmYWAvCwYS6fdhNTUnONB1jL4TSO0VSLqjnG_nOdjupZ-ff4u-vkHxKtUtZVgpc_SDT_6gA-2iQ5SaB0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=shCFAzet8YR439Muu9Kl8I3toJvBSyyC1OoSZUU7IKXDcCjHojV0H-HhZs19zS4P3n2cQVCBS20Th8ij9BQvIhfw51hc4NfRVMS3vF8VKUo2KwwAned90nQACmpuzqQceaSZCcY_a8VuCMxcrakWxg2&amp;t=27679117" type="text/javascript"></script>
+
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="4D8E48C7" />
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+</div>    
+        <div class="wrapper">
+        <header id="headerwrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="LanguageControlWrapper" class="pull-right">
+                            
+                        </div>
+                        <div id="LoginControlWrapper" class="pull-right">
+                            <div id="ctl00_outerLinks" class="outerlinks">
+	
+                                
+                                
+
+                                <a id="ctl00_Helplnk" class="btn-xs btn-success" data-qa-id="lnk-helpMasterPage" href="help.aspx">Help</a>
+                                
+                                <a id="ctl00_ProfileLink" class="hidden-xs btn-xs btn-success" data-qa-id="lnk-profileMasterPage" href="MemberManagement/EditMemberDetails.aspx">My Account</a>
+                                
+                                <a id="ctl00_LoginControl_Logoutlnk" class="btn-xs btn-success" data-qa-id="lnk-logout" href="logout.aspx">Logout</a>
+	
+                                &nbsp;&nbsp;                             
+                            
+</div>
+                        </div>
+                        <div id="MemberNameDisplay" class="pull-right">
+                            <span id="ctl00_lblFullName" class="hidden-xs btn-xs btn-textonly" data-qa-id="label-memberNameMasterPage">Welcome Alex Example</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">                    
+                        
+                        
+                    </div>
+                </div>
+            </div>
+                                  
+            
+                            
+                        
+            
+            
+            <div class="container">
+                <div class="row headerbg">
+                    <div id="headermobile" class="hidden-md hidden-sm hidden-lg">
+                        <a href='/Connect/memberHomePage.aspx'><img id="ctl00_Image2" class="Logo" data-qa-id="img-memberHomePage" src="App_Themes/Default/Images/connect_head_logoleft_mobile.png" alt="Connect Online Booking System" /></a>
+                    </div>
+                    <div id="headerdesktop" class="hidden-xs">
+                        <div id="headerdesktopleft" class="col-md-6">
+                            <div class="headerbg">
+                                <a href='/Connect/memberHomePage.aspx'><img id="ctl00_websiteLogo" class="Logo" data-qa-id="img-websiteLogoHeader" src="App_Themes/Default/Images/connect_head_logoleft.png" alt="Connect Online Booking System" /></a>
+                            </div>
+                        </div>
+                        <div id="headerdesktopright" class="col-md-6 hidden-sm">
+                            <div class="pull-right">
+                                <img id="ctl00_Image1" class="absImage" data-qa-id="img-websiteLogoHeaderDesktopRight" src="App_Themes/Default/Images/connect_headRight.jpg" alt="Connect" />
+                            </div>                            
+                        </div>                        
+                    </div>                    
+                </div>        
+            </div>
+
+            <nav class="navbar navbar-default">
+                
+    
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li id="ctl00_ctl11_homeli">
+                <a href='/Connect/memberHomePage.aspx'>
+                    <span id="ctl00_ctl11_Literal1" data-qa-id="label-navBarHome">Home</span>
+                </a>        
+            </li>
+
+            <li id="ctl00_ctl11_Li1" class="hidden-sm hidden-md" data-qa-id="lnk-navBarMakeBooking"><a href='/Connect/mrmselectsite.aspx?disableSiteSelection=1'>
+                Make a Booking</a>
+            </li>
+            <li id="ctl00_ctl11_Li2" class="hidden-sm hidden-md" data-qa-id="lnk-navBarManageBooking"><a href='/Connect/mrmViewMyBookings.aspx?showOption=1'>
+                Manage Bookings</a>
+            </li>
+            
+
+
+            <li id="ctl00_ctl11_Li3" class="dropdown hidden-xs hidden-lg">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bookings <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li id="ctl00_ctl11_MakeBookingli" data-qa-id="literal-navBarBookingMakeBooking"><a href='/Connect/mrmselectsite.aspx?disableSiteSelection=1'>
+                        Make a Booking</a>
+                    </li>
+                    <li id="ctl00_ctl11_ManageBookingsli" data-qa-id="literal-navBarBookingManageBooking"><a href='/Connect/mrmViewMyBookings.aspx?showOption=1'>
+                        Manage Bookings</a>
+                    </li>
+                    
+                </ul>
+            </li>
+
+            
+
+            <li id="ctl00_ctl11_UnpaidSaleli" class="hidden-sm hidden-md" data-qa-id="literal-navBarBasket">
+                <a href='/Connect/ManageSales.aspx'>
+                    <i class="icon-bag"></i>
+                    Basket
+                </a>
+            </li>
+            
+            
+
+            <li id="ctl00_ctl11_PayLi" class="dropdown hidden-xs hidden-lg">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pay <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li id="ctl00_ctl11_UnpaidSaleDropdownLi" data-qa-id="literal-navBarBasket">
+                        <a href='/Connect/ManageSales.aspx'>
+                            <i class="icon-bag"></i>
+                            Basket
+                        </a>
+                    </li>
+                    <li id="ctl00_ctl11_CashlessBasketDropdownLi" data-qa-id="literal-navBarCashlessBasket">
+                        <a href='/Connect/CashlessBasket.aspx'>
+                            <i class="icon-shopping-bag"></i>
+                            Cashless Basket
+                        </a>
+                    </li>
+                    <li id="ctl00_ctl11_PayInvoicesDropdownLi" data-qa-id="literal-navBarPayPayInvoices">
+                        <a href='/Connect/PayInvoices.aspx'>
+                            <i class="icon-paste"></i>
+                            Pay Invoices
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            
+        
+            <li class="hidden-md hidden-sm hidden-lg"><a href="MemberManagement/EditMemberDetails.aspx">My Account</a></li>
+            <!-- <li class="hidden-md hidden-sm hidden-lg"><a href="help.aspx">Help</a></li> -->
+        </ul>
+		<div class="navbar-form navbar-right" role="search">
+		    <div class="input-group">
+			    <!-- <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"> -->
+                <input type="hidden" name="ctl00$ctl11$SearchResult" id="ctl00_ctl11_SearchResult" />
+                <label for="ctl00_ctl11_SearchTextBox" class="sr-only">Quick Search Box</label>
+                <input name="ctl00$ctl11$SearchTextBox" type="text" id="ctl00_ctl11_SearchTextBox" class="form-control SearchBox" data-qa-id="text-navBarSearch" />
+                <input type="hidden" name="ctl00$ctl11$searchTextBoxWaterMark_ClientState" id="ctl00_ctl11_searchTextBoxWaterMark_ClientState" />
+
+			    <div class="input-group-btn">
+            		<button onclick="__doPostBack('ctl00$ctl11$SearchButton1','')" id="ctl00_ctl11_SearchButton1" data-qa-id="button-navBarSearch" class="btn btn-default loading-icon" type="button" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>">
+		                <i class="glyphicon glyphicon-search"></i>
+                        <span class="sr-only">Quick Search</span>
+		            </button>                    
+            		                                
+			    </div>
+		    </div>
+		</div>		
+    </div>
+</div>
+            </nav>
+          
+        </header><!-- /header -->
+        
+        <div id="contentwrapper">
+            <div id="contentcolumn">                
+                  
+  
+    <div class="container">        
+        <section class="row">
+            <div class="col-md-3">                
+                <div id="ctl00_MainContent_RightHandControls">
+	
+                    <div class="panel-group" id="right_accordion" role="tablist">
+                        <div id="recentbookings" style="display:none;">
+                            
+
+                            
+
+                            
+
+<div class="panel panel-default">
+    <div class="panel-heading" data-toggle="collapse" data-target="#collapseQuickBook">
+        <h3 class="panel-title">
+            QuickBook           
+            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+        </h3>                    
+    </div>
+    <div class="panel-collapse collapse in collapsedMobile" id="collapseQuickBook" >
+        <div class="panel-body">
+            <div id="ctl00_MainContent_MostRecentBookings1_TodaysBookingsPanel">
+		
+                
+                <ul class="list-group">
+                    <li class="list-group-item  list-group-item-info">
+                        <span id="ctl00_MainContent_MostRecentBookings1__ltlUpCommingBookingInfoMessage" class="quickAndUpCommingBookings" data-qa-id="label-commingBookingInfoMostRecentBooking">Book one of these Classes or Activities again</span>
+                    </li>
+                    
+                            <li class="list-group-item  list-group-item-info">
+                                <a id="ctl00_MainContent_MostRecentBookings1_Bookings_ctl01_bookingLink" class="btn btn-primary btn-block" data-qa-id="lnkbutton-ActivityID=SFIT50MR109550" href="javascript:__doPostBack(&#39;ctl00$MainContent$MostRecentBookings1$Bookings$ctl01$bookingLink&#39;,&#39;&#39;)">Swimfit/weds/08.15/...</a>
+                            </li>
+                        
+                            <li class="list-group-item  list-group-item-info">
+                                <a id="ctl00_MainContent_MostRecentBookings1_Bookings_ctl02_bookingLink" class="btn btn-primary btn-block" data-qa-id="lnkbutton-ActivityID=BEACHMULTI1" href="javascript:__doPostBack(&#39;ctl00$MainContent$MostRecentBookings1$Bookings$ctl02$bookingLink&#39;,&#39;&#39;)">Beach Multi Use Stu...</a>
+                            </li>
+                        
+                </ul>
+            
+	</div>
+        </div>
+    </div>
+</div>  
+                            
+    <div class="panel panel-default">
+        <div class="panel-heading" data-toggle="collapse" data-target="#upcomingPanel">
+            <h3 class="panel-title">
+                Upcoming Bookings
+                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>         
+            </h3>               
+        </div>
+        <div class="panel-collapse collapse in collapsedMobile" id="upcomingPanel">
+            <div class="panel-body">
+                <div id="ctl00_MainContent_UpcomingBookings1_TodaysBookingsPanel">
+		
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-info">
+                            <span id="ctl00_MainContent_UpcomingBookings1__ltlQuickBookingInfoMessage" class="quickAndUpCommingBookings" data-qa-id="label-quickBookingInfoMessage">View information about your next Class or Activity bookings</span>
+                        </li>
+                        
+                    </ul>
+                
+	</div>
+            </div>
+        </div>
+    </div>
+    
+
+
+                        </div>                                                                 
+                    </div>
+                
+</div>                
+            </div>
+            <div class="col-md-9">        
+                <h4 class="hidden">
+                    Online Booking
+                </h4>
+                
+                <div class="panel-group" id="main_accordion" role="tablist" aria-multiselectable="true">
+                    <div id="searchcontrol" style="display:none;">
+                        
+<!--Advance search popup Control-->
+
+
+
+<input type="hidden" name="ctl00$MainContent$_advanceSearchUserControl$_selectedSite" id="ctl00_MainContent__advanceSearchUserControl__selectedSite" />
+<div id="ctl00_MainContent__advanceSearchUserControl_AdvancedSearchPopupUpdatePnl">
+	
+        <div class="panel-group" id="search-panels">
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseSearch" data-parent="#search-panels">
+                    <h3 class="panel-title">
+                        Search<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></h3>
+                </div>
+                <div id="collapseSearch" class="panel-collapse collapse in">
+                    <div id="searchPanel" class="panel-body">
+                        <!-- What's on at? -->
+                        <div class="col-md-12">
+                            <label for="ctl00_MainContent__advanceSearchUserControl_SitesSimple" id="ctl00_MainContent__advanceSearchUserControl_SiteLabel" data-qa-id="label-sitesWhatsOnAt">What's on at</label>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <select name="ctl00$MainContent$_advanceSearchUserControl$SitesSimple" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$SitesSimple\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_SitesSimple" class="form-control" data-qa-id="dropdownlist-sitesSearch">
+		<option selected="selected" value="TBATH">Team Bath</option>
+
+	</select>
+                        </div>
+                        <div class="col-md-8 form-group">
+                            <!-- today, tomorrow or 7 days time -->
+                            <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelQuickLinks">
+		
+                                    <div class="whatsOnWhen a btn-group-xs" role="group">
+                                        <a onclick="DisableQuickLinkButtons(this);" id="ctl00_MainContent__advanceSearchUserControl__lnkBtnToday" class="btn btn-primary loadingtext" data-qa-id="lnkbutton-todaySearch" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>  Loading..." href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchUserControl$_lnkBtnToday&#39;,&#39;&#39;)">Today</a>
+                                        <a onclick="DisableQuickLinkButtons(this);" id="ctl00_MainContent__advanceSearchUserControl__lnkBtnTomorrow" class="btn btn-primary loadingtext" data-qa-id="lnkbutton-tomorrowSearch" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>  Loading..." href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchUserControl$_lnkBtnTomorrow&#39;,&#39;&#39;)">Tomorrow</a>
+                                        <a onclick="DisableQuickLinkButtons(this);" id="ctl00_MainContent__advanceSearchUserControl__lnkBtnSevenDaysTime" class="btn btn-primary loadingtext" data-qa-id="lnkbutton-sevenDaysSearch" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>  Loading..." href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchUserControl$_lnkBtnSevenDaysTime&#39;,&#39;&#39;)">7 days time</a>
+                                        <p class="hidden-lg"></p>
+                                        <a onclick="DisableQuickLinkButtons(this);return false;" id="ctl00_MainContent__advanceSearchUserControl__lnkBtnSpecifyDate" class="btn btn-primary disabled" data-qa-id="lnkbutton-specifyDateCalendar" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchUserControl$_lnkBtnSpecifyDate&#39;,&#39;&#39;)">Specify date</a>
+                                        <input name="ctl00$MainContent$_advanceSearchUserControl$specificDate" onchange="if (!SpecificDateLoading(true)) return;setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$specificDate\&#39;,\&#39;\&#39;)&#39;, 0)" onkeypress="if (WebForm_TextBoxKeyHandler(event) == false) return false;" id="ctl00_MainContent__advanceSearchUserControl_specificDate" disabled="disabled" class="aspNetDisabled form-control-inline" data-qa-id="text-specifyDateCalendar" Type="Date" />
+                                        <label for="ctl00_MainContent__advanceSearchUserControl_specificDate" class="sr-only">Specific Date</label>
+                                        <a onclick="return SpecificDateLoading(false);" id="ctl00_MainContent__advanceSearchUserControl__lnkBtnSpecifyDateSearch" class="btn btn-primary" data-qa-id="lnkbutton-specifyDateSearch" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchUserControl$_lnkBtnSpecifyDateSearch&#39;,&#39;&#39;)" style="pointer-events: auto; cursor: auto;">Search</a>
+                                    </div>
+                                
+	</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ACTIVITY TYPE -->
+
+            <div class="panel panel-default">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseAdv" data-parent="#search-panels">
+                    <h3 class="panel-title">
+                        Advanced Search<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-down"></i></span></h3>
+                </div>
+                <div id="collapseAdv" class="panel-collapse collapse collapsedMobile">
+                    <div class="panel-body">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ctl00_MainContent__advanceSearchUserControl_SitesAdvanced" id="ctl00_MainContent__advanceSearchUserControl_Label2">What's on at</label>
+                                <select name="ctl00$MainContent$_advanceSearchUserControl$SitesAdvanced" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$SitesAdvanced\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_SitesAdvanced" class="form-control" data-qa-id="dropdownlist-advancedSearchSites">
+		<option selected="selected" value="TBATH">Team Bath</option>
+
+	</select>
+                            </div>
+                        </div>
+
+                        <!-- Activity Type -->
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelActivityGroups">
+		
+                                        <div id="ActivityType" class="floatL">
+                                            <div id="ActivityTypeLabelWrapper" class="activityTypeLabelWrapper">
+                                                <label for="ctl00_MainContent__advanceSearchUserControl_ActivityGroups" id="ctl00_MainContent__advanceSearchUserControl_ActivityGroupLabel">Activity Type</label>
+                                            </div>
+                                            <div id="ActivityTypeDropDownWrapper" class="activityTypeDropDownWrapper">
+                                                <select name="ctl00$MainContent$_advanceSearchUserControl$ActivityGroups" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$ActivityGroups\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_ActivityGroups" class="form-control" data-qa-id="dropdownlist-advancedSearchActivityGroups">
+			<option value="">Any</option>
+			<option value="BADMINTON">Badminton</option>
+			<option value="BASKETBALL">Basketball</option>
+			<option value="BEACHMULTI">Beach Multi Use</option>
+			<option value="BEACHVOLL">Beach Volleyball</option>
+			<option value="CLASS">Fitness Classes/ Gym Pass</option>
+			<option value="FOOTBALL">Football</option>
+			<option value="HOCKEY">Hockey</option>
+			<option value="HYDRO">Hydro &amp; Ice</option>
+			<option value="MUGA">Muga Outdoor Courts</option>
+			<option value="MISC">Netball/futsal/volleyball</option>
+			<option value="OUTDOOR AT">Outdoor Athletics</option>
+			<option selected="selected" value="SQUASH">Squash</option>
+			<option value="SWIMMING">Swimming 50m Pool</option>
+			<option value="TENNHOL">Tennis Holiday Camps</option>
+			<option value="TENNIS">Tennis Indoor Courts</option>
+			<option value="TENNISOUT">Tennis Outdoor Courts</option>
+			<option value="TENNISSUC">Tennis Students Coaching</option>
+			<option value="TRIBECAMPS">Tribe Holiday Camps</option>
+			<option value="TRIBECOURS">Tribe Term Courses</option>
+
+		</select>
+                                            </div>
+                                        </div>
+                                    
+	</div>
+                            </div>
+                        </div>
+                        <!-- Activity -->
+                        <div class="col-md-12 col-xs-12">
+                            <div class="form-group">
+                                <!--<label for="textinput">from</label>                  
+                                <input id="textinput" name="textinput" type="text" placeholder="date" class="form-control input-md">
+                                <span class="help-block">help</span>  -->
+                                <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelActivities">
+		
+                                        <div id="Activity" class="floatL">
+                                            <div id="ActivityLabelWrapper" class="activityLabelWrapper">
+                                                <label for="ctl00_MainContent__advanceSearchUserControl_Activities" id="ctl00_MainContent__advanceSearchUserControl_ActivityLabel">Activity</label>
+                                            </div>
+                                            <div id="ActivityDropDownWrapper" class="activityDropDownWrapper">
+                                                <select name="ctl00$MainContent$_advanceSearchUserControl$Activities" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$Activities\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_Activities" class="form-control" data-qa-id="dropdownlist-advancedSearchActivity">
+			<option selected="selected" value="">Any</option>
+			<option value="SQUASHPAY1">Squash P.A.Y.G</option>
+			<option value="SQUASHSTAFF">Squash Staff</option>
+			<option value="SQUASHFREE2">Squash Students</option>
+
+		</select>
+                                            </div>
+                                        </div>
+                                    
+	</div>
+                            </div>
+                        </div>
+                        <!-- Advanced panel -->
+
+                        <!-- Start and end time -->
+                        <div class="col-md-6 col-xs-6 nopadding">
+                            <div class="form-group">
+                                <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelDates">
+		
+
+                                        <div id="DayFrom" class="floatL">
+                                            <label for="ctl00_MainContent__advanceSearchUserControl_startDate" id="ctl00_MainContent__advanceSearchUserControl_DateFromLabel">From</label>
+                                            <input name="ctl00$MainContent$_advanceSearchUserControl$startDate" value="2026-10-01" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$startDate\&#39;,\&#39;\&#39;)&#39;, 0)" onkeypress="if (WebForm_TextBoxKeyHandler(event) == false) return false;" id="ctl00_MainContent__advanceSearchUserControl_startDate" class="form-control" data-qa-id="txt-advancedSearchStartDate" Type="Date" />
+                                            <span id="ctl00_MainContent__advanceSearchUserControl__startDateRangeValidator" style="display:none;">The 'From' date should be between 01/01/2000 and 31/12/2099</span>
+                                        </div>
+
+                                        <div id="TimeFrom" class="floatL">
+
+                                            <label for="ctl00_MainContent__advanceSearchUserControl_StartTime" class="sr-only">Drop Down Calendar</label>
+                                            <select name="ctl00$MainContent$_advanceSearchUserControl$StartTime" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$StartTime\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_StartTime" class="form-control hidden" data-qa-id="dropdownlist-advancedSearchStartTime">
+			<option value="0">00:00</option>
+			<option value="1">01:00</option>
+			<option value="2">02:00</option>
+			<option value="3">03:00</option>
+			<option value="4">04:00</option>
+			<option value="5">05:00</option>
+			<option value="6">06:00</option>
+			<option value="7">07:00</option>
+			<option value="8">08:00</option>
+			<option value="9">09:00</option>
+			<option value="10">10:00</option>
+			<option value="11">11:00</option>
+			<option value="12">12:00</option>
+			<option value="13">13:00</option>
+			<option value="14">14:00</option>
+			<option value="15">15:00</option>
+			<option value="16">16:00</option>
+			<option selected="selected" value="17">17:00</option>
+			<option value="18">18:00</option>
+			<option value="19">19:00</option>
+			<option value="20">20:00</option>
+			<option value="21">21:00</option>
+			<option value="22">22:00</option>
+			<option value="23">23:00</option>
+			<option value="24">24:00</option>
+
+		</select>
+                                        </div>
+
+
+                                    
+	</div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6 col-xs-6 nopadding">
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <!--<input id="text1" name="textinput" type="text" placeholder="date" class="form-control input-md">
+                                <span class="help-block">help</span>  -->
+                                <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelTimes">
+		
+                                        <div id="DayTo" class="floatL">
+                                            <label for="ctl00_MainContent__advanceSearchUserControl_endDate" id="ctl00_MainContent__advanceSearchUserControl_DateToLabel" title="To">To</label>
+                                            <input name="ctl00$MainContent$_advanceSearchUserControl$endDate" value="2026-10-01" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$endDate\&#39;,\&#39;\&#39;)&#39;, 0)" onkeypress="if (WebForm_TextBoxKeyHandler(event) == false) return false;" id="ctl00_MainContent__advanceSearchUserControl_endDate" class="form-control" data-qa-id="text-advancedSearchEndDate" Type="Date" />
+
+                                            <span id="ctl00_MainContent__advanceSearchUserControl__endDateRangeValidator" style="display:none;">The 'To' date should be between 01/01/2000 and 31/12/2099</span>
+                                        </div>
+                                        <div id="TimeTo" class="floatL">
+
+                                            <label for="ctl00_MainContent__advanceSearchUserControl_EndTime" class="sr-only">Drop Down Calendar</label>
+                                            <select name="ctl00$MainContent$_advanceSearchUserControl$EndTime" onchange="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$EndTime\&#39;,\&#39;\&#39;)&#39;, 0)" id="ctl00_MainContent__advanceSearchUserControl_EndTime" class="form-control hidden" data-qa-id="dropdownlist-advancedSearchEndTime">
+			<option value="0">00:00</option>
+			<option value="1">01:00</option>
+			<option value="2">02:00</option>
+			<option value="3">03:00</option>
+			<option value="4">04:00</option>
+			<option value="5">05:00</option>
+			<option value="6">06:00</option>
+			<option value="7">07:00</option>
+			<option value="8">08:00</option>
+			<option value="9">09:00</option>
+			<option value="10">10:00</option>
+			<option value="11">11:00</option>
+			<option value="12">12:00</option>
+			<option value="13">13:00</option>
+			<option value="14">14:00</option>
+			<option value="15">15:00</option>
+			<option value="16">16:00</option>
+			<option value="17">17:00</option>
+			<option value="18">18:00</option>
+			<option value="19">19:00</option>
+			<option value="20">20:00</option>
+			<option value="21">21:00</option>
+			<option value="22">22:00</option>
+			<option value="23">23:00</option>
+			<option selected="selected" value="24">24:00</option>
+
+		</select>
+                                            <span id="ctl00_MainContent__advanceSearchUserControl_TimeCompareValidator" style="display:none;">The 'To' time must be later than the 'From' time.</span>
+
+                                        </div>
+
+                                    
+	</div>
+
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                        <div class="col-md-12 nopadding">
+
+                            <strong id="lblPreferedTimes">Preferred Times</strong><br />
+
+
+                            <div class="form-group">
+                                <div id="timeOfDaySelectors" class="floatL">
+                                    <span class="ExcludeDays">
+
+                                        <input class="vis-hidden new-post-tags" id="morning" type="checkbox" name="morning" checked="checked" >
+                                        <label for="morning" data-qa-id=check-advancedSearchMorning class="time-width" id="MorningLbl">Morning</label>
+
+                                        <input class="vis-hidden new-post-tags" id="afternoon" type="checkbox" name="afternoon" checked="checked"  onclick="">
+                                        <label for="afternoon" class="time-width" data-qa-id=check-advancedSearchAfternoon id="AfternoonLbl">Afternoon</label>
+
+                                        <input class="vis-hidden new-post-tags" id="evening" type="checkbox" name="evening" checked="checked">
+                                        <label for="evening" class="time-width" data-qa-id=check-advancedSearchEvening id="EveningLbl">Evening</label>
+
+                                        <label for="ctl00_MainContent__advanceSearchUserControl_alldaycheck" class="hidden">alldaycheck</label>
+                                        <input name="ctl00$MainContent$_advanceSearchUserControl$alldaycheck" type="checkbox" id="ctl00_MainContent__advanceSearchUserControl_alldaycheck" class="vis-hidden new-post-tags" data-qa-id="check-advancedSearchAllDays" checked="checked" />
+
+                                    </span>
+                                </div>
+                                <span id="timeOfDayError" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <!-- days to include -->
+                        <div class="col-md-6 col-sm-6 col-xs-12 nopadding">
+
+                            <!-- Multiple Checkboxes (inline) -->
+
+                            <strong id="lblIncludeDays">Include Days<br />
+                            </strong>
+                            <div class="form-group">
+                                <div id="IncludeDays" class="floatL">
+                                    <!--<span id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays" class="ExcludeDays form-control"><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_0" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$0" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$0\&#39;,\&#39;\&#39;)&#39;, 0)" value="1" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_0">Sun</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_1" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$1" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$1\&#39;,\&#39;\&#39;)&#39;, 0)" value="2" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_1">Mon</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_2" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$2" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$2\&#39;,\&#39;\&#39;)&#39;, 0)" value="3" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_2">Tue</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_3" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$3" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$3\&#39;,\&#39;\&#39;)&#39;, 0)" value="4" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_3">Wed</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_4" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$4" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$4\&#39;,\&#39;\&#39;)&#39;, 0)" value="5" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_4">Thu</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_5" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$5" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$5\&#39;,\&#39;\&#39;)&#39;, 0)" value="6" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_5">Fri</label><input id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_6" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$6" checked="checked" onclick="javascript:setTimeout(&#39;__doPostBack(\&#39;ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$6\&#39;,\&#39;\&#39;)&#39;, 0)" value="7" /><label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_6">Sat</label></span>-->
+                                    <span id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays" class="ExcludeDays">
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchMonday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_1" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$1" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$1\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_1" id="MonLbl">Mon</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchTuesday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_2" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$2" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$2\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_2"  id="TueLbl">Tue</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchWednesday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_3" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$3" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$3\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_3"  id="WedLbl">Wed</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchThursday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_4" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$4" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$4\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_4" id="ThuLbl">Thu</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchFriday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_5" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$5" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$5\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_5"  id="FriLbl">Fri</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchSaturday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_6" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$6" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$6\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_6" id="SatLbl">Sat</label>
+                                        <input class="vis-hidden new-post-tags" data-qa-id=check-advancedSearchSunday id="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_0" type="checkbox" name="ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$0" checked="checked" onclick="javascript: setTimeout('__doPostBack(\'ctl00$MainContent$_advanceSearchUserControl$_chkBoxListIncludeDays$0\',\'\')', 0)">
+                                        <label for="ctl00_MainContent__advanceSearchUserControl__chkBoxListIncludeDays_0"  id="SunLbl">Sun</label>
+                                    </span>
+                                </div>
+                                <span id="includedDaysError" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div id="Row4Container" class="col-md-6 col-sm-6 col-xs-12">
+                            <div id="SearchButton" class="floatR pull-right">
+                                <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelSearchButton">
+		
+                                        <div>&nbsp;</div>
+                                        <input name="ctl00$MainContent$_advanceSearchUserControl$inputIsSearchByQuickLinks" type="hidden" id="ctl00_MainContent__advanceSearchUserControl_inputIsSearchByQuickLinks" value="0" />
+                                        
+                                        <button onclick="__doPostBack('ctl00$MainContent$_advanceSearchUserControl$_searchBtn','')" id="ctl00_MainContent__advanceSearchUserControl__searchBtn" class="btn btn-custom loadingtext" data-qa-id="button-advancedSearchButton" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>  Loading...">Search</button>
+                                    
+	</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- search button -->
+
+            <div id="ctl00_MainContent__advanceSearchUserControl__updatePanelMessage">
+		
+                    
+                
+	</div>
+            <div class="validationSummary">
+                <div id="ctl00_MainContent__advanceSearchUserControl_vlsSearch" style="display:none;">
+
+	</div>
+            </div>
+        </div>
+    
+</div>
+     
+                    </div>
+                    <div id="scrollto"></div>  
+                    <div id="resultscontrol" style="display:none;">             
+                        <div id="ctl00_MainContent__advanceSearchResultsUserControl__updatePanelSearchResults">
+	
+        
+        
+        
+
+        <div class="panel-group" id="results-panels">
+            <div id="ctl00_MainContent__advanceSearchResultsUserControl_classes_panel" class="panel panel-default" style="display:none;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseClasses">
+                    <h3 class="panel-title">Classes<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></h3>
+                </div>
+
+                <div id="collapseClasses" class="panel-collapse collapse in div-accordion">
+
+                    
+                </div>  
+            </div>
+
+            <div id="ctl00_MainContent__advanceSearchResultsUserControl_activities_panel" class="panel panel-default" style="display:block;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseActivities">
+                    <h3 class="panel-title">Activities<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></h3>
+                </div>
+                <div id="collapseActivities" class="panel-collapse collapse in div-accordion">
+
+                
+                        
+                        <!-- extra small mode -->
+                        <div class="visible-xs">
+                            <div class="col-xs-12 div-row">
+                                <div class="col-xs-12">
+                                    <div class="btn-group btn-block" role="group">
+                                        <button id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl0_linkButtonCommentToggle" class="toggle-comments btn btn-info col-xs-2">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </button>
+                                        <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl0_lnkActivitySelect_xs" class="BookingLinkButton btn btn-primary col-xs-10" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl0$lnkActivitySelect_xs&#39;,&#39;&#39;)">Squash P.A.Y.G&nbsp;</a>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl0_ActGroupSurroundH" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-xs-12 div-row-cell div-hidden togglecomments">
+                                        Founders Hall: 45min booking, Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                    </div>  
+                                </div> 
+                            </div>
+                        </div>
+
+                        <!-- All Other Modes -->
+                        <div class="hidden-xs col-sm-12 div-row">
+                            <div class="col-sm-5 div-row-cell">
+                                <div class="col-sm-12 btn-group btn-block">
+                                    <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl0_lnkActivitySelect_lg" class="BookingLinkButton btn btn-primary col-sm-12" data-qa-id="lnkbutton-AdvancedSearchResultUserControl-ActivityID=SQUASHPAY1 ActivityType=Activity" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl0$lnkActivitySelect_lg&#39;,&#39;&#39;)">Squash P.A.Y.G&nbsp; 
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-7 div-row-cell">
+                                <div class="col-sm-12 div-row-cell">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl0_ActGroupSurround" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-sm-12 div-row-cell flexible-comment">
+                                        <div class="flexible-comment-text">
+                                            Founders Hall: 45min booking, Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    
+                        <!-- extra small mode -->
+                        <div class="visible-xs">
+                            <div class="col-xs-12 div-row">
+                                <div class="col-xs-12">
+                                    <div class="btn-group btn-block" role="group">
+                                        <button id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl1_linkButtonCommentToggle" class="toggle-comments btn btn-info col-xs-2">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </button>
+                                        <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl1_lnkActivitySelect_xs" class="BookingLinkButton btn btn-primary col-xs-10" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl1$lnkActivitySelect_xs&#39;,&#39;&#39;)">Squash Staff&nbsp;</a>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl1_ActGroupSurroundH" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-xs-12 div-row-cell div-hidden togglecomments">
+                                        Founders Hall: 45min booking, Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                    </div>  
+                                </div> 
+                            </div>
+                        </div>
+
+                        <!-- All Other Modes -->
+                        <div class="hidden-xs col-sm-12 div-row">
+                            <div class="col-sm-5 div-row-cell">
+                                <div class="col-sm-12 btn-group btn-block">
+                                    <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl1_lnkActivitySelect_lg" class="BookingLinkButton btn btn-primary col-sm-12" data-qa-id="lnkbutton-AdvancedSearchResultUserControl-ActivityID=SQUASHSTAFF ActivityType=Activity" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl1$lnkActivitySelect_lg&#39;,&#39;&#39;)">Squash Staff&nbsp; 
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-7 div-row-cell">
+                                <div class="col-sm-12 div-row-cell">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl1_ActGroupSurround" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-sm-12 div-row-cell flexible-comment">
+                                        <div class="flexible-comment-text">
+                                            Founders Hall: 45min booking, Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    
+                        <!-- extra small mode -->
+                        <div class="visible-xs">
+                            <div class="col-xs-12 div-row">
+                                <div class="col-xs-12">
+                                    <div class="btn-group btn-block" role="group">
+                                        <button id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl2_linkButtonCommentToggle" class="toggle-comments btn btn-info col-xs-2">
+                                            <span class="glyphicon glyphicon-info-sign"></span>
+                                        </button>
+                                        <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl2_lnkActivitySelect_xs" class="BookingLinkButton btn btn-primary col-xs-10" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl2$lnkActivitySelect_xs&#39;,&#39;&#39;)">Squash Students&nbsp;</a>
+                                        
+                                        
+                                    </div>
+                                </div>
+                                <div class="col-xs-12">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl2_ActGroupSurroundH" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-xs-12 div-row-cell div-hidden togglecomments">
+                                        Founders Hall: (Sports Pass 1 x 45min booking per day) Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                    </div>  
+                                </div> 
+                            </div>
+                        </div>
+
+                        <!-- All Other Modes -->
+                        <div class="hidden-xs col-sm-12 div-row">
+                            <div class="col-sm-5 div-row-cell">
+                                <div class="col-sm-12 btn-group btn-block">
+                                    <a id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl2_lnkActivitySelect_lg" class="BookingLinkButton btn btn-primary col-sm-12" data-qa-id="lnkbutton-AdvancedSearchResultUserControl-ActivityID=SQUASHFREE2 ActivityType=Activity" href="javascript:__doPostBack(&#39;ctl00$MainContent$_advanceSearchResultsUserControl$Activities$ctrl2$lnkActivitySelect_lg&#39;,&#39;&#39;)">Squash Students&nbsp; 
+                                    </a>
+                                    
+                                </div>
+                            </div>
+                            <div class="col-sm-7 div-row-cell">
+                                <div class="col-sm-12 div-row-cell">
+                                    
+                                    <div id="ctl00_MainContent__advanceSearchResultsUserControl_Activities_ctrl2_ActGroupSurround" class="div-row-cell greysurround">
+                                        Squash
+                                    </div>
+                                    <div class="col-sm-12 div-row-cell flexible-comment">
+                                        <div class="flexible-comment-text">
+                                            Founders Hall: (Sports Pass 1 x 45min booking per day) Non-marking shoes only. Squash balls can be purchased from STV Reception
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    
+                    
+                </div>  
+            </div>
+
+            <div id="ctl00_MainContent__advanceSearchResultsUserControl_courses_panel" class="panel panel-default" style="display:none;">
+                <div class="panel-heading" data-toggle="collapse" data-target="#collapseCourses">
+                    <h3 class="panel-title">Courses<span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span></h3>
+                </div>
+                <div id="collapseCourses" class="panel-collapse collapse in div-accordion">
+
+                
+                </div>  
+            </div>            
+        </div>
+                  
+    
+</div>
+
+                    </div>
+                </div>
+                <div class="HomeQuickLinks">
+                    
+                </div>
+            </div>
+        </section>
+    </div>    
+                
+            </div>
+        </div>
+
+        <aside id="rightcolumn">
+            
+        </aside>
+
+        <footer class="footer" id="footer">
+            <div class="container inner">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span id="ctl00__ltlCurrentPreferredSiteFooter" class="PreferredSiteLabel" data-qa-id="label-preferredSiteFooter"></span>
+                        <a id="ctl00__hyperLinkChangePreferredSiteFooter" class="btn-xs btn-success" data-qa-id="lnk-changePreferredSiteFooter" href="javascript:__doPostBack(&#39;ctl00$_hyperLinkChangePreferredSiteFooter&#39;,&#39;&#39;)">Change</a>
+                    </div>
+                </div>
+                                
+                
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="ctl00_MrmFooter_PrivacyPolicyDiv" class="footer-left privacypolicy-wrapper" style="text-align:left;">
+                        <a id="ctl00_MrmFooter_ppLink" class="privacypolicy" data-qa-id="lnk-privacyPolicy" href="PrivacyPolicy.aspx" target="_blank">Privacy Policy</a>
+                    </div>  
+        </div>
+        <div class="col-md-6">
+            <!-- <div class="pull-right">
+                <div class="PoweredBy">
+                    
+
+<a href="http://www.gladstonesoftware.com" target="_blank">
+    <img id="ctl00_MrmFooter_footerImageCtl_imgLogo" class="logoPad" src="/Connect/WebResource.axd?d=yHDktpGiGQ-x6DzzDgnx8WutyA4rh9TseCHgEtXzfM17UQGYFHr3dUqkdbVrgY8V-qrGmJssVWAmfv6gkmfXmIFBczfop0Ga5h2tLarKtylSH3aDVIbmnFDeH6ouvozX0Se1QVPU9-h0VILLPqSOE8HKaMGg66jXW0jW8k6xNp3JCNNlEqgZZZPaj6bOLPjL0&amp;t=637896879260000000" alt="Powered By Gladstone" style="height:45px;width:135px;" />
+</a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+
+
+<!-- <div class="footer-tr">
+    <div class="footer-tl">
+        <div class="footer-top">
+        </div>
+        <div class="footer-right">
+            <div class="footer-left">
+                <div class="footerMain">
+                    
+    
+                    
+    
+                    
+    
+                    <div class="clearOut"></div>
+ 
+                                
+                </div>
+     
+            </div>
+        </div>
+        <div class="footer-br">
+            <div class="footer-bl">
+                <div class="footer-bottom">
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+            </div>
+        </footer>
+        </div>
+    
+
+
+
+
+
+
+</form>
+    
+    <!-- Connect Global Scripts -->
+    <script src='/Connect/inc/Connect.js' type="text/javascript"></script>
+    <script src='/Connect/inc/LinkedMembers.js?version=1.1' type="text/javascript"></script>
+
+    
+
+</body>
+</html>
+

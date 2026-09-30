@@ -1,0 +1,453 @@
+
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head id="ctl00_Head1"><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1" /><link id="ctl00_FaviconLink" rel="shortcut icon" href="images/Icons/favicon.ico" type="image/x-icon" /><title>
+	
+    Online Booking
+
+</title>
+    <!--[if IE 6]>
+        <style type="text/css">
+        img, { behavior: url("/Connect/PNGFIX/iepngfix.htc") }
+        </style>
+        <![endif]-->
+
+    <!-- Load Global Styles -->
+    <link href="Scripts/Vendor/jQuery/jquery-ui.min.css" rel="stylesheet" type="text/css" /><link href="Styles/fonts/fontello/css/fontello.css" rel="stylesheet" type="text/css" /><link href="Styles/fonts/fontello/css/animation.css" rel="stylesheet" type="text/css" />
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+
+    <!-- If browser doesn't support input type="date", load files for jQuery UI Date Picker -->
+    
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="text/javascript" src='/Connect/Scripts/Vendor/Bootstrap/bootstrap.min.js'></script>
+
+    <!-- If browser doesn't support input type="date", initialize date picker widget -->
+    
+
+    
+<!-- THIS IS BLANK ON PURPOSE --><link href="App_Themes/Default/Less/Css/Theme.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/MediaOverride.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/Override.css" type="text/css" rel="stylesheet" /><link href="App_Themes/Default/Overrides/PrintOverride.css" type="text/css" rel="stylesheet" /><link href="/Connect/WebResource.axd?d=q_ToWuCX7tqVzo_TIL62ROTQEtXy2rZOPB84n8Gr7nWyu7ImpGHabzcj5icCdpnhl5yFjEYe0Lmp1Y3scI7ABGpzLH0KAn_8LIBKeBIe1K2biMAepZZ1-a4ZfEZyOmtXD32ZquhdNno6QIhEaaKWVvT_H_MhHu2QJbw7Tgn_BqI1&amp;t=637533306700000000" type="text/css" rel="stylesheet" /></head>
+
+<body>
+    
+    <form method="post" action="./mrmProductStatus.aspx" onsubmit="javascript:return WebForm_OnSubmit();" id="aspnetForm">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="" />
+</div>
+
+
+
+
+<script src="/Connect/WebResource.axd?d=xuv4GX2npZEFfrXqmEEum8-G_k3KLXNTacA_R5NB14VnGSFQJHRwjHBsdR0W5CxCxTm7IWjIQQF5Jx5RRMDKIkQKCcyQF4tigSX0-LxOYrI1&amp;t=639202632265548063" type="text/javascript"></script>
+
+
+
+
+<script src="/Connect/ScriptResource.axd?d=hR9oQkqJjBDNPfw3KxV3eRtOnIcqIICQCqZ1Vbnkf7Rhxn4uOo8b0qS9Q0hI1all6cWYfpO3inXRom89g7m4Ex9fO9iypKi8SP4ZGjTp3IfdbdBZzZx_E1s7xSexzMb-zDIqHiI9P3cpNnk0GT7cfdxIiP28d1rRDEZ9nwdtTZo1&amp;t=fffffffff7f39b88" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=Zs1lmEIk1LL4V01jUYqdw-3SEo_UTW35mJt1108dMS-ChxfJoX4e3b6dlxOps5QdKGdQ1vH4A67V56yCD-abe-SyfgcESQc_PyCnDALr_2QoxJd1RN39VjOah1XSieX4Y_8klqBG6BszP0cBgURHDV6za8edZcJ2IDjNP1l5MpaywJOqIb7nWhgkck5C6EWL0&amp;t=fffffffff7f39b88" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=yW-VlEXdB-UDpVMqHAWIDeNzOzj9NsJsWKpXOjoUfaolcHIKFWEMw3NnuuY0n38wAOPQcF32iCboxVnAImpuGsP8sxOqNyj-DIc_mw3a9NuR2kKbpYeo25LD9BQdBVUcV7ipmbwV2d8l74f8bg2MQg2&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=GZTmHH_6-r-MUWUVIVpI7fvkgha5xnEQppGmz3N75-CNdm9-wS4v5NlkELFhBZ3sPgzfBElVqyofAQpwnr5fHIu-6MknF4EnWaeFSMzI3wR4KGK5uYuIuwkVXkhVv9fe0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=mvAelx64GwsAy1x0SGHhNsbTyMWSUFmC-WeT9nrPWkxinrDsBW5iyBOb1q8niDjZRjnEgPW1icX2bHohbnWjv162ZIJPJ-YkQsRHGHIs0l9RVJzAjIBG-UMuLk6JapHv0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=XS3JUsXKzFwCfwO7aqJh3oqc3xxi6HsuSuHiouZJU4fIdk4n1fmYWAvCwYS6fdhNTUnONB1jL4TSO0VSLqjnG_nOdjupZ-ff4u-vkHxKtUtZVgpc_SDT_6gA-2iQ5SaB0&amp;t=27679117" type="text/javascript"></script>
+<script src="/Connect/ScriptResource.axd?d=shCFAzet8YR439Muu9Kl8I3toJvBSyyC1OoSZUU7IKXDcCjHojV0H-HhZs19zS4P3n2cQVCBS20Th8ij9BQvIhfw51hc4NfRVMS3vF8VKUo2KwwAned90nQACmpuzqQceaSZCcY_a8VuCMxcrakWxg2&amp;t=27679117" type="text/javascript"></script>
+
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="4EFA3A21" />
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+</div>    
+        <div class="wrapper">
+        <header id="headerwrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="LanguageControlWrapper" class="pull-right">
+                            
+                        </div>
+                        <div id="LoginControlWrapper" class="pull-right">
+                            <div id="ctl00_outerLinks" class="outerlinks">
+	
+                                
+                                
+
+                                <a id="ctl00_Helplnk" class="btn-xs btn-success" data-qa-id="lnk-helpMasterPage" href="help.aspx">Help</a>
+                                
+                                <a id="ctl00_ProfileLink" class="hidden-xs btn-xs btn-success" data-qa-id="lnk-profileMasterPage" href="MemberManagement/EditMemberDetails.aspx">My Account</a>
+                                
+                                <a id="ctl00_LoginControl_Logoutlnk" class="btn-xs btn-success" data-qa-id="lnk-logout" href="logout.aspx">Logout</a>
+	
+                                &nbsp;&nbsp;                             
+                            
+</div>
+                        </div>
+                        <div id="MemberNameDisplay" class="pull-right">
+                            <span id="ctl00_lblFullName" class="hidden-xs btn-xs btn-textonly" data-qa-id="label-memberNameMasterPage">Welcome Alex Example</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">                    
+                        
+                        
+                    </div>
+                </div>
+            </div>
+                                  
+            
+                            
+                        
+            
+            
+            <div class="container">
+                <div class="row headerbg">
+                    <div id="headermobile" class="hidden-md hidden-sm hidden-lg">
+                        <a href='/Connect/memberHomePage.aspx'><img id="ctl00_Image2" class="Logo" data-qa-id="img-memberHomePage" src="App_Themes/Default/Images/connect_head_logoleft_mobile.png" alt="Connect Online Booking System" /></a>
+                    </div>
+                    <div id="headerdesktop" class="hidden-xs">
+                        <div id="headerdesktopleft" class="col-md-6">
+                            <div class="headerbg">
+                                <a href='/Connect/memberHomePage.aspx'><img id="ctl00_websiteLogo" class="Logo" data-qa-id="img-websiteLogoHeader" src="App_Themes/Default/Images/connect_head_logoleft.png" alt="Connect Online Booking System" /></a>
+                            </div>
+                        </div>
+                        <div id="headerdesktopright" class="col-md-6 hidden-sm">
+                            <div class="pull-right">
+                                <img id="ctl00_Image1" class="absImage" data-qa-id="img-websiteLogoHeaderDesktopRight" src="App_Themes/Default/Images/connect_headRight.jpg" alt="Connect" />
+                            </div>                            
+                        </div>                        
+                    </div>                    
+                </div>        
+            </div>
+
+            <nav class="navbar navbar-default">
+                
+    
+<div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+
+    <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+            <li id="ctl00_ctl11_homeli">
+                <a href='/Connect/memberHomePage.aspx'>
+                    <span id="ctl00_ctl11_Literal1" data-qa-id="label-navBarHome">Home</span>
+                </a>        
+            </li>
+
+            <li id="ctl00_ctl11_Li1" class="hidden-sm hidden-md" data-qa-id="lnk-navBarMakeBooking"><a href='/Connect/mrmselectsite.aspx?disableSiteSelection=1'>
+                Make a Booking</a>
+            </li>
+            <li id="ctl00_ctl11_Li2" class="hidden-sm hidden-md" data-qa-id="lnk-navBarManageBooking"><a href='/Connect/mrmViewMyBookings.aspx?showOption=1'>
+                Manage Bookings</a>
+            </li>
+            
+
+
+            <li id="ctl00_ctl11_Li3" class="dropdown hidden-xs hidden-lg">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bookings <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li id="ctl00_ctl11_MakeBookingli" data-qa-id="literal-navBarBookingMakeBooking"><a href='/Connect/mrmselectsite.aspx?disableSiteSelection=1'>
+                        Make a Booking</a>
+                    </li>
+                    <li id="ctl00_ctl11_ManageBookingsli" data-qa-id="literal-navBarBookingManageBooking"><a href='/Connect/mrmViewMyBookings.aspx?showOption=1'>
+                        Manage Bookings</a>
+                    </li>
+                    
+                </ul>
+            </li>
+
+            
+
+            <li id="ctl00_ctl11_UnpaidSaleli" class="hidden-sm hidden-md" data-qa-id="literal-navBarBasket">
+                <a href='/Connect/ManageSales.aspx'>
+                    <i class="icon-bag"></i>
+                    Basket
+                </a>
+            </li>
+            
+            
+
+            <li id="ctl00_ctl11_PayLi" class="dropdown hidden-xs hidden-lg">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pay <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li id="ctl00_ctl11_UnpaidSaleDropdownLi" data-qa-id="literal-navBarBasket">
+                        <a href='/Connect/ManageSales.aspx'>
+                            <i class="icon-bag"></i>
+                            Basket
+                        </a>
+                    </li>
+                    <li id="ctl00_ctl11_CashlessBasketDropdownLi" data-qa-id="literal-navBarCashlessBasket">
+                        <a href='/Connect/CashlessBasket.aspx'>
+                            <i class="icon-shopping-bag"></i>
+                            Cashless Basket
+                        </a>
+                    </li>
+                    <li id="ctl00_ctl11_PayInvoicesDropdownLi" data-qa-id="literal-navBarPayPayInvoices">
+                        <a href='/Connect/PayInvoices.aspx'>
+                            <i class="icon-paste"></i>
+                            Pay Invoices
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            
+        
+            <li class="hidden-md hidden-sm hidden-lg"><a href="MemberManagement/EditMemberDetails.aspx">My Account</a></li>
+            <!-- <li class="hidden-md hidden-sm hidden-lg"><a href="help.aspx">Help</a></li> -->
+        </ul>
+		<div class="navbar-form navbar-right" role="search">
+		    <div class="input-group">
+			    <!-- <input type="text" class="form-control" placeholder="Search" name="srch-term" id="srch-term"> -->
+                <input type="hidden" name="ctl00$ctl11$SearchResult" id="ctl00_ctl11_SearchResult" />
+                <label for="ctl00_ctl11_SearchTextBox" class="sr-only">Quick Search Box</label>
+                <input name="ctl00$ctl11$SearchTextBox" type="text" id="ctl00_ctl11_SearchTextBox" class="form-control SearchBox" data-qa-id="text-navBarSearch" />
+                <input type="hidden" name="ctl00$ctl11$searchTextBoxWaterMark_ClientState" id="ctl00_ctl11_searchTextBoxWaterMark_ClientState" />
+
+			    <div class="input-group-btn">
+            		<button onclick="__doPostBack('ctl00$ctl11$SearchButton1','')" id="ctl00_ctl11_SearchButton1" data-qa-id="button-navBarSearch" class="btn btn-default loading-icon" type="button" data-loading-text="&lt;i class=&#39;icon-spin4 animate-spin&#39;>&lt;/i>">
+		                <i class="glyphicon glyphicon-search"></i>
+                        <span class="sr-only">Quick Search</span>
+		            </button>                    
+            		                                
+			    </div>
+		    </div>
+		</div>		
+    </div>
+</div>
+            </nav>
+          
+        </header><!-- /header -->
+        
+        <div id="contentwrapper">
+            <div id="contentcolumn">                
+                
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">            
+                <h1>
+                Select Slot
+            </h1>
+<p>Select the day and timeslot to view the specific availability</p>        
+                <div id="ctl00_MainContent_pnModifyInfo">
+	
+                    <table class="tableSearch tableless"><tr><th colspan='4' class='searchHeading'>Search Criteria</th></tr><tr><td class="description"><h3>Squash Students</h3><h4></h4></td><td class="date">Thu 1 Oct</td><td class="time">00:00 - 23:59</td><td class="exclude"></td></tr></table>
+                
+</div>
+                <div class="error">
+                    
+                </div>
+                <br />
+                <div class="productStatusOuterWrapper">
+                    <div class="productStatusWrapper">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-btn">
+                                        <button onclick="__doPostBack('ctl00$MainContent$Button1','')" id="ctl00_MainContent_Button1" data-qa-id="button-previousDate" type="button" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i><span class="sr-only">Previous Week</span></button>        
+                                    </span>                            
+                                    <span id="ctl00_MainContent_lblCurrentNavDate" class="ReadOnlyTextBox form-control input-medium text-center">Thu 01 Oct</span>
+                                    <span class="input-group-btn">
+                                        <button onclick="__doPostBack('ctl00$MainContent$Button2','')" id="ctl00_MainContent_Button2" data-qa-id="button-nextDate" type="button" class="btn btn-default"><span class="sr-only">Next Week</span><i class="glyphicon glyphicon-chevron-right"></i></button>        
+                                    </span>
+                            
+                        </div>    
+                            </div>
+                        </div>
+                        
+                        <div>&nbsp;</div>
+                       
+                    </div>
+                    <div class="ProductStatusGridWrapper">
+                        <div class="productStatusGrid productStatusWrapper">
+                            
+                            <div class="table-responsive">
+                            <div>
+	<table class="masterTable table table-narrow" id="ctl00_MainContent_grdResourceView">
+		<tr>
+			<th class="masterTableHeader" scope="col">Squash Court 1</th><th class="masterTableHeader" scope="col">Squash Court 2</th><th class="masterTableHeader" scope="col">Squash Court 3</th><th class="masterTableHeader" scope="col">Squash Court 4</th>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl02$ctl00" value="07:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:00 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl02$ctl01" value="07:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:00 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl02$ctl02" value="07:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:00 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl02$ctl03" value="07:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:00 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl03$ctl00" value="07:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:45 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl03$ctl01" value="07:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:45 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl03$ctl02" value="07:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:45 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl03$ctl03" value="07:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=07:45 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl04$ctl00" value="08:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=08:30 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl04$ctl01" value="08:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=08:30 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl04$ctl02" value="08:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=08:30 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl04$ctl03" value="08:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=08:30 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl05$ctl00" value="09:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=09:15 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl05$ctl01" value="09:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=09:15 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl05$ctl02" value="09:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=09:15 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl05$ctl03" value="09:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=09:15 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl06$ctl00" value="10:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:00 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl06$ctl01" value="10:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:00 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl06$ctl02" value="10:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:00 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl06$ctl03" value="10:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:00 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>10:45</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl07$ctl00" value="10:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:45 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl07$ctl01" value="10:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:45 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl07$ctl02" value="10:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=10:45 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl08$ctl00" value="11:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=11:30 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl08$ctl01" value="11:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=11:30 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl08$ctl02" value="11:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=11:30 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl08$ctl03" value="11:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=11:30 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>12:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>12:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>12:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>12:15</div></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl10$ctl00" value="13:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=13:00 Availability= Available Court=Squash Court 1" /></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>13:00</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>13:00</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl10$ctl01" value="13:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=13:00 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>13:45</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl11$ctl00" value="13:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=13:45 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl11$ctl01" value="13:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=13:45 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl11$ctl02" value="13:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=13:45 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>14:30</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl12$ctl00" value="14:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=14:30 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl12$ctl01" value="14:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=14:30 Availability= Available Court=Squash Court 3" /></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>14:30</div></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl13$ctl00" value="15:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=15:15 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl13$ctl01" value="15:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=15:15 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl13$ctl02" value="15:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=15:15 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl13$ctl03" value="15:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=15:15 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl14$ctl00" value="16:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:00 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl14$ctl01" value="16:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:00 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl14$ctl02" value="16:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:00 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl14$ctl03" value="16:00" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:00 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl15$ctl00" value="16:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:45 Availability= Available Court=Squash Court 1" /></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>16:45</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl15$ctl01" value="16:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:45 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl15$ctl02" value="16:45" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=16:45 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>17:30</div></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl16$ctl00" value="17:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=17:30 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl16$ctl01" value="17:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=17:30 Availability= Available Court=Squash Court 3" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl16$ctl02" value="17:30" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=17:30 Availability= Available Court=Squash Court 4" /></td>
+		</tr><tr>
+			<td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl17$ctl00" value="18:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=18:15 Availability= Available Court=Squash Court 1" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl17$ctl01" value="18:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=18:15 Availability= Available Court=Squash Court 2" /></td><td class="itemavailable"><input type="submit" name="ctl00$MainContent$grdResourceView$ctl17$ctl02" value="18:15" class="removeUnderLineAvailable btn btn-custom-success" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time=18:15 Availability= Available Court=Squash Court 3" /></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>18:15</div></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>19:00</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>19:00</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>19:00</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>19:00</div></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>19:45</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>19:45</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>19:45</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>19:45</div></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>20:30</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>20:30</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>20:30</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>20:30</div></td>
+		</tr><tr>
+			<td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 1"><div class='btn btn-custom-default'>21:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 2"><div class='btn btn-custom-default'>21:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 3"><div class='btn btn-custom-default'>21:15</div></td><td class="itemnotavailable" data-qa-id="button-ActivityID=SQUASHFREE2 ResourceID=0 Date=2026/10/1 Time= Availability= Not Available Court=Squash Court 4"><div class='btn btn-custom-default'>21:15</div></td>
+		</tr>
+	</table>
+</div>
+                            </div>
+                        </div>
+                         <div class="productStatusTimeNavigation" style="display: none;">
+                            <input type="image" name="ctl00$MainContent$ImageButton1" id="ctl00_MainContent_ImageButton1" title="Previous time" src="App_Themes/Default/Images/arrows/up.png" alt="Previous time" />
+                            <br />
+                            <br />
+                            <span id="ctl00_MainContent_Label1" style="font-size:Medium;font-weight:bold;"></span>
+                            <input type="image" name="ctl00$MainContent$ImageButton2" id="ctl00_MainContent_ImageButton2" title="Next time" src="App_Themes/Default/Images/arrows/down.png" alt="Next time" />
+                        </div>
+                        <div class="clearOut"></div>
+                    </div>
+                </div>
+                <br />
+
+                
+
+<div class="row">
+    <div class="col-md-12"><h4>Availability status information</h4></div>
+    <div class="col-md-12 legend">
+        <a id="ctl00_MainContent_LegendControl_btnAvaliable" class="btn btn-custom-success" href="javascript:__doPostBack(&#39;ctl00$MainContent$LegendControl$btnAvaliable&#39;,&#39;&#39;)">Available</a>
+        <a id="ctl00_MainContent_LegendControl_btnNotAvaliable" class="btn btn-custom-default" href="javascript:__doPostBack(&#39;ctl00$MainContent$LegendControl$btnNotAvaliable&#39;,&#39;&#39;)">Not available</a>
+        <a id="ctl00_MainContent_LegendControl_btnMyBookings" class="btn btn-custom-warning" href="javascript:__doPostBack(&#39;ctl00$MainContent$LegendControl$btnMyBookings&#39;,&#39;&#39;)">My booking(s)</a>
+
+    </div>
+</div>
+                
+                
+            </div>
+        </div>    
+    </div>
+
+    
+                
+            </div>
+        </div>
+
+        <aside id="rightcolumn">
+            
+        </aside>
+
+        <footer class="footer" id="footer">
+            <div class="container inner">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <span id="ctl00__ltlCurrentPreferredSiteFooter" class="PreferredSiteLabel" data-qa-id="label-preferredSiteFooter"></span>
+                        <a id="ctl00__hyperLinkChangePreferredSiteFooter" class="btn-xs btn-success" data-qa-id="lnk-changePreferredSiteFooter" href="javascript:__doPostBack(&#39;ctl00$_hyperLinkChangePreferredSiteFooter&#39;,&#39;&#39;)">Change</a>
+                    </div>
+                </div>
+                                
+                
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div id="ctl00_MrmFooter_PrivacyPolicyDiv" class="footer-left privacypolicy-wrapper" style="text-align:left;">
+                        <a id="ctl00_MrmFooter_ppLink" class="privacypolicy" data-qa-id="lnk-privacyPolicy" href="PrivacyPolicy.aspx" target="_blank">Privacy Policy</a>
+                    </div>  
+        </div>
+        <div class="col-md-6">
+            <!-- <div class="pull-right">
+                <div class="PoweredBy">
+                    
+
+<a href="http://www.gladstonesoftware.com" target="_blank">
+    <img id="ctl00_MrmFooter_footerImageCtl_imgLogo" class="logoPad" src="/Connect/WebResource.axd?d=yHDktpGiGQ-x6DzzDgnx8WutyA4rh9TseCHgEtXzfM17UQGYFHr3dUqkdbVrgY8V-qrGmJssVWAmfv6gkmfXmIFBczfop0Ga5h2tLarKtylSH3aDVIbmnFDeH6ouvozX0Se1QVPU9-h0VILLPqSOE8HKaMGg66jXW0jW8k6xNp3JCNNlEqgZZZPaj6bOLPjL0&amp;t=637896879260000000" alt="Powered By Gladstone" style="height:45px;width:135px;" />
+</a>
+                </div>
+            </div> -->
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            &nbsp;
+        </div>
+    </div>
+
+
+<!-- <div class="footer-tr">
+    <div class="footer-tl">
+        <div class="footer-top">
+        </div>
+        <div class="footer-right">
+            <div class="footer-left">
+                <div class="footerMain">
+                    
+    
+                    
+    
+                    
+    
+                    <div class="clearOut"></div>
+ 
+                                
+                </div>
+     
+            </div>
+        </div>
+        <div class="footer-br">
+            <div class="footer-bl">
+                <div class="footer-bottom">
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+            </div>
+        </footer>
+        </div>
+    
+
+
+</form>
+    
+    <!-- Connect Global Scripts -->
+    <script src='/Connect/inc/Connect.js' type="text/javascript"></script>
+    <script src='/Connect/inc/LinkedMembers.js?version=1.1' type="text/javascript"></script>
+
+    
+
+</body>
+</html>
+
