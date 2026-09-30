@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="512" height="512">
+  <title>teambath</title>
+  <defs>
+    <linearGradient id="court" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3b6fd8"/>
+      <stop offset="1" stop-color="#1c3f94"/>
+    </linearGradient>
+    <clipPath id="tile"><rect x="18" y="18" width="124" height="124" rx="30"/></clipPath>
+  </defs>
+  <!-- tile: a court seen from above -->
+  <rect x="18" y="18" width="124" height="124" rx="30" fill="url(#court)"/>
+  <g clip-path="url(#tile)" stroke="#ffffff" stroke-opacity="0.28" stroke-width="3" fill="none">
+    <line x1="80" y1="18" x2="80" y2="142"/>
+    <rect x="36" y="36" width="88" height="88" rx="4"/>
+  </g>
+  <rect x="18" y="136" width="124" height="6" fill="#000" opacity="0.15" clip-path="url(#tile)"/>
+  <!-- terminal prompt >_ -->
+  <polyline points="46,74 64,89 46,104" fill="none" stroke="#ffffff" stroke-width="11"
+            stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="74" y="96" width="31" height="10" rx="3" fill="#ffffff"/>
+  <!-- ball, in Team Bath gold -->
+  <circle cx="112" cy="50" r="15" fill="#f2b632"/>
+  <path d="M100 42 q12 8 24 0 M100 58 q12 -8 24 0" fill="none" stroke="#1c3f94"
+        stroke-width="3" stroke-linecap="round"/>
+</svg>
