@@ -164,17 +164,17 @@
   #score .sf { width: 30px; height: 36px; border-radius: 6px; background: #16244d; color: var(--gold);
                font: 800 24px/36px "JetBrains Mono", monospace; text-align: center; letter-spacing: 0; }
   #score .you { color: var(--white); }
-  #web { left: 24px; top: 552px; width: 250px; height: 150px; border-radius: 12px; overflow: hidden; background: #e9eef8;
+  #web { left: 60px; top: 440px; width: 300px; height: 178px; border-radius: 14px; overflow: hidden; background: #e9eef8;
          color: #3a4a70; box-shadow: 0 14px 30px rgba(0,0,0,.5); transform-origin: 30% 100%; }
-  #web .wbar { height: 28px; background: #cfd8ea; display: flex; align-items: center; gap: 6px; padding: 0 10px; }
+  #web .wbar { height: 32px; background: #cfd8ea; display: flex; align-items: center; gap: 6px; padding: 0 10px; }
   #web .wbar i { width: 9px; height: 9px; border-radius: 50%; background: #9aa8c4; }
-  #web .wbar span { margin-left: 6px; flex: 1; font: 700 11px "JetBrains Mono", monospace; background: #fff;
+  #web .wbar span { margin-left: 6px; flex: 1; font: 700 13px "JetBrains Mono", monospace; background: #fff;
                     border-radius: 6px; padding: 2px 8px; color: #6b7a9e; }
-  #web .wbody { display: flex; align-items: center; gap: 12px; padding: 16px 14px; }
-  #web .wtxt { flex: 1; font-weight: 900; font-size: 16px; }
-  #web .wprog { margin-top: 8px; height: 8px; border-radius: 4px; background: #cfd8ea; overflow: hidden; }
+  #web .wbody { display: flex; align-items: center; gap: 14px; padding: 26px 18px; }
+  #web .wtxt { flex: 1; font-weight: 900; font-size: 20px; }
+  #web .wprog { margin-top: 10px; height: 10px; border-radius: 4px; background: #cfd8ea; overflow: hidden; }
   #web .wprog i { display: block; height: 100%; background: #9aa8c4; }
-  #web .wface { font-size: 34px; }
+  #web .wface { font-size: 44px; }
   #vf { inset: 20px; }
   #vf .br { position: absolute; width: 46px; height: 46px; border: 0 solid #fff; }
   #vf .rec { position: absolute; right: 64px; top: 10px; font: 800 18px "JetBrains Mono", monospace; color: #fff; }
@@ -226,7 +226,7 @@
     <div id="web" class="abs">
       <div class="wbar"><i></i><i></i><i></i><span>bookings.teambath.com</span></div>
       <div class="wbody">
-        <svg id="spin" width="38" height="38" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="#9aa8c4" stroke-width="5" stroke-linecap="round" stroke-dasharray="55 100"/></svg>
+        <svg id="spin" width="46" height="46" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="#9aa8c4" stroke-width="5" stroke-linecap="round" stroke-dasharray="55 100"/></svg>
         <div class="wtxt"><span id="wmsg">Loading…</span><div class="wprog"><i id="wfill"></i></div></div>
         <span class="wface" id="wface">😓</span>
       </div>
@@ -479,7 +479,7 @@ const LAMP_X = [400, 610, 820, 1030];
 // Between scenes the ball flies in from the camera, hits the wall (the terminal) and comes back.
 const IN = 0.5, OUT = 0.5;
 const HITS = demos.slice(1).map((d, i) => ({ t: d.a, dir: i % 2 ? -1 : 1,
-  x: [880, 420, 760, 520, 900, 450][i], y: [300, 380, 280, 420, 330, 300][i] }));
+  x: [226, 420, 760, 520, 900, 450][i], y: [521, 380, 280, 420, 330, 300][i] }));   // the first one hits the website
 
 // ---------------------------------------------------------------- the camera
 // Keyframes [time, zoom, focus x, focus y], eased between; plus a jolt on every hit and lamp.
@@ -713,21 +713,20 @@ function render(t) {
   set($("#score"), { y: -80 * (1 - termIn) - 80 * termOut, o: termIn * (1 - termOut) });
   $("#score .live").style.opacity = Math.floor(t * 2) % 2 ? 0.35 : 1;
 
-  // the website: keeps loading, gets knocked back by every hit, and out by the last one... then peeks back
-  const hits = HITS.filter((h) => h.t > SEARCH.a);
-  const since = Math.min(4, hits.filter((h) => t >= h.t).length);
-  const jolt = hits.reduce((a, h) => a + 22 * decay(t - h.t, 30, 6), 0);
-  const knocked = outCubic(seg(t, hits[hits.length - 1].t, hits[hits.length - 1].t + 0.5));
-  const enter = outBack(seg(t, SEARCH.a + 0.35, SEARCH.a + 0.7)), peek = outBack(seg(t, END_START + 1.9, END_START + 2.3));
+  // the website: loads forever while you log in, gets hit by the first ball, and peeks back in at the end
+  const smack = HITS[0].t, enter = outBack(seg(t, LOGIN.a + 0.3, LOGIN.a + 0.7));
+  const fly = seg(t, smack, smack + 0.6), peek = outBack(seg(t, END_START + 1.9, END_START + 2.3));
   if (t < END_START) {
-    set($("#web"), { x: -300 * (1 - enter) - 28 * since - jolt - 520 * knocked, y: 160 * knocked,
-                     r: -3 * since - 0.3 * jolt - 40 * knocked, o: t < SEARCH.a + 0.35 ? 0 : 1 });
+    set($("#web"), { x: -420 * (1 - enter) - 700 * inCubic(fly) - 18 * decay(t - smack, 30, 6),
+                     y: -260 * outCubic(fly) + 500 * inCubic(fly), s: 1 - 0.3 * fly, r: -8 * (1 - enter) - 540 * outCubic(fly),
+                     o: t < LOGIN.a + 0.3 || fly >= 1 ? 0 : termIn });
   } else {
-    set($("#web"), { x: lerp(-420, -50, peek), y: 24, r: lerp(-20, 9, peek), o: peek > 0 ? 1 - loopOut : 0 });
+    set($("#web"), { x: lerp(-460, 0, peek), y: 60, r: lerp(-25, -4, peek), o: peek > 0 ? 1 - loopOut : 0 });
   }
+  const since = t >= smack ? 1 : 0;
   $("#spin").style.transform = `rotate(${t * 400}deg)`;
   $("#wfill").style.width = `${lerp(2, 5, seg(t, SEARCH.a, DURATION))}%`;
-  $("#wface").textContent = t > END_START ? "🫠" : since >= 3 ? "😵" : since >= 1 ? "😰" : "😓";
+  $("#wface").textContent = t > END_START ? "🫠" : since ? "😵" : "😓";
   $("#wmsg").textContent = t > END_START ? "still loading…" : "Loading…";
 
   // the ticket: prints out when booked, gets stamped, then tears in half on cancel
