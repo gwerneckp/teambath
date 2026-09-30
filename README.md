@@ -6,6 +6,14 @@
 
 <p align="center"><b>Find a free court at Team Bath without clicking through the booking site.</b></p>
 
+<p align="center">
+  <a href="https://github.com/gwerneckp/teambath/blob/main/assets/demo.mp4">
+    <img src="https://raw.githubusercontent.com/gwerneckp/teambath/main/assets/demo.gif" alt="teambath demo: log in, search tomorrow's squash, every court and slot lighting up, a week of free courts in one loop, swim spaces, booking in one line, and a paid class refused." width="800">
+  </a>
+  <br>
+  <sub>▶️ <a href="https://github.com/gwerneckp/teambath/blob/main/assets/demo.mp4">Watch the video</a></sub>
+</p>
+
 Want a squash court this week? On [bookings.teambath.com](https://bookings.teambath.com/Connect/memberHomePage.aspx) that means log in, search, open the activity, and check the grid, one day at a time. Then do it all again for badminton.
 
 teambath does that clicking for you, from Python. It can check courts and classes, and book and cancel free slots.
