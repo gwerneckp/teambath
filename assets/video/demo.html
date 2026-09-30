@@ -13,7 +13,7 @@
   :root {
     --navy: #08132e; --blue: #3b6fd8; --deep: #1c3f94; --gold: #f2b632; --gold-light: #ffe29a;
     --green: #3ddc84; --coral: #ff6b6b; --lilac: #a99bff; --white: #f5f7fa; --muted: #8fa3c8;
-    --sky: #7fb2ff; --water: #1f8fd6;
+    --sky: #7fb2ff;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--navy); }
@@ -34,7 +34,7 @@
   #title .word { font-size: 104px; margin-top: 10px; }
   #tag { font-weight: 800; font-size: 32px; color: var(--muted); margin-top: 14px; }
   #tag b { color: var(--white); }
-  #ball { left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; z-index: 5;
+  #ball { left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; z-index: 7;
           background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 55%, #c88a12);
           box-shadow: 0 0 24px rgba(242, 182, 50, .7); }
   #shadow { left: 0; top: 0; width: 44px; height: 12px; border-radius: 50%; background: rgba(0, 0, 0, .45);
@@ -65,14 +65,24 @@
   .gold { color: var(--gold); } .kw { color: var(--coral); } .str { color: #9be29b; } .fn { color: var(--sky); }
   .tagx { font-size: 16px; color: var(--navy); background: var(--green); padding: 1px 8px; border-radius: 6px; }
   .caret { display: inline-block; width: 11px; height: 24px; background: var(--gold); vertical-align: -5px; margin-left: 2px; }
+  .pop { display: inline-block; font-family: "Nunito", sans-serif; font-weight: 900; }
+  .lock { display: inline-flex; align-items: center; gap: 12px; margin-top: 10px; padding: 8px 18px;
+          border-radius: 14px; background: #10224f; font-family: "Nunito", sans-serif; font-weight: 900; font-size: 24px; }
 
   /* the court grid + split-flap counter */
-  .grid { display: inline-grid; grid-template-columns: 96px repeat(20, 37px); gap: 5px; margin: 8px 0 10px;
+  .gridwrap { position: relative; display: inline-block; margin: 30px 0 10px; }
+  .grid { display: inline-grid; grid-template-columns: 96px repeat(20, 37px); gap: 5px;
           font-family: "Nunito", sans-serif; white-space: normal; }
   .grid .ct { font-weight: 800; font-size: 17px; color: var(--muted); align-self: center; }
   .grid .c { height: 30px; border-radius: 7px; }
-  .grid .free { background: var(--green); box-shadow: 0 0 14px rgba(61, 220, 132, .45); }
-  .grid .taken { background: #1d2c55; }
+  .c.free { background: var(--green); box-shadow: 0 0 14px rgba(61, 220, 132, .45); }
+  .c.taken { background: #1d2c55; }
+  .scan { position: absolute; top: -6px; bottom: -6px; width: 6px; border-radius: 3px;
+          background: var(--gold); box-shadow: 0 0 22px 6px rgba(242, 182, 50, .55); }
+  .target { position: absolute; left: 97px; top: -4px; width: 45px; height: 38px; border-radius: 10px;
+            border: 3px solid var(--gold); }
+  .target b { position: absolute; left: -4px; top: -30px; font: 800 15px "JetBrains Mono", monospace;
+              color: var(--navy); background: var(--gold); padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
   .flaps { display: inline-flex; gap: 6px; vertical-align: middle; margin-left: 4px; }
   .flap { position: relative; width: 46px; height: 60px; border-radius: 8px; background: #16244d;
           font: 800 44px/60px "JetBrains Mono", monospace; color: var(--gold); text-align: center;
@@ -110,11 +120,19 @@
              background: repeating-linear-gradient(90deg, #08132e 0 3px, transparent 3px 5px, #08132e 5px 6px, transparent 6px 10px, #08132e 10px 14px, transparent 14px 16px); }
   .tid { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 13px; color: #6b7a9e; }
   #conf { position: absolute; left: 12px; right: 12px; top: 56px; text-align: center; font-weight: 900;
-          font-size: 19px; letter-spacing: 1px; white-space: nowrap; color: var(--green); border: 5px solid var(--green); border-radius: 12px;
-          background: rgba(255, 248, 230, .9); padding: 2px 0; }
+          font-size: 19px; letter-spacing: 1px; white-space: nowrap; color: var(--green); border: 5px solid var(--green);
+          border-radius: 12px; background: rgba(255, 248, 230, .9); padding: 2px 0; }
+  .freed { display: inline-flex; align-items: center; gap: 14px; margin-top: 12px; font-family: "Nunito", sans-serif;
+           font-weight: 900; font-size: 24px; white-space: normal; }
+  .freed .c { display: inline-block; width: 44px; height: 34px; border-radius: 8px; }
 
-  #steps { left: 0; right: 0; top: 614px; display: flex; justify-content: center; gap: 10px; }
-  #steps i { width: 30px; height: 8px; border-radius: 4px; background: #24407f; }
+  /* the scoreboard */
+  #score { left: 0; right: 0; top: 604px; display: flex; justify-content: center; align-items: center; gap: 12px;
+           font-weight: 900; font-size: 18px; letter-spacing: 2px; color: var(--muted); }
+  #score .sf { width: 34px; height: 40px; border-radius: 7px; background: #16244d; color: var(--gold);
+               font: 800 26px/40px "JetBrains Mono", monospace; text-align: center; letter-spacing: 0;
+               box-shadow: 0 3px 0 rgba(0,0,0,.35); }
+  #score .you { color: var(--white); }
   #flash { inset: 0; background: #fff; z-index: 9; }
   #top { z-index: 8; pointer-events: none; }
 </style>
@@ -130,7 +148,6 @@
     <div id="tag">Team Bath bookings, <b>in Python.</b></div>
   </div>
   <div id="shadow" class="abs"></div>
-  <div id="ball" class="abs"></div>
 
   <div id="label" class="abs"></div>
   <div id="term" class="abs">
@@ -141,7 +158,7 @@
     <div id="body"></div>
   </div>
   <div id="ticket" class="abs">
-    <div id="tmain" class="part abs-free">
+    <div id="tmain" class="part">
       <div class="k">SQUASH STUDENTS · TEAM BATH</div>
       <div class="big">Court 1</div>
       <div class="row"><span>THU 01 OCT</span><span>07:00</span><span>45 MIN</span></div>
@@ -152,7 +169,9 @@
       <div id="conf">✓ CONFIRMED</div>
     </div>
   </div>
-  <div id="steps" class="abs"></div>
+  <div id="score" class="abs">
+    <span class="you">YOU</span><span class="sf" id="points">0</span><span>:</span><span class="sf">0</span><span>THE WEBSITE</span>
+  </div>
 
   <div id="end" class="abs card">
     <img id="endlogo" class="logo" src="../logo.svg" width="140" height="140" alt="">
@@ -160,6 +179,7 @@
     <div class="url">pip install git+https://github.com/gwerneckp/teambath</div>
     <div class="sub">Made at the University of Bath 🎓</div>
   </div>
+  <div id="ball" class="abs"></div>
   <canvas id="top" width="1280" height="720"></canvas>
   <div id="flash" class="abs"></div>
 </div>
@@ -171,15 +191,15 @@ const seg = (t, a, b) => clamp((t - a) / (b - a));
 const lerp = (a, b, p) => a + (b - a) * p;
 const outCubic = (p) => 1 - Math.pow(1 - p, 3);
 const inCubic = (p) => p * p * p;
-const inOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 const outBack = (p) => { const c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const bump = (p) => Math.sin(Math.PI * clamp(p));   // 0 -> 1 -> 0
 const set = (el, { x = 0, y = 0, s = 1, sy = 1, r = 0, o = 1 }) => {
   el.style.transform = `translate(${x}px, ${y}px) scale(${s}, ${s * sy}) rotate(${r}deg)`;
   el.style.opacity = o;
 };
 const type = (text, p) => text.slice(0, Math.round(text.length * clamp(p)));
 const line = (html, u, at) => (u >= at ? html : "");
-const caret = (u) => `<span class="caret" style="opacity:${Math.floor(u * 14) % 2 ? 0 : 1}"></span>`;
+const caret = (u) => `<span class="caret" style="opacity:${Math.floor(u * 20) % 2 ? 0 : 1}"></span>`;
 // A typed Python prompt. `code` is plain text; `html` is the same code with syntax colours.
 const py = (code, html, u, a, b) => {
   if (u < a) return "";
@@ -187,108 +207,136 @@ const py = (code, html, u, a, b) => {
   return `<span class="ps">&gt;&gt;&gt;</span> ${done ? html : type(code, seg(u, a, b))}${done ? "" : caret(u)}\n`;
 };
 const cont = (html, u, at) => line(`<span class="ps">...</span> ${html}\n`, u, at);
+const popIn = (html, u, a, b) => u < a ? "" :
+  `<span class="pop" style="transform:scale(${outBack(seg(u, a, b))})">${html}</span>`;
 
 // Real data: the Squash Students grid for Thu 1 Oct 2026 (tests/fixtures/activity_grid.html).
 const GRID = ["11111010100111010000", "11111110011110110000",
               "11111110011111110000", "11111110110111100000"];
 
 // ---------------------------------------------------------------- the demos
-// len: seconds on screen. body(u): terminal HTML at progress u in [0, 1].
+// len: seconds on screen (content finishes early, then holds). body(u): terminal HTML, u in [0, 1].
 const demos = [
-  { len: 1.3, label: 'Log in with your <span class="hl">PIN</span>', body: (u) =>
-      py("from teambath import TeamBath",
-         `<span class="kw">from</span> teambath <span class="kw">import</span> TeamBath`, u, 0.02, 0.22) +
-      py('tb = TeamBath("abc123@bath.ac.uk", "1234")',
-         `tb = <span class="fn">TeamBath</span>(<span class="str">"abc123@bath.ac.uk"</span>, <span class="str">"1234"</span>)`, u, 0.26, 0.58) +
-      py("tb.login()", `tb.<span class="fn">login</span>()`, u, 0.62, 0.74),
-  },
-  { len: 1.4, label: 'What\'s on <span class="hl">tomorrow?</span>', body: (u) => {
-    let s = py('tb.search(tomorrow, type="squash")',
-               `tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"squash"</span>)`, u, 0.02, 0.3);
-    s += line(`[Activity(id=<span class="str">'SQUASHPAY1'</span>,  name=<span class="str">'Squash P.A.Y.G'</span>, ...),\n`, u, 0.36);
-    s += line(` Activity(id=<span class="str">'SQUASHSTAFF'</span>, name=<span class="str">'Squash Staff'</span>, ...),\n`, u, 0.42);
-    s += line(` Activity(id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>, ...)]  <span class="tagx">free</span>\n`, u, 0.48);
+  { len: 1.8, label: 'Log in with your <span class="hl">PIN</span>', body: (u) => {
+    let s = py("from teambath import TeamBath",
+               `<span class="kw">from</span> teambath <span class="kw">import</span> TeamBath`, u, 0.02, 0.18);
+    s += py('tb = TeamBath("abc123@bath.ac.uk", "1234")',
+            `tb = <span class="fn">TeamBath</span>(<span class="str">"abc123@bath.ac.uk"</span>, <span class="str">"1234"</span>)`, u, 0.2, 0.46);
+    s += py("tb.login()", `tb.<span class="fn">login</span>()`, u, 0.5, 0.6);
+    if (u >= 0.62) {
+      const open = u >= 0.72;
+      s += `<span class="lock" style="transform:scale(${outBack(seg(u, 0.62, 0.72)) * (1 + 0.08 * bump(seg(u, 0.72, 0.8)))})">` +
+           `<span>${open ? "🔓" : "🔒"}</span><span class="${open ? "ok" : "dim"}">${open ? "you're in" : "logging in…"}</span></span>`;
+    }
     return s;
   }},
-  { len: 2.3, label: 'Every court. <span class="hl">Every slot.</span>', body: (u) => {
+  { len: 1.9, label: 'What\'s on <span class="hl">tomorrow?</span>', body: (u) => {
+    let s = py('tb.search(tomorrow, type="squash")',
+               `tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"squash"</span>)`, u, 0.04, 0.3);
+    const rows = [
+      `[Activity(id=<span class="str">'SQUASHPAY1'</span>,  name=<span class="str">'Squash P.A.Y.G'</span>, ...),`,
+      ` Activity(id=<span class="str">'SQUASHSTAFF'</span>, name=<span class="str">'Squash Staff'</span>, ...),`,
+      ` Activity(id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>, ...)]`,
+    ];
+    rows.forEach((r, i) => {
+      const p = outCubic(seg(u, 0.34 + i * 0.07, 0.46 + i * 0.07));
+      if (u >= 0.34 + i * 0.07) s += `<span style="display:inline-block;transform:translateX(${(1 - p) * 40}px);opacity:${p}">${r}</span>`;
+      if (i === 2) s += "  " + popIn(`<span class="tagx" style="box-shadow:0 0 ${18 * bump((u * 3) % 1)}px #3ddc84">free</span>`, u, 0.58, 0.68);
+      s += "\n";
+    });
+    return s;
+  }},
+  { len: 3.0, label: 'Every court. <span class="hl">Every slot.</span>', body: (u) => {
     let s = py('slots = tb.availability("SQUASHFREE2", tomorrow)',
-               `slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, tomorrow)`, u, 0.02, 0.22);
-    if (u < 0.25) return s;
+               `slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, tomorrow)`, u, 0.03, 0.2);
+    if (u < 0.22) return s;
+    // a gold scan line sweeps across the times, lighting up each court as it passes
+    const scan = seg(u, 0.23, 0.52);
     let cells = "";
     GRID.forEach((row, r) => {
       cells += `<div class="ct">Court ${r + 1}</div>`;
       [...row].forEach((v, c) => {
-        const p = seg(u, 0.27 + (c + r * 2) * 0.011, 0.38 + (c + r * 2) * 0.011);
+        const p = seg(scan * 21 - c - r * 0.25, 0, 1);
         cells += `<div class="c ${v === "1" ? "free" : "taken"}" style="transform:scale(${0.2 + 0.8 * outBack(p)});opacity:${clamp(p * 2)}"></div>`;
       });
     });
-    s += `<div class="grid">${cells}</div>\n`;
+    const scanX = 101 + scan * 840;
+    s += `<div class="gridwrap"><div class="grid">${cells}</div>` +
+         (scan > 0 && scan < 1 ? `<div class="scan" style="left:${scanX}px"></div>` : "") +
+         (u >= 0.84 ? `<div class="target" style="transform:scale(${outBack(seg(u, 0.84, 0.9)) * (1 + 0.1 * bump((u * 5) % 1))})"><b>slots[0]</b></div>` : "") +
+         `</div>\n`;
     s += py("sum(s.available for s in slots)",
-            `<span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots)`, u, 0.6, 0.74);
-    if (u >= 0.76) {
+            `<span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots)`, u, 0.56, 0.66);
+    if (u >= 0.68) {
       // a split-flap board spins through numbers and lands on 51
-      const p = seg(u, 0.76, 0.94), n = Math.round(51 * outCubic(p)), spin = (p * 22) % 1;
+      const p = seg(u, 0.68, 0.82), n = Math.round(51 * outCubic(p)), spin = (p * 22) % 1;
       const flaps = String(n).padStart(2, "0").split("").map((dgt) =>
         `<span class="flap" style="transform:scaleY(${p < 1 ? 1 - 0.55 * Math.sin(Math.PI * spin) : 1})">${dgt}</span>`).join("");
       s += `<span class="flaps">${flaps}</span><span class="flabel">free slots</span>`;
     }
     return s;
   }},
-  { len: 1.8, label: 'The whole week in <span class="hl">one loop</span>', body: (u) => {
-    let s = py("for d in week:", `<span class="kw">for</span> d <span class="kw">in</span> week:`, u, 0.02, 0.1);
-    s += cont(`    slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, d)`, u, 0.14);
-    s += cont(`    <span class="fn">print</span>(<span class="str">f"{d:%a}"</span>, <span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots))`, u, 0.2);
+  { len: 2.4, label: 'The whole week in <span class="hl">one loop</span>', body: (u) => {
+    let s = py("for d in week:", `<span class="kw">for</span> d <span class="kw">in</span> week:`, u, 0.03, 0.1);
+    s += cont(`    slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, d)`, u, 0.13);
+    s += cont(`    <span class="fn">print</span>(<span class="str">f"{d:%a}"</span>, <span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots))`, u, 0.18);
     [["Thu", 51], ["Fri", 42], ["Sat", 50], ["Sun", 33], ["Mon", 51]].forEach(([d, n], i) => {
-      if (u < 0.3 + i * 0.08) return;
-      const p = outCubic(seg(u, 0.3 + i * 0.08, 0.55 + i * 0.08));
-      s += `<div class="barrow"><span class="d">${d}</span><span class="b" style="width:${n * 12 * p}px"></span><span>${Math.round(n * p)}</span></div>`;
+      if (u < 0.26 + i * 0.07) return;
+      const p = outCubic(seg(u, 0.26 + i * 0.07, 0.46 + i * 0.07));
+      const star = n === 51 ? popIn("⭐", u, 0.7 + i * 0.02, 0.8 + i * 0.02) : "";
+      s += `<div class="barrow"><span class="d">${d}</span><span class="b" style="width:${n * 12 * p}px"></span><span>${Math.round(n * p)}</span>${star}</div>`;
     });
     return s;
   }},
-  { len: 1.6, label: 'Swim spaces, <span class="hl">live</span>', body: (u) => {
+  { len: 2.1, label: 'Swim spaces, <span class="hl">live</span>', body: (u) => {
     let s = py('[swim] = tb.availability("SFIT50MR18897", tomorrow)',
-               `[swim] = tb.<span class="fn">availability</span>(<span class="str">"SFIT50MR18897"</span>, tomorrow)`, u, 0.02, 0.28);
-    s += py("swim.start, swim.spaces", `swim.start, swim.spaces`, u, 0.32, 0.44);
-    s += line(`(datetime.datetime(2026, 10, 1, 18, 0), <span class="gold">5</span>)`, u, 0.48);
-    if (u < 0.52) return s;
-    // a pool lane slides in: rippling water, a lane rope, one swimmer, five free spaces
-    const lp = outCubic(seg(u, 0.52, 0.66)), tt = u * 1.6;
-    let wave = "";
+               `[swim] = tb.<span class="fn">availability</span>(<span class="str">"SFIT50MR18897"</span>, tomorrow)`, u, 0.03, 0.24);
+    s += py("swim.start, swim.spaces", `swim.start, swim.spaces`, u, 0.27, 0.36);
+    s += line(`(datetime.datetime(2026, 10, 1, 18, 0), <span class="gold">5</span>)`, u, 0.39);
+    if (u < 0.43) return s;
+    // a pool lane slides in: rippling water, a lane rope, one swimmer trailing bubbles, five free spaces
+    const lp = outCubic(seg(u, 0.43, 0.56)), tt = u * 2.1, sx = 40 + 420 * seg(u, 0.46, 1);
+    let art = "";
     for (let row = 0; row < 3; row++) {
       let d = `M0 ${26 + row * 30}`;
       for (let x = 0; x <= 900; x += 20) d += ` L${x} ${26 + row * 30 + Math.sin(x / 38 + tt * 6 + row) * 4}`;
-      wave += `<path d="${d}" stroke="rgba(255,255,255,.22)" stroke-width="3" fill="none"/>`;
+      art += `<path d="${d}" stroke="rgba(255,255,255,.22)" stroke-width="3" fill="none"/>`;
     }
-    const rope = [...Array(45)].map((_, i) =>
+    for (let i = 0; i < 9; i++) {
+      const ph = (tt * 1.4 + i / 9) % 1;
+      art += `<circle cx="${sx + 6 - ph * 50 - i * 3}" cy="${78 - ph * 64}" r="${2.5 + ph * 3.5}" fill="none" stroke="rgba(255,255,255,${0.8 * (1 - ph)})" stroke-width="2"/>`;
+    }
+    art += [...Array(45)].map((_, i) =>
       `<circle cx="${i * 20 + 10}" cy="102" r="5" fill="${i % 6 < 3 ? "#ff6b6b" : "#fff"}"/>`).join("");
     const pips = [0, 1, 2, 3, 4, 5].map((i) =>
-      `<i class="pip ${i < 5 ? "" : "off"}" style="transform:scale(${outBack(seg(u, 0.62 + i * 0.04, 0.72 + i * 0.04))})"></i>`).join("");
-    s += `<div class="lane" style="transform:translateX(${(1 - lp) * -960}px)"><svg viewBox="0 0 900 108">${wave}${rope}</svg>` +
-         `<span class="swimmer" style="left:${40 + 380 * seg(u, 0.55, 1)}px">🏊</span>` +
+      `<i class="pip ${i < 5 ? "" : "off"}" style="transform:scale(${outBack(seg(u, 0.56 + i * 0.03, 0.64 + i * 0.03))})"></i>`).join("");
+    s += `<div class="lane" style="transform:translateX(${(1 - lp) * -960}px)"><svg viewBox="0 0 900 108">${art}</svg>` +
+         `<span class="swimmer" style="left:${sx}px">🏊</span>` +
          `<span class="left">Swimfit 18:00 · 5 spaces</span><span class="pips">${pips}</span></div>`;
     return s;
   }},
-  { len: 2.0, label: 'Book it. <span class="hl">One line.</span>', ticketIn: 0.34, confirm: 0.56, body: (u) =>
-      py("booking = tb.book(slots[0])", `booking = tb.<span class="fn">book</span>(slots[<span class="gold">0</span>])`, u, 0.02, 0.24) +
-      py("booking", "booking", u, 0.26, 0.3) +
-      line(`Booking(activity_id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>,\n        start=datetime.datetime(2026, 10, 1, 7, 0), ...)\n`, u, 0.32),
+  { len: 2.5, label: 'Book it. <span class="hl">One line.</span>', ticketIn: 0.3, confirm: 0.48, body: (u) =>
+      py("booking = tb.book(slots[0])", `booking = tb.<span class="fn">book</span>(slots[<span class="gold">0</span>])`, u, 0.03, 0.2) +
+      py("booking", "booking", u, 0.22, 0.25) +
+      line(`Booking(activity_id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>,\n        start=datetime.datetime(2026, 10, 1, 7, 0), ...)\n`, u, 0.27),
   },
-  { len: 1.7, label: 'Plans changed? <span class="hl">No problem.</span>', tear: 0.3, body: (u) =>
-      py("tb.cancel(booking)", `tb.<span class="fn">cancel</span>(booking)`, u, 0.02, 0.24) +
-      py("tb.bookings()", `tb.<span class="fn">bookings</span>()`, u, 0.56, 0.68) +
-      line(`[]\n`, u, 0.72) +
-      line(`<span class="dim"># Court 1 at 07:00 is back for someone else</span> <span class="ok">✓</span>\n`, u, 0.8),
+  { len: 2.3, label: 'Plans changed? <span class="hl">No problem.</span>', tear: 0.24, body: (u) =>
+      py("tb.cancel(booking)", `tb.<span class="fn">cancel</span>(booking)`, u, 0.03, 0.18) +
+      py("tb.bookings()", `tb.<span class="fn">bookings</span>()`, u, 0.5, 0.58) +
+      line(`[]\n`, u, 0.61) +
+      (u >= 0.66 ? `<span class="freed" style="transform:scale(${outBack(seg(u, 0.66, 0.76))})">` +
+        `<span class="c free" style="box-shadow:0 0 ${10 + 16 * bump((u * 3) % 1)}px #3ddc84"></span>` +
+        `Court 1 · 07:00 is free again</span>` : ""),
   },
 ];
 
 const DEMO_START = 1.6;
 let acc = DEMO_START;
 demos.forEach((d) => { d.a = acc; acc += d.len; d.b = acc; });
-const END_START = acc;
-const DURATION = END_START + 1.8;
+const END_START = acc, END_HIT = END_START + 0.4;
+const DURATION = END_START + 2.2;
 const BOOK = demos[5], CANCEL = demos[6];
 const CONFIRM_T = BOOK.a + BOOK.len * BOOK.confirm;
-$("#steps").innerHTML = demos.map(() => "<i></i>").join("");
 
 // ---------------------------------------------------------------- background
 // A squash court from above, drawn as a line sketch.
@@ -305,7 +353,7 @@ const court = (() => {
   };
 })();
 
-// Floodlight + confetti on the back canvas, ball streaks on the top one.
+// Floodlight + confetti on the back canvas, impact dust on the top one.
 // Deterministic pseudo-random so every render is identical.
 const fx = (() => {
   const back = $("#fx").getContext("2d"), top = $("#top").getContext("2d");
@@ -315,70 +363,98 @@ const fx = (() => {
     a: rnd() * 6.28, v: 380 + rnd() * 520, sw: 20 + rnd() * 40,
     ph: rnd() * 6.28, w: 7 + rnd() * 9, h: 3 + rnd() * 5, c: colors[Math.floor(rnd() * 6)], spin: 3 + rnd() * 8,
   }));
-  const confetti = (ctx, t, [t0, x0, y0, o]) => {
+  const dust = Array.from({ length: 14 }, () => ({ a: Math.PI + rnd() * Math.PI, v: 60 + rnd() * 110, r: 3 + rnd() * 4 }));
+  const confetti = (t, [t0, x0, y0, o]) => {
     const dt = t - t0;
     if (dt < 0 || o <= 0) return;
-    ctx.globalAlpha = o;
+    back.globalAlpha = o;
     for (const b of bits) {
       const x = x0 + Math.cos(b.a) * b.v * dt * Math.exp(-dt * 1.6) + Math.sin(dt * 4 + b.ph) * b.sw * dt;
       const y = y0 + Math.sin(b.a) * b.v * dt * Math.exp(-dt * 1.6) + 520 * dt * dt;
       if (y > 740) continue;
-      ctx.save(); ctx.translate(x, y); ctx.rotate(dt * b.spin + b.ph);
-      ctx.fillStyle = b.c; ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); ctx.restore();
+      back.save(); back.translate(x, y); back.rotate(dt * b.spin + b.ph);
+      back.fillStyle = b.c; back.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); back.restore();
     }
-    ctx.globalAlpha = 1;
+    back.globalAlpha = 1;
   };
-  return (t, lightO, bursts, streak) => {
+  return (t, lightO, bursts, puff) => {
     back.clearRect(0, 0, 1280, 720);
     top.clearRect(0, 0, 1280, 720);
     if (lightO > 0) {   // a floodlight drifting slowly over the court
-      const lx = 640 + 260 * Math.sin(t * 0.45), ly = 250 + 60 * Math.cos(t * 0.6);
+      const lx = 640 + 260 * Math.sin(t * 0.4), ly = 250 + 60 * Math.cos(t * 0.55);
       const g = back.createRadialGradient(lx, ly, 0, lx, ly, 520);
       g.addColorStop(0, `rgba(160, 200, 255, ${0.16 * lightO})`); g.addColorStop(1, "rgba(160, 200, 255, 0)");
       back.fillStyle = g; back.fillRect(0, 0, 1280, 720);
     }
-    bursts.forEach((b) => confetti(back, t, b));
-    if (streak !== null) {   // the ball zips across between scenes, with a fading trail
-      for (let k = 12; k >= 0; k--) {
-        const p = clamp(streak - k * 0.018);
-        const x = lerp(-60, 1340, p), y = 610 - 520 * p + 160 * Math.sin(Math.PI * p);
-        top.globalAlpha = (1 - k / 13) * (k === 0 ? 1 : 0.35);
-        top.beginPath(); top.arc(x, y, k === 0 ? 17 : 17 - k, 0, 6.29);
-        top.fillStyle = k === 0 ? "#f2b632" : "#ffe29a"; top.fill();
+    bursts.forEach((b) => confetti(t, b));
+    if (puff) {   // chalk dust kicked up where the ball hits the terminal
+      const [x0, y0, p] = puff;
+      for (const d of dust) {
+        top.globalAlpha = 0.7 * (1 - p);
+        top.beginPath();
+        top.arc(x0 + Math.cos(d.a) * d.v * outCubic(p), y0 + Math.sin(d.a) * d.v * 0.5 * outCubic(p), d.r * (1 - p * 0.5), 0, 6.29);
+        top.fillStyle = "#dfe8ff"; top.fill();
       }
       top.globalAlpha = 1;
     }
   };
 })();
 
-// ---------------------------------------------------------------- the title ball
-// Drops in, bounces twice along the floor, then flies up into the ball on the logo.
-const FLOOR = 560, LOGO_BALL = [672, 162], HIT = 0.9;
+// ---------------------------------------------------------------- the ball
+// Title: drops in, bounces twice along the floor, then flies up into the ball on the logo.
+const FLOOR = 560, LOGO_BALL = [672, 162], END_BALL = [668, 184], HIT = 0.9;
 const LEGS = [
   { t0: 0.0, t1: 0.3, x0: -60, x1: 250, drop: true },
   { t0: 0.3, t1: 0.56, x0: 250, x1: 460, h: 200 },
   { t0: 0.56, t1: 0.74, x0: 460, x1: 600, h: 90 },
   { t0: 0.74, t1: HIT, x0: 600, x1: LOGO_BALL[0], up: true },
 ];
-// [x, y, how much it's still a floor ball (for the shadow)]
-function titleBall(t) {
+// Between scenes: the ball arcs in, bounces off the top of the terminal, and flies off.
+const TERM_TOP = 146, IN = 0.45, OUT = 0.45;
+const HITS = demos.slice(1).map((d, i) => ({ t: d.a, x: [860, 420, 760, 500, 880, 460][i] }));
+
+// [x, y, squash, shadow] for the ball at time t, or null when it's off screen.
+function ball(t) {
   const leg = LEGS.find((l) => t >= l.t0 && t <= l.t1);
-  if (!leg) return [LOGO_BALL[0], LOGO_BALL[1], 0];
-  const p = (t - leg.t0) / (leg.t1 - leg.t0), x = lerp(leg.x0, leg.x1, p);
-  if (leg.drop) return [x, lerp(120, FLOOR, p * p), 1];
-  if (leg.up) return [x, lerp(FLOOR, LOGO_BALL[1], outCubic(p)), 1 - p];
-  return [x, FLOOR - leg.h * 4 * p * (1 - p), 1];
+  if (leg) {
+    const p = (t - leg.t0) / (leg.t1 - leg.t0), x = lerp(leg.x0, leg.x1, p);
+    if (leg.drop) return [x, lerp(120, FLOOR, p * p), bump(seg(p, 0.9, 1)), 1];
+    if (leg.up) return [x, lerp(FLOOR, LOGO_BALL[1], outCubic(p)), 0, 1 - p];
+    return [x, FLOOR - leg.h * 4 * p * (1 - p), bump(seg(p, 0.92, 1)) + bump(seg(p, 0, 0.08)), 1];
+  }
+  for (const [i, h] of HITS.entries()) {
+    // drops in from above, lands on the terminal's top edge, bounces up and out the top
+    const dir = i % 2 ? -1 : 1, from = h.x - dir * 420, y0 = TERM_TOP - 17;
+    if (t >= h.t - IN && t < h.t) {
+      const p = (t - (h.t - IN)) / IN;
+      return [lerp(from, h.x, p), lerp(-60, y0, p * p), bump(seg(p, 0.88, 1)), 0];
+    }
+    if (t >= h.t && t < h.t + OUT) {
+      const p = (t - h.t) / OUT;
+      return [h.x + dir * 380 * p, y0 - 420 * p + 190 * p * p, bump(seg(p, 0, 0.12)), 0];
+    }
+  }
+  if (t >= END_HIT - 0.55 && t < END_HIT) {   // the end: back into the ball on the logo
+    const p = (t - (END_HIT - 0.55)) / 0.55;
+    return [lerp(-60, END_BALL[0], p), lerp(620, END_BALL[1], p) - 200 * Math.sin(Math.PI * p), 0, 0];
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------- one frame
 function render(t) {
   const loopOut = inCubic(seg(t, DURATION - 0.22, DURATION));   // fade so the loop restarts cleanly
 
-  // title ball + its shadow on the floor
-  const [bx, by, onFloor] = titleBall(t);
-  const air = clamp((FLOOR - by) / 300);
-  set($("#ball"), { x: bx - 17, y: by - 17, o: t <= HIT ? 1 : 0 });
-  set($("#shadow"), { x: bx - 22, y: FLOOR + 14, s: 1 - 0.6 * air, o: (t <= HIT ? 0.9 - 0.6 * air : 0) * onFloor });
+  // the ball, squashing on every bounce, with a floor shadow in the title
+  const b = ball(t);
+  if (b) {
+    const [bx, by, squash, sh] = b, air = clamp((FLOOR - by) / 300);
+    set($("#ball"), { x: bx - 17, y: by - 17, s: 1 + 0.25 * squash, sy: 1 - 0.45 * squash });
+    set($("#shadow"), { x: bx - 22, y: FLOOR + 14, s: 1 - 0.6 * air, o: sh * (0.9 - 0.6 * air) });
+  } else {
+    set($("#ball"), { o: 0 });
+    set($("#shadow"), { o: 0 });
+  }
 
   // title: the logo pops when the ball lands in it
   const out = inCubic(seg(t, 1.38, 1.56));
@@ -389,53 +465,63 @@ function render(t) {
   set($("#title"), { y: -120 * out, s: 1 - 0.1 * out, o: 1 - out });
 
   // demos
-  const termIn = outCubic(seg(t, 1.5, 1.72)), termOut = inCubic(seg(t, END_START - 0.05, END_START + 0.2));
+  const termIn = outCubic(seg(t, 1.5, 1.72)), termOut = inCubic(seg(t, END_START - 0.05, END_START + 0.25));
   const cur = demos.findIndex((d) => t >= d.a && t < d.b);
   const d = demos[cur === -1 ? (t < DEMO_START ? 0 : demos.length - 1) : cur];
   const u = clamp((t - d.a) / d.len);
+  // the terminal dips when the ball hits it, and shakes when the booking is stamped
+  const hit = HITS.find((h) => t >= h.t && t < h.t + 0.3);
+  const dip = hit ? 14 * bump(seg(t, hit.t, hit.t + 0.3)) * (1 - seg(t, hit.t, hit.t + 0.3)) : 0;
   const k = seg(t, CONFIRM_T, CONFIRM_T + 0.14);
   const shake = k > 0 && k < 1 ? Math.sin(k * 40) * 9 * (1 - k) : 0;
-  set($("#term"), { x: shake, y: 90 * (1 - termIn) + 60 * termOut, s: 0.94 + 0.06 * termIn - 0.06 * termOut,
+  set($("#term"), { x: shake, y: 90 * (1 - termIn) + 60 * termOut + dip, s: 0.94 + 0.06 * termIn - 0.06 * termOut,
                     o: termIn * (1 - termOut) });
-  set($("#steps"), { o: termIn * (1 - termOut) });
   $("#label").innerHTML = d.label;
   $("#body").innerHTML = d.body(u);
-  const labelIn = outBack(seg(u, 0, 0.14)), labelOut = inCubic(seg(u, 0.93, 1));
-  set($("#label"), { y: 24 * (1 - labelIn) - 20 * labelOut, s: 0.9 + 0.1 * labelIn,
-                     o: termIn * clamp(labelIn) * (1 - labelOut) * (1 - termOut) });
-  $("#body").style.opacity = 1 - labelOut * 0.9;
-  [...document.querySelectorAll("#steps i")].forEach((el, i) => {
-    el.style.background = i === cur ? "#f2b632" : i < cur ? "#8a6a1f" : "#24407f";
-  });
+  // the old scene fades as the ball comes in, and the new one lands with the hit
+  const labelIn = outBack(seg(u, 0, 0.1)), labelOut = inCubic(seg(t, d.b - IN * 0.7, d.b));
+  const lastOut = d === demos[demos.length - 1] ? 0 : labelOut;
+  set($("#label"), { y: 24 * (1 - labelIn) - 20 * lastOut, s: 0.9 + 0.1 * labelIn,
+                     o: termIn * clamp(labelIn) * (1 - lastOut) * (1 - termOut) });
+  $("#body").style.opacity = 1 - lastOut * 0.9;
+
+  // scoreboard: a point to you on every hit
+  const points = cur === -1 ? (t >= END_START ? demos.length : 0) : cur + 1;
+  const flip = HITS.find((h) => t >= h.t && t < h.t + 0.2);
+  $("#points").textContent = points;
+  set($("#points"), { sy: flip ? 1 - 0.8 * bump(seg(t, flip.t, flip.t + 0.2)) : 1 });
+  set($("#score"), { y: dip * 0.5, o: termIn * (1 - termOut) });
 
   // the ticket: prints out when booked, gets stamped, then tears in half on cancel
-  const tIn = seg(t, BOOK.a + BOOK.len * BOOK.ticketIn, BOOK.a + BOOK.len * BOOK.ticketIn + 0.3);
-  const tear = seg(t, CANCEL.a + CANCEL.len * CANCEL.tear, CANCEL.a + CANCEL.len * CANCEL.tear + 0.5);
-  set($("#ticket"), { x: shake, y: 320 * (1 - outBack(tIn)), r: 7 * (1 - tIn) - 2,
+  const tIn = seg(t, BOOK.a + BOOK.len * BOOK.ticketIn, BOOK.a + BOOK.len * BOOK.ticketIn + 0.35);
+  const tear = seg(t, CANCEL.a + CANCEL.len * CANCEL.tear, CANCEL.a + CANCEL.len * CANCEL.tear + 0.55);
+  const tdip = t >= CANCEL.a && t < CANCEL.a + 0.3 ? dip : 0;
+  set($("#ticket"), { x: shake, y: 320 * (1 - outBack(tIn)) + tdip, r: 7 * (1 - tIn) - 2,
                       o: t < BOOK.a ? 0 : clamp(tIn * 3) });
   set($("#tmain"), { x: -60 * outCubic(tear), y: 420 * inCubic(tear), r: -16 * outCubic(tear), o: 1 - seg(tear, 0.6, 1) });
   set($("#tstub"), { x: 50 * outCubic(tear), y: 460 * inCubic(tear), r: 22 * outCubic(tear), o: 1 - seg(tear, 0.6, 1) });
   set($("#conf"), { s: t < CONFIRM_T ? 0 : 2.2 - 1.2 * outCubic(k), r: -10, o: t < CONFIRM_T ? 0 : clamp(k * 3) });
   set($("#flash"), { o: t >= CONFIRM_T ? 0.3 * (1 - seg(t, CONFIRM_T, CONFIRM_T + 0.18)) : 0 });
 
-  // end card: the ball drops back into the logo
-  const e = t - END_START;
-  set($("#endlogo"), { s: outBack(seg(e, 0.1, 0.4)), sy: 1 - 0.18 * Math.sin(Math.PI * seg(e, 0.36, 0.5)),
-                       r: (1 - seg(e, 0.1, 0.4)) * 20, o: seg(e, 0.1, 0.2) * (1 - loopOut) });
-  set($("#end .word"), { y: 24 * (1 - outCubic(seg(e, 0.18, 0.42))), o: seg(e, 0.18, 0.32) * (1 - loopOut) });
-  set($("#end .url"), { y: 20 * (1 - outCubic(seg(e, 0.3, 0.52))), s: 0.8 + 0.2 * outBack(seg(e, 0.3, 0.52)),
-                        o: seg(e, 0.3, 0.42) * (1 - loopOut) });
-  set($("#end .sub"), { o: seg(e, 0.45, 0.6) * (1 - loopOut) });
+  // end card: the ball lands back in the logo
+  const e = seg(t, END_HIT - 0.02, END_HIT + 0.3);
+  set($("#endlogo"), { s: t < END_HIT - 0.02 ? 0 : outBack(e), sy: 1 - 0.15 * bump(seg(t, END_HIT, END_HIT + 0.14)),
+                       r: (1 - e) * 20, o: seg(t, END_HIT - 0.02, END_HIT + 0.05) * (1 - loopOut) });
+  set($("#end .word"), { y: 24 * (1 - outCubic(seg(t, END_HIT, END_HIT + 0.24))), o: seg(t, END_HIT, END_HIT + 0.14) * (1 - loopOut) });
+  set($("#end .url"), { y: 20 * (1 - outCubic(seg(t, END_HIT + 0.12, END_HIT + 0.34))),
+                        s: 0.8 + 0.2 * outBack(seg(t, END_HIT + 0.12, END_HIT + 0.34)),
+                        o: seg(t, END_HIT + 0.12, END_HIT + 0.24) * (1 - loopOut) });
+  set($("#end .sub"), { o: seg(t, END_HIT + 0.3, END_HIT + 0.45) * (1 - loopOut) });
 
-  // background: court lines, floodlight, confetti, and the ball zipping across between scenes
+  // background: court lines, floodlight, confetti, and dust from each hit
   const bgIn = seg(t, 0, 0.25);
-  court(seg(t, 0.05, 0.9), (0.2 * bgIn + 0.08 * seg(e, 0, 0.4)) * (1 - loopOut));
-  const zip = demos.slice(1).map((dm) => seg(t, dm.a - 0.12, dm.a + 0.26)).find((p) => p > 0 && p < 1);
+  court(seg(t, 0.05, 0.9), (0.2 * bgIn + 0.08 * seg(t, END_START, END_START + 0.4)) * (1 - loopOut));
+  const puffHit = HITS.find((h) => t >= h.t && t < h.t + 0.4);
   fx(t, bgIn * (1 - loopOut), [
     [HIT, LOGO_BALL[0], LOGO_BALL[1], 1 - seg(t, 1.6, 1.9)],
     [CONFIRM_T, 870, 440, 1 - seg(t, BOOK.b, BOOK.b + 0.3)],
-    [END_START + 0.4, 640, 210, 1 - loopOut],
-  ], zip ?? null);
+    [END_HIT, END_BALL[0], END_BALL[1], 1 - loopOut],
+  ], puffHit ? [puffHit.x, TERM_TOP, seg(t, puffHit.t, puffHit.t + 0.4)] : null);
 }
 
 window.DURATION = DURATION;

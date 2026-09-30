@@ -23,7 +23,7 @@ class Media:
     ASSETS = HERE.parent
     FPS = 60
     GIF_FPS = 20
-    GIF_WIDTH = 720
+    GIF_WIDTH = 640
     SCALE = 1.5  # 1280x720 page -> 1920x1080 frames
 
     def render(self):
