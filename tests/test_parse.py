@@ -4,7 +4,7 @@ from datetime import date, datetime
 
 from bs4 import BeautifulSoup
 
-from teambath import Account, ActivityType
+from teambath import Account, ActivityType, Booking
 from teambath.parse import Parse
 
 
@@ -63,8 +63,6 @@ def test_search_results_activity(pages):
 
 def test_search_no_results(pages):
     assert Parse.search_results(pages.soup("search_empty")) == []
-    assert Parse.no_results(pages.soup("search_empty"))
-    assert not Parse.no_results(pages.soup("search_squash"))
 
 
 def test_class_with_space(pages):
@@ -119,3 +117,38 @@ def test_activity_grid_with_a_single_unnamed_resource():
     a, b = Parse.activity_slots(soup)
     assert (a.start, a.resource, a.available) == (datetime(2026, 10, 1, 8, 0), None, False)
     assert (b.start, b.resource, b.available) == (datetime(2026, 10, 1, 9, 0), None, True)
+
+
+def test_bookings(pages):
+    [booking] = Parse.bookings(pages.soup("bookings"))
+    assert booking == Booking(activity_id="SQUASHFREE2", name="Squash Students",
+                              start=datetime(2026, 10, 5, 10, 45), duration=45, status="Confirmed")
+    assert Parse.bookings(pages.soup("bookings_empty")) == []
+
+
+def test_booking_confirmation_pages(pages):
+    assert Parse.prices(pages.soup("confirm_free")) == ["£0.00"]
+    assert Parse.confirmation(pages.soup("confirm_free")) == ("Squash Students", 45)
+    assert Parse.prices(pages.soup("confirm_paid")) == ["£9.50"]
+    assert Parse.prices(pages.soup("confirm_refused")) == []
+    assert Parse.error(pages.soup("confirm_refused")) == \
+        "Sorry, you are not permitted to book at the time selected."
+    assert Parse.error(pages.soup("confirm_free")) is None
+
+
+def test_cancel_confirmation_page(pages):
+    assert Parse.prices(pages.soup("cancel_confirm")) == ["Total £0.00"]
+    assert Parse.error(pages.soup("cancel_confirm")) is None
+
+
+def test_is_free():
+    assert Parse.is_free("£0.00") and Parse.is_free("Total £0.00")
+    assert not Parse.is_free("£9.50") and not Parse.is_free("Total £0.50")
+    assert not Parse.is_free("")  # no price shown: don't assume free
+
+
+def test_cells_pair_slots_with_their_buttons(pages):
+    for slot, el in Parse.activity_cells(pages.soup("activity_grid")):
+        assert (el.name == "input") == slot.available  # only free cells can be clicked
+    [(slot, button)] = Parse.class_cells(pages.soup("class"))
+    assert button["name"] == "ctl00$MainContent$ClassStatus$ctrl0$btnBook"

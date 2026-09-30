@@ -52,3 +52,14 @@ class Account:
     birth_date: date | None
     mobile: str
     address: list[str]  # non-empty address lines, postcode last
+
+
+@dataclass
+class Booking:
+    """One of your bookings."""
+
+    activity_id: str
+    name: str  # e.g. "Squash Students"
+    start: datetime
+    duration: int | None  # minutes
+    status: str  # e.g. "Confirmed"
