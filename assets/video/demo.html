@@ -3,6 +3,10 @@
   teambath README animation. Every frame is a pure function of time: render(t).
   Rendered to video by render_media.py (Playwright screenshots + ffmpeg).
   Open this file in a browser to preview it live.
+
+  Layout: #world is a squash court seen from the back, with the terminal on the front wall.
+  A camera (cam) moves over it. #hud sits on top: titles, the scoreboard, the website
+  character, the ball, the viewfinder and the end card.
 -->
 <html>
 <head>
@@ -13,16 +17,16 @@
   :root {
     --navy: #08132e; --blue: #3b6fd8; --deep: #1c3f94; --gold: #f2b632; --gold-light: #ffe29a;
     --green: #3ddc84; --coral: #ff6b6b; --lilac: #a99bff; --white: #f5f7fa; --muted: #8fa3c8;
-    --sky: #7fb2ff;
+    --sky: #7fb2ff; --cream: #fff8e6;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--navy); }
-  #stage {
-    position: relative; width: 1280px; height: 720px; overflow: hidden;
-    background: radial-gradient(ellipse 90% 80% at 50% 38%, #173478 0%, #0e2154 45%, var(--navy) 100%);
-    font-family: "Nunito", system-ui, sans-serif; color: var(--white);
-  }
-  canvas, #court { position: absolute; inset: 0; }
+  #stage { position: relative; width: 1280px; height: 720px; overflow: hidden; background: #050b1f;
+           font-family: "Nunito", system-ui, sans-serif; color: var(--white); perspective: 1400px; }
+  #world, #hud { position: absolute; inset: 0; }
+  #world { transform-origin: 640px 360px; }
+  #court { position: absolute; left: 0; top: 0; overflow: visible; }
+  canvas { position: absolute; left: 0; top: 0; }
   .abs { position: absolute; will-change: transform, opacity; }
   .logo { display: block; filter: drop-shadow(0 16px 36px rgba(242, 182, 50, .35)); }
   .word { font-weight: 900; letter-spacing: -2px; line-height: 1; }
@@ -34,26 +38,23 @@
   #title .word { font-size: 104px; margin-top: 10px; }
   #tag { font-weight: 800; font-size: 32px; color: var(--muted); margin-top: 14px; }
   #tag b { color: var(--white); }
-  #ball { left: 0; top: 0; width: 34px; height: 34px; border-radius: 50%; z-index: 7;
-          background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 55%, #c88a12);
-          box-shadow: 0 0 24px rgba(242, 182, 50, .7); }
-  #shadow { left: 0; top: 0; width: 44px; height: 12px; border-radius: 50%; background: rgba(0, 0, 0, .45);
-            filter: blur(3px); }
-  #end { top: 140px; }
+  #end { top: 118px; }
   #end .word { font-size: 88px; margin-top: 8px; }
   #end .url { margin-top: 26px; font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 22px;
               color: var(--navy); background: var(--gold); padding: 10px 22px; border-radius: 12px;
               box-shadow: 0 6px 0 rgba(0,0,0,.25); }
   #end .sub { margin-top: 20px; font-weight: 800; font-size: 22px; color: var(--muted); }
+  #toast { left: 0; top: 0; padding: 8px 18px; border-radius: 999px; background: var(--green); color: var(--navy);
+           font-weight: 900; font-size: 20px; box-shadow: 0 8px 20px rgba(0,0,0,.35); white-space: nowrap; }
+  #cursor { left: 0; top: 0; filter: drop-shadow(0 4px 6px rgba(0,0,0,.4)); }
 
-  /* ---- demo scene ---- */
-  #label { left: 0; right: 0; top: 62px; text-align: center; font-weight: 900; font-size: 48px; }
+  /* ---- the terminal on the front wall ---- */
+  #label { left: 0; right: 0; top: 60px; text-align: center; font-weight: 900; font-size: 48px;
+           text-shadow: 0 4px 18px rgba(0,0,0,.5); }
   #label .hl { color: var(--gold); }
-  #term {
-    left: 140px; top: 146px; width: 1000px; height: 440px; border-radius: 18px;
-    background: #0a1430; border: 1.5px solid #2a4380;
-    box-shadow: 0 30px 80px rgba(0,0,0,.5); overflow: hidden;
-  }
+  #term { left: 140px; top: 146px; width: 1000px; height: 440px; border-radius: 18px;
+          background: #0a1430; border: 1.5px solid #2f4d92;
+          box-shadow: 0 0 60px rgba(90, 140, 255, .18), 0 30px 80px rgba(0,0,0,.5); overflow: hidden; }
   #term .bar { height: 44px; background: #0f1d42; display: flex; align-items: center; padding: 0 18px;
                gap: 9px; border-bottom: 1px solid #1e3366; }
   #term .dot { width: 13px; height: 13px; border-radius: 50%; }
@@ -63,125 +64,196 @@
           white-space: pre; font-variant-ligatures: none; }
   .ps { color: var(--lilac); } .dim { color: #6c80ad; } .ok { color: var(--green); }
   .gold { color: var(--gold); } .kw { color: var(--coral); } .str { color: #9be29b; } .fn { color: var(--sky); }
-  .tagx { font-size: 16px; color: var(--navy); background: var(--green); padding: 1px 8px; border-radius: 6px; }
   .caret { display: inline-block; width: 11px; height: 24px; background: var(--gold); vertical-align: -5px; margin-left: 2px; }
-  .pop { display: inline-block; font-family: "Nunito", sans-serif; font-weight: 900; }
+  .pop { display: inline-block; }
+  .n { white-space: normal; font-family: "Nunito", sans-serif; }
   .lock { display: inline-flex; align-items: center; gap: 12px; margin-top: 10px; padding: 8px 18px;
-          border-radius: 14px; background: #10224f; font-family: "Nunito", sans-serif; font-weight: 900; font-size: 24px; }
+          border-radius: 14px; background: #10224f; font-weight: 900; font-size: 24px; }
 
-  /* the court grid + split-flap counter */
-  .gridwrap { position: relative; display: inline-block; margin: 30px 0 10px; }
-  .grid { display: inline-grid; grid-template-columns: 96px repeat(20, 37px); gap: 5px;
-          font-family: "Nunito", sans-serif; white-space: normal; }
-  .grid .ct { font-weight: 800; font-size: 17px; color: var(--muted); align-self: center; }
-  .grid .c { height: 30px; border-radius: 7px; }
-  .c.free { background: var(--green); box-shadow: 0 0 14px rgba(61, 220, 132, .45); }
-  .c.taken { background: #1d2c55; }
-  .scan { position: absolute; top: -6px; bottom: -6px; width: 6px; border-radius: 3px;
-          background: var(--gold); box-shadow: 0 0 22px 6px rgba(242, 182, 50, .55); }
-  .target { position: absolute; left: 97px; top: -4px; width: 45px; height: 38px; border-radius: 10px;
-            border: 3px solid var(--gold); }
-  .target b { position: absolute; left: -4px; top: -30px; font: 800 15px "JetBrains Mono", monospace;
-              color: var(--navy); background: var(--gold); padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
+  /* search: trading cards */
+  .deck { position: relative; height: 262px; perspective: 900px; }
+  .tcard { position: absolute; top: 14px; left: 373px; width: 190px; height: 236px; transform-style: preserve-3d; }
+  .face { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; display: flex;
+          flex-direction: column; align-items: center; justify-content: space-between; padding: 16px 12px; }
+  .front { background: linear-gradient(160deg, #24499f, #10245a); border: 2px solid #4d7de0;
+           box-shadow: 0 14px 30px rgba(0,0,0,.45); }
+  .back { background: linear-gradient(160deg, #54f09c, #1fa866); border: 2px solid #b6ffd6; color: var(--navy);
+          transform: rotateY(180deg); box-shadow: 0 0 40px rgba(61, 220, 132, .55); }
+  .face .k { font-weight: 900; font-size: 13px; letter-spacing: 3px; opacity: .8; }
+  .face .em { font-size: 58px; line-height: 1; }
+  .face .nm { font-weight: 900; font-size: 22px; text-align: center; line-height: 1.1; }
+  .face .id { font: 700 13px "JetBrains Mono", monospace; opacity: .75; }
+  .face .pr { font-weight: 800; font-size: 14px; padding: 2px 10px; border-radius: 999px; background: rgba(255,255,255,.14); }
+  .back .big { font-weight: 900; font-size: 64px; letter-spacing: -1px; line-height: 1; }
+
+  /* grid: four little squash courts from above, free slots are balls */
+  .courts { position: relative; margin: 26px 0 6px; }
+  .crow { display: flex; align-items: center; height: 38px; }
+  .crow .ct { width: 96px; font-weight: 800; font-size: 17px; color: var(--muted); }
+  .strip { position: relative; display: inline-block; width: 840px; height: 32px; border-radius: 8px;
+           background: repeating-linear-gradient(90deg, rgba(0,0,0,.06) 0 2px, transparent 2px 42px), linear-gradient(180deg, #e2ad6a, #c68b4c);
+           box-shadow: inset 0 0 0 2px rgba(0,0,0,.12); }
+  .strip .ln { position: absolute; background: rgba(214, 40, 40, .75); }
+  .ball { position: absolute; width: 20px; height: 20px; border-radius: 50%;
+          background: radial-gradient(circle at 35% 30%, var(--gold-light), var(--gold) 55%, #c88a12);
+          box-shadow: 0 0 10px rgba(242, 182, 50, .6); }
+  .bsh { position: absolute; width: 18px; height: 6px; border-radius: 50%; background: rgba(0,0,0,.35); }
+  .axis { position: relative; height: 20px; margin-left: 96px; width: 840px; font-size: 15px; color: #6c80ad;
+          font-family: "JetBrains Mono", monospace; }
+  .axis span { position: absolute; transform: translateX(-50%); }
+  .target { position: absolute; width: 34px; height: 34px; border-radius: 50%; border: 3px solid var(--white); }
+  .target b { position: absolute; left: 50%; top: -30px; transform: translateX(-50%); font: 800 15px "JetBrains Mono", monospace;
+              color: var(--navy); background: var(--white); padding: 1px 7px; border-radius: 6px; white-space: nowrap; }
   .flaps { display: inline-flex; gap: 6px; vertical-align: middle; margin-left: 4px; }
-  .flap { position: relative; width: 46px; height: 60px; border-radius: 8px; background: #16244d;
-          font: 800 44px/60px "JetBrains Mono", monospace; color: var(--gold); text-align: center;
+  .flap { position: relative; width: 42px; height: 52px; border-radius: 8px; background: #16244d;
+          font: 800 38px/52px "JetBrains Mono", monospace; color: var(--gold); text-align: center;
           box-shadow: 0 4px 0 rgba(0,0,0,.35); overflow: hidden; }
-  .flap::after { content: ""; position: absolute; left: 0; right: 0; top: 29px; height: 2px; background: #08132e; }
-  .flabel { font-family: "Nunito", sans-serif; font-weight: 900; font-size: 26px; margin-left: 12px; vertical-align: middle; }
+  .flap::after { content: ""; position: absolute; left: 0; right: 0; top: 25px; height: 2px; background: #08132e; }
+  .flabel { font-weight: 900; font-size: 26px; margin-left: 12px; vertical-align: middle; }
 
-  /* week bars */
-  .barrow { display: flex; align-items: center; gap: 14px; height: 37px; font-family: "Nunito", sans-serif;
-            font-weight: 800; font-size: 22px; white-space: normal; }
-  .barrow .d { width: 52px; color: var(--muted); }
-  .barrow .b { height: 24px; border-radius: 12px; background: linear-gradient(90deg, var(--blue), var(--green)); }
+  /* week: tear-off calendar pages */
+  .cal { display: flex; gap: 22px; margin-top: 16px; perspective: 700px; }
+  .page { position: relative; width: 150px; height: 160px; border-radius: 12px; background: var(--cream); color: var(--navy);
+          transform-origin: 50% 0; box-shadow: 0 12px 24px rgba(0,0,0,.4); }
+  .page .hd { height: 40px; border-radius: 12px 12px 0 0; background: var(--coral); color: #fff; font-weight: 900;
+              font-size: 22px; letter-spacing: 3px; text-align: center; line-height: 40px; }
+  .page .num { font-weight: 900; font-size: 62px; text-align: center; line-height: 1.2; margin-top: 4px; }
+  .page .fr { text-align: center; font-weight: 800; font-size: 16px; color: #6b7a9e; }
+  .page .ring { position: absolute; top: -10px; width: 12px; height: 18px; border-radius: 6px; background: #1b2b55; }
+  .page .star { position: absolute; right: -14px; top: -16px; font-size: 38px; }
 
-  /* the pool lane */
-  .lane { position: relative; margin-top: 14px; width: 900px; height: 108px; border-radius: 16px; overflow: hidden;
-          background: linear-gradient(180deg, #1c9be6, #0f6fb3); white-space: normal; }
-  .lane svg { position: absolute; inset: 0; }
-  .lane .swimmer { position: absolute; top: 30px; font-size: 44px; }
-  .lane .left { position: absolute; right: 18px; top: 18px; font-family: "Nunito"; font-weight: 900;
-                font-size: 26px; color: #fff; text-shadow: 0 2px 0 rgba(0,0,0,.25); }
-  .lane .pips { position: absolute; right: 18px; bottom: 16px; display: flex; gap: 8px; }
-  .lane .pip { width: 20px; height: 20px; border-radius: 50%; background: #fff; }
-  .lane .pip.off { background: rgba(255,255,255,.25); }
+  /* swim: a three-lane race */
+  .pool { position: relative; margin-top: 12px; width: 930px; border-radius: 14px; overflow: hidden;
+          background: linear-gradient(180deg, #1c9be6, #0f6fb3); }
+  .plane { position: relative; height: 52px; }
+  .plane svg { position: absolute; inset: 0; }
+  .plane .nm { position: absolute; left: 14px; top: 13px; font-weight: 900; font-size: 18px; color: #fff;
+               text-shadow: 0 2px 0 rgba(0,0,0,.25); }
+  .plane .sw { position: absolute; top: 6px; font-size: 34px; }
+  .finish { position: absolute; right: 0; top: 0; bottom: 0; width: 18px;
+            background: repeating-conic-gradient(#fff 0 25%, #08132e 0 50%) 0 0 / 12px 12px; }
+  .trophy { position: absolute; right: 30px; top: 4px; font-size: 34px; }
 
-  /* the ticket */
-  #ticket { left: 300px; top: 368px; width: 680px; height: 176px; display: flex; z-index: 3; }
-  #ticket .part { height: 100%; background: #fff8e6; color: var(--navy); box-shadow: 0 18px 40px rgba(0,0,0,.45); }
-  #tmain { flex: 1; border-radius: 18px 0 0 18px; padding: 20px 28px; border-right: 3px dashed #d9c89a; }
-  #tstub { width: 190px; border-radius: 0 18px 18px 0; padding: 18px; position: relative;
+  /* book: split-flap board + ticket */
+  .board { display: inline-flex; gap: 3px; margin-top: 8px; }
+  .board i { width: 24px; height: 36px; border-radius: 5px; background: #111d40; color: var(--gold); font-style: normal;
+             font: 800 24px/36px "JetBrains Mono", monospace; text-align: center; position: relative; }
+  .board i::after { content: ""; position: absolute; left: 0; right: 0; top: 17px; height: 2px; background: #050b1f; }
+  #ticket { left: 300px; top: 410px; width: 680px; height: 168px; display: flex; }
+  #ticket .part { height: 100%; background: var(--cream); color: var(--navy); box-shadow: 0 18px 40px rgba(0,0,0,.45); }
+  #tmain { flex: 1; border-radius: 18px 0 0 18px; padding: 18px 28px; border-right: 3px dashed #d9c89a; }
+  #tstub { width: 190px; border-radius: 0 18px 18px 0; padding: 16px; position: relative;
            display: flex; flex-direction: column; justify-content: space-between; align-items: center; }
   #tmain .k { font-weight: 900; font-size: 16px; letter-spacing: 3px; color: var(--deep); }
   #tmain .big { font-weight: 900; font-size: 54px; line-height: 1.1; }
   #tmain .row { display: flex; gap: 26px; font-family: "JetBrains Mono", monospace; font-weight: 800; font-size: 20px; color: #3a4a70; }
-  .barcode { width: 150px; height: 64px;
+  .barcode { width: 150px; height: 62px;
              background: repeating-linear-gradient(90deg, #08132e 0 3px, transparent 3px 5px, #08132e 5px 6px, transparent 6px 10px, #08132e 10px 14px, transparent 14px 16px); }
   .tid { font-family: "JetBrains Mono", monospace; font-weight: 700; font-size: 13px; color: #6b7a9e; }
-  #conf { position: absolute; left: 12px; right: 12px; top: 56px; text-align: center; font-weight: 900;
+  #conf { position: absolute; left: 12px; right: 12px; top: 52px; text-align: center; font-weight: 900;
           font-size: 19px; letter-spacing: 1px; white-space: nowrap; color: var(--green); border: 5px solid var(--green);
           border-radius: 12px; background: rgba(255, 248, 230, .9); padding: 2px 0; }
-  .freed { display: inline-flex; align-items: center; gap: 14px; margin-top: 12px; font-family: "Nunito", sans-serif;
-           font-weight: 900; font-size: 24px; white-space: normal; }
-  .freed .c { display: inline-block; width: 44px; height: 34px; border-radius: 8px; }
+  .freed { display: inline-flex; align-items: center; gap: 16px; margin-top: 12px; font-weight: 900; font-size: 24px; }
+  .freed .strip { width: 300px; }
 
-  /* the scoreboard */
-  #score { left: 0; right: 0; top: 604px; display: flex; justify-content: center; align-items: center; gap: 12px;
-           font-weight: 900; font-size: 18px; letter-spacing: 2px; color: var(--muted); }
-  #score .sf { width: 34px; height: 40px; border-radius: 7px; background: #16244d; color: var(--gold);
-               font: 800 26px/40px "JetBrains Mono", monospace; text-align: center; letter-spacing: 0;
-               box-shadow: 0 3px 0 rgba(0,0,0,.35); }
+  /* HUD: scoreboard, the website, viewfinder */
+  #score { left: 22px; top: 22px; display: flex; align-items: center; gap: 10px; padding: 8px 14px; border-radius: 12px;
+           background: rgba(8, 19, 46, .85); border: 1.5px solid #2a4380; font-weight: 900; font-size: 15px;
+           letter-spacing: 2px; color: var(--muted); }
+  #score .live { color: var(--coral); font-size: 12px; }
+  #score .sf { width: 30px; height: 36px; border-radius: 6px; background: #16244d; color: var(--gold);
+               font: 800 24px/36px "JetBrains Mono", monospace; text-align: center; letter-spacing: 0; }
   #score .you { color: var(--white); }
-  #flash { inset: 0; background: #fff; z-index: 9; }
-  #top { z-index: 8; pointer-events: none; }
+  #web { left: 24px; top: 552px; width: 250px; height: 150px; border-radius: 12px; overflow: hidden; background: #e9eef8;
+         color: #3a4a70; box-shadow: 0 14px 30px rgba(0,0,0,.5); transform-origin: 30% 100%; }
+  #web .wbar { height: 28px; background: #cfd8ea; display: flex; align-items: center; gap: 6px; padding: 0 10px; }
+  #web .wbar i { width: 9px; height: 9px; border-radius: 50%; background: #9aa8c4; }
+  #web .wbar span { margin-left: 6px; flex: 1; font: 700 11px "JetBrains Mono", monospace; background: #fff;
+                    border-radius: 6px; padding: 2px 8px; color: #6b7a9e; }
+  #web .wbody { display: flex; align-items: center; gap: 12px; padding: 16px 14px; }
+  #web .wtxt { flex: 1; font-weight: 900; font-size: 16px; }
+  #web .wprog { margin-top: 8px; height: 8px; border-radius: 4px; background: #cfd8ea; overflow: hidden; }
+  #web .wprog i { display: block; height: 100%; background: #9aa8c4; }
+  #web .wface { font-size: 34px; }
+  #vf { inset: 20px; }
+  #vf .br { position: absolute; width: 46px; height: 46px; border: 0 solid #fff; }
+  #vf .rec { position: absolute; right: 64px; top: 10px; font: 800 18px "JetBrains Mono", monospace; color: #fff; }
+  #vf .rec b { color: var(--coral); }
+  #vf .tc { position: absolute; right: 64px; bottom: 10px; font: 700 16px "JetBrains Mono", monospace; color: #fff; }
+  .shutter { left: 0; right: 0; height: 360px; background: #02060f; }
+  #shT { top: 0; transform-origin: 50% 0; }
+  #shB { bottom: 0; transform-origin: 50% 100%; }
+  #flash { inset: 0; background: #fff; }
 </style>
 </head>
 <body>
 <div id="stage">
-  <canvas id="fx" width="1280" height="720"></canvas>
-  <svg id="court" viewBox="0 0 1280 720"></svg>
-
-  <div id="title" class="abs card">
-    <img id="logo" class="logo" src="../logo.svg" width="160" height="160" alt="">
-    <div class="word">team<span class="bath">bath</span></div>
-    <div id="tag">Team Bath bookings, <b>in Python.</b></div>
-  </div>
-  <div id="shadow" class="abs"></div>
-
-  <div id="label" class="abs"></div>
-  <div id="term" class="abs">
-    <div class="bar">
-      <i class="dot" style="background:#ff5f57"></i><i class="dot" style="background:#febc2e"></i>
-      <i class="dot" style="background:#28c840"></i><div class="ttl">python3 — teambath</div>
+  <div id="world">
+    <svg id="court" width="1280" height="720" viewBox="0 0 1280 720"></svg>
+    <canvas id="dark" width="1280" height="720"></canvas>
+    <div id="term" class="abs">
+      <div class="bar">
+        <i class="dot" style="background:#ff5f57"></i><i class="dot" style="background:#febc2e"></i>
+        <i class="dot" style="background:#28c840"></i><div class="ttl">python3 — teambath</div>
+      </div>
+      <div id="body"></div>
     </div>
-    <div id="body"></div>
-  </div>
-  <div id="ticket" class="abs">
-    <div id="tmain" class="part">
-      <div class="k">SQUASH STUDENTS · TEAM BATH</div>
-      <div class="big">Court 1</div>
-      <div class="row"><span>THU 01 OCT</span><span>07:00</span><span>45 MIN</span></div>
-    </div>
-    <div id="tstub" class="part">
-      <div class="barcode"></div>
-      <div class="tid">SQUASHFREE2</div>
-      <div id="conf">✓ CONFIRMED</div>
+    <div id="ticket" class="abs">
+      <div id="tmain" class="part">
+        <div class="k">SQUASH STUDENTS · TEAM BATH</div>
+        <div class="big">Court 1</div>
+        <div class="row"><span>THU 01 OCT</span><span>07:00</span><span>45 MIN</span></div>
+      </div>
+      <div id="tstub" class="part">
+        <div class="barcode"></div>
+        <div class="tid">SQUASHFREE2</div>
+        <div id="conf">✓ CONFIRMED</div>
+      </div>
     </div>
   </div>
-  <div id="score" class="abs">
-    <span class="you">YOU</span><span class="sf" id="points">0</span><span>:</span><span class="sf">0</span><span>THE WEBSITE</span>
-  </div>
 
-  <div id="end" class="abs card">
-    <img id="endlogo" class="logo" src="../logo.svg" width="140" height="140" alt="">
-    <div class="word">team<span class="bath">bath</span></div>
-    <div class="url">pip install git+https://github.com/gwerneckp/teambath</div>
-    <div class="sub">Made at the University of Bath 🎓</div>
+  <div id="hud">
+    <div id="title" class="abs card">
+      <img id="logo" class="logo" src="../logo.svg" width="160" height="160" alt="">
+      <div class="word">team<span class="bath">bath</span></div>
+      <div id="tag">Team Bath bookings, <b>in Python.</b></div>
+    </div>
+    <div id="label" class="abs"></div>
+    <div id="score" class="abs">
+      <span class="live">● LIVE</span><span class="you">YOU</span><span class="sf" id="points">0</span><span>:</span>
+      <span class="sf">0</span><span>THE WEBSITE</span>
+    </div>
+    <div id="web" class="abs">
+      <div class="wbar"><i></i><i></i><i></i><span>bookings.teambath.com</span></div>
+      <div class="wbody">
+        <svg id="spin" width="38" height="38" viewBox="0 0 40 40"><circle cx="20" cy="20" r="15" fill="none" stroke="#9aa8c4" stroke-width="5" stroke-linecap="round" stroke-dasharray="55 100"/></svg>
+        <div class="wtxt"><span id="wmsg">Loading…</span><div class="wprog"><i id="wfill"></i></div></div>
+        <span class="wface" id="wface">😓</span>
+      </div>
+    </div>
+    <div id="end" class="abs card">
+      <img id="endlogo" class="logo" src="../logo.svg" width="140" height="140" alt="">
+      <div class="word">team<span class="bath">bath</span></div>
+      <div class="url">pip install git+https://github.com/gwerneckp/teambath</div>
+      <div class="sub">Made at the University of Bath 🎓</div>
+    </div>
+    <div id="toast" class="abs">✓ Copied!</div>
+    <svg id="cursor" class="abs" width="30" height="40" viewBox="0 0 30 40">
+      <path d="M3 3 L3 32 L10.5 25.5 L15.5 37 L21 34.5 L16 23.5 L25.5 23.5 Z" fill="#fff" stroke="#08132e" stroke-width="2.5" stroke-linejoin="round"/>
+    </svg>
+    <canvas id="top" width="1280" height="720"></canvas>
+    <div id="vf" class="abs">
+      <div class="br" style="left:0;top:0;border-left-width:5px;border-top-width:5px"></div>
+      <div class="br" style="right:0;top:0;border-right-width:5px;border-top-width:5px"></div>
+      <div class="br" style="left:0;bottom:0;border-left-width:5px;border-bottom-width:5px"></div>
+      <div class="br" style="right:0;bottom:0;border-right-width:5px;border-bottom-width:5px"></div>
+      <div class="rec" id="rec"><b>●</b> REC</div>
+      <div class="tc">THU 01 OCT · 07:00:00</div>
+    </div>
+    <div id="shT" class="abs shutter"></div>
+    <div id="shB" class="abs shutter"></div>
+    <div id="flash" class="abs"></div>
   </div>
-  <div id="ball" class="abs"></div>
-  <canvas id="top" width="1280" height="720"></canvas>
-  <div id="flash" class="abs"></div>
 </div>
 
 <script>
@@ -189,339 +261,528 @@ const $ = (s) => document.querySelector(s);
 const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
 const seg = (t, a, b) => clamp((t - a) / (b - a));
 const lerp = (a, b, p) => a + (b - a) * p;
+const smooth = (p) => p * p * (3 - 2 * p);
 const outCubic = (p) => 1 - Math.pow(1 - p, 3);
 const inCubic = (p) => p * p * p;
+const inOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 const outBack = (p) => { const c = 1.9; return 1 + (c + 1) * Math.pow(p - 1, 3) + c * Math.pow(p - 1, 2); };
+const outBounce = (p) => {
+  const n = 7.5625, d = 2.75;
+  if (p < 1 / d) return n * p * p;
+  if (p < 2 / d) return n * (p -= 1.5 / d) * p + 0.75;
+  if (p < 2.5 / d) return n * (p -= 2.25 / d) * p + 0.9375;
+  return n * (p -= 2.625 / d) * p + 0.984375;
+};
 const bump = (p) => Math.sin(Math.PI * clamp(p));   // 0 -> 1 -> 0
+const decay = (dt, f = 25, k = 7) => (dt < 0 ? 0 : Math.exp(-k * dt) * Math.sin(dt * f));
 const set = (el, { x = 0, y = 0, s = 1, sy = 1, r = 0, o = 1 }) => {
   el.style.transform = `translate(${x}px, ${y}px) scale(${s}, ${s * sy}) rotate(${r}deg)`;
   el.style.opacity = o;
 };
-const type = (text, p) => text.slice(0, Math.round(text.length * clamp(p)));
-const line = (html, u, at) => (u >= at ? html : "");
-const caret = (u) => `<span class="caret" style="opacity:${Math.floor(u * 20) % 2 ? 0 : 1}"></span>`;
+const hash = (s) => [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) | 0, 7);
+const noise = (seed, i) => { const x = Math.sin(seed * 0.0137 + i * 12.9898) * 43758.5453; return x - Math.floor(x); };
+
+// ---------------------------------------------------------------- typing, like a person
+// Uneven keystrokes, little pauses after spaces and punctuation, and optionally one typo
+// ({at, wrong}): the wrong key, a beat, a backspace, then on.
+function keystrokes(text, typo) {
+  const seed = hash(text), states = [], weights = [];
+  for (let i = 1; i <= text.length; i++) {
+    if (typo && i === typo.at + 1) {
+      states.push(text.slice(0, typo.at) + typo.wrong); weights.push(1);
+      states.push(text.slice(0, typo.at)); weights.push(3.2);     // notice, then backspace
+    }
+    const prev = text[i - 2] || "";
+    states.push(text.slice(0, i));
+    weights.push((0.45 + 1.1 * noise(seed, i)) * (" ,(.=".includes(prev) ? 1.9 : 1));
+  }
+  const total = weights.reduce((a, b) => a + b, 0);
+  let acc = 0;
+  return states.map((s, i) => ({ s, at: (acc += weights[i]) / total }));
+}
+const typedCache = new Map();
+const typed = (text, p, typo) => {
+  if (p <= 0) return "";
+  const key = text + (typo ? `#${typo.at}` : "");
+  if (!typedCache.has(key)) typedCache.set(key, keystrokes(text, typo));
+  const ks = typedCache.get(key);
+  return (ks.find((k) => k.at >= p) || ks[ks.length - 1]).s;
+};
+const esc = (s) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const caret = (u) => `<span class="caret" style="opacity:${Math.floor(u * 22) % 2 ? 0 : 1}"></span>`;
 // A typed Python prompt. `code` is plain text; `html` is the same code with syntax colours.
-const py = (code, html, u, a, b) => {
+const py = (code, html, u, a, b, typo) => {
   if (u < a) return "";
   const done = u >= b;
-  return `<span class="ps">&gt;&gt;&gt;</span> ${done ? html : type(code, seg(u, a, b))}${done ? "" : caret(u)}\n`;
+  return `<span class="ps">&gt;&gt;&gt;</span> ${done ? html : esc(typed(code, seg(u, a, b), typo))}${done ? "" : caret(u)}\n`;
 };
-const cont = (html, u, at) => line(`<span class="ps">...</span> ${html}\n`, u, at);
-const popIn = (html, u, a, b) => u < a ? "" :
-  `<span class="pop" style="transform:scale(${outBack(seg(u, a, b))})">${html}</span>`;
+const cont = (html, u, at) => (u >= at ? `<span class="ps">...</span> ${html}\n` : "");
+const line = (html, u, at) => (u >= at ? html : "");
+const popIn = (html, u, a, b) => (u < a ? "" : `<span class="pop" style="transform:scale(${outBack(seg(u, a, b))})">${html}</span>`);
+const courtLines = `<i class="ln" style="left:38%;top:0;bottom:0;width:3px"></i><i class="ln" style="left:38%;right:0;top:15px;height:2px"></i>`;
 
-// Real data: the Squash Students grid for Thu 1 Oct 2026 (tests/fixtures/activity_grid.html).
+// Real data: the Squash Students grid for Thu 1 Oct 2026 (tests/fixtures/activity_grid.html),
+// and the 18:00 swim lanes from the live site.
 const GRID = ["11111010100111010000", "11111110011110110000",
               "11111110011111110000", "11111110110111100000"];
+const WEEK = [["THU", 51], ["FRI", 42], ["SAT", 50], ["SUN", 33], ["MON", 51]];
+const LANES = [["fast", 4, 1.0], ["med", 12, 0.8], ["slow", 4, 0.62]];
+const CARDS = [
+  { nm: "Squash P.A.Y.G", id: "SQUASHPAY1", pr: "pay as you go" },
+  { nm: "Squash Staff", id: "SQUASHSTAFF", pr: "staff only" },
+  { nm: "Squash Students", id: "SQUASHFREE2", pr: "students" },
+];
 
 // ---------------------------------------------------------------- the demos
 // len: seconds on screen (content finishes early, then holds). body(u): terminal HTML, u in [0, 1].
 const demos = [
-  { len: 1.8, label: 'Log in with your <span class="hl">PIN</span>', body: (u) => {
+  { len: 2.6, label: 'Log in with your <span class="hl">PIN</span>', body: (u) => {
     let s = py("from teambath import TeamBath",
-               `<span class="kw">from</span> teambath <span class="kw">import</span> TeamBath`, u, 0.02, 0.18);
+               `<span class="kw">from</span> teambath <span class="kw">import</span> TeamBath`, u, 0.04, 0.2);
     s += py('tb = TeamBath("abc123@bath.ac.uk", "1234")',
-            `tb = <span class="fn">TeamBath</span>(<span class="str">"abc123@bath.ac.uk"</span>, <span class="str">"1234"</span>)`, u, 0.2, 0.46);
-    s += py("tb.login()", `tb.<span class="fn">login</span>()`, u, 0.5, 0.6);
+            `tb = <span class="fn">TeamBath</span>(<span class="str">"abc123@bath.ac.uk"</span>, <span class="str">"1234"</span>)`, u, 0.23, 0.5);
+    s += py("tb.login()", `tb.<span class="fn">login</span>()`, u, 0.53, 0.6);
     if (u >= 0.62) {
       const open = u >= 0.72;
-      s += `<span class="lock" style="transform:scale(${outBack(seg(u, 0.62, 0.72)) * (1 + 0.08 * bump(seg(u, 0.72, 0.8)))})">` +
+      s += `<span class="lock n" style="transform:scale(${outBack(seg(u, 0.62, 0.72)) * (1 + 0.08 * bump(seg(u, 0.72, 0.8)))})">` +
            `<span>${open ? "🔓" : "🔒"}</span><span class="${open ? "ok" : "dim"}">${open ? "you're in" : "logging in…"}</span></span>`;
     }
     return s;
   }},
-  { len: 1.9, label: 'What\'s on <span class="hl">tomorrow?</span>', body: (u) => {
-    let s = py('tb.search(tomorrow, type="squash")',
-               `tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"squash"</span>)`, u, 0.04, 0.3);
-    const rows = [
-      `[Activity(id=<span class="str">'SQUASHPAY1'</span>,  name=<span class="str">'Squash P.A.Y.G'</span>, ...),`,
-      ` Activity(id=<span class="str">'SQUASHSTAFF'</span>, name=<span class="str">'Squash Staff'</span>, ...),`,
-      ` Activity(id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>, ...)]`,
-    ];
-    rows.forEach((r, i) => {
-      const p = outCubic(seg(u, 0.34 + i * 0.07, 0.46 + i * 0.07));
-      if (u >= 0.34 + i * 0.07) s += `<span style="display:inline-block;transform:translateX(${(1 - p) * 40}px);opacity:${p}">${r}</span>`;
-      if (i === 2) s += "  " + popIn(`<span class="tagx" style="box-shadow:0 0 ${18 * bump((u * 3) % 1)}px #3ddc84">free</span>`, u, 0.58, 0.68);
-      s += "\n";
-    });
-    return s;
+  { len: 2.4, label: 'What\'s on <span class="hl">tomorrow?</span>', body: (u) => {
+    const s = py('tb.search(tomorrow, type="squash")',
+                 `tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"squash"</span>)`, u, 0.04, 0.3,
+                 { at: 5, wrong: "r" });
+    if (u < 0.32) return s;
+    // three trading cards are dealt, fan out, and the Students one flips to show it's free
+    const spread = outCubic(seg(u, 0.5, 0.62)), flip = outBack(seg(u, 0.66, 0.8));
+    const cards = CARDS.map((c, i) => {
+      const deal = outBack(seg(u, 0.32 + i * 0.05, 0.46 + i * 0.05));
+      const glow = i === 2 && u > 0.8 ? 1 + 0.03 * bump((u * 3) % 1) : 1;
+      return `<div class="tcard n" style="transform:translate(${(i - 1) * 222 * spread}px, ${260 * (1 - deal)}px) rotate(${(i - 1) * 7 * spread}deg) rotateY(${i === 2 ? 180 * flip : 0}deg) scale(${glow})">` +
+        `<div class="face front"><span class="k">SQUASH</span><span class="em">🎾</span><span class="nm">${c.nm}</span><span class="pr">${c.pr}</span><span class="id">${c.id}</span></div>` +
+        `<div class="face back"><span class="k">SPORTS PASS</span><span class="big">FREE</span><span class="nm">for students</span><span class="id">${c.id}</span></div></div>`;
+    }).join("");
+    return s + `<div class="deck">${cards}</div>`;
   }},
-  { len: 3.0, label: 'Every court. <span class="hl">Every slot.</span>', body: (u) => {
+  { len: 3.4, label: 'Every court. <span class="hl">Every slot.</span>', body: (u) => {
     let s = py('slots = tb.availability("SQUASHFREE2", tomorrow)',
                `slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, tomorrow)`, u, 0.03, 0.2);
     if (u < 0.22) return s;
-    // a gold scan line sweeps across the times, lighting up each court as it passes
-    const scan = seg(u, 0.23, 0.52);
-    let cells = "";
+    // four little courts from above; every free slot is a ball bouncing into place
+    let rows = "";
     GRID.forEach((row, r) => {
-      cells += `<div class="ct">Court ${r + 1}</div>`;
+      let balls = "";
       [...row].forEach((v, c) => {
-        const p = seg(scan * 21 - c - r * 0.25, 0, 1);
-        cells += `<div class="c ${v === "1" ? "free" : "taken"}" style="transform:scale(${0.2 + 0.8 * outBack(p)});opacity:${clamp(p * 2)}"></div>`;
+        if (v !== "1") return;
+        const p = seg(u, 0.24 + c * 0.014 + r * 0.02, 0.36 + c * 0.014 + r * 0.02);
+        if (p <= 0) return;
+        const h = 70 * (1 - outBounce(p)), x = 11 + c * 42;
+        balls += `<i class="bsh" style="left:${x + 1}px;top:22px;transform:scale(${1 - h / 100})"></i>` +
+                 `<i class="ball" style="left:${x}px;top:${6 - h}px"></i>`;
       });
+      rows += `<div class="crow"><span class="ct">Court ${r + 1}</span><div class="strip">${courtLines}${balls}</div></div>`;
     });
-    const scanX = 101 + scan * 840;
-    s += `<div class="gridwrap"><div class="grid">${cells}</div>` +
-         (scan > 0 && scan < 1 ? `<div class="scan" style="left:${scanX}px"></div>` : "") +
-         (u >= 0.84 ? `<div class="target" style="transform:scale(${outBack(seg(u, 0.84, 0.9)) * (1 + 0.1 * bump((u * 5) % 1))})"><b>slots[0]</b></div>` : "") +
-         `</div>\n`;
+    const target = u >= 0.84 ? `<div class="target" style="left:100px;top:2px;transform:scale(${outBack(seg(u, 0.84, 0.9)) * (1 + 0.1 * bump((u * 4) % 1))})"><b>slots[0]</b></div>` : "";
+    const axis = [[0, "07:00"], [4, "10:00"], [8, "13:00"], [12, "16:00"], [16, "19:00"], [19, "21:15"]]
+      .map(([c, x]) => `<span style="left:${21 + c * 42}px">${x}</span>`).join("");
+    s += `<div class="courts n">${rows}${target}<div class="axis">${axis}</div></div>`;
     s += py("sum(s.available for s in slots)",
-            `<span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots)`, u, 0.56, 0.66);
-    if (u >= 0.68) {
+            `<span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots)`, u, 0.58, 0.67);
+    if (u >= 0.69) {
       // a split-flap board spins through numbers and lands on 51
-      const p = seg(u, 0.68, 0.82), n = Math.round(51 * outCubic(p)), spin = (p * 22) % 1;
+      const p = seg(u, 0.69, 0.82), n = Math.round(51 * outCubic(p)), spin = (p * 22) % 1;
       const flaps = String(n).padStart(2, "0").split("").map((dgt) =>
         `<span class="flap" style="transform:scaleY(${p < 1 ? 1 - 0.55 * Math.sin(Math.PI * spin) : 1})">${dgt}</span>`).join("");
-      s += `<span class="flaps">${flaps}</span><span class="flabel">free slots</span>`;
+      s += `<span class="flaps">${flaps}</span><span class="flabel n">free slots</span>`;
     }
     return s;
   }},
-  { len: 2.4, label: 'The whole week in <span class="hl">one loop</span>', body: (u) => {
+  { len: 2.8, label: 'The whole week in <span class="hl">one loop</span>', body: (u) => {
     let s = py("for d in week:", `<span class="kw">for</span> d <span class="kw">in</span> week:`, u, 0.03, 0.1);
     s += cont(`    slots = tb.<span class="fn">availability</span>(<span class="str">"SQUASHFREE2"</span>, d)`, u, 0.13);
     s += cont(`    <span class="fn">print</span>(<span class="str">f"{d:%a}"</span>, <span class="fn">sum</span>(s.available <span class="kw">for</span> s <span class="kw">in</span> slots))`, u, 0.18);
-    [["Thu", 51], ["Fri", 42], ["Sat", 50], ["Sun", 33], ["Mon", 51]].forEach(([d, n], i) => {
-      if (u < 0.26 + i * 0.07) return;
-      const p = outCubic(seg(u, 0.26 + i * 0.07, 0.46 + i * 0.07));
-      const star = n === 51 ? popIn("⭐", u, 0.7 + i * 0.02, 0.8 + i * 0.02) : "";
-      s += `<div class="barrow"><span class="d">${d}</span><span class="b" style="width:${n * 12 * p}px"></span><span>${Math.round(n * p)}</span>${star}</div>`;
-    });
+    if (u < 0.26) return s;
+    // tear-off calendar pages flip down, one per day
+    const pages = WEEK.map(([d, n], i) => {
+      const p = seg(u, 0.26 + i * 0.08, 0.4 + i * 0.08);
+      const star = n === 51 && u >= 0.72 ? `<span class="star" style="transform:scale(${outBack(seg(u, 0.72 + i * 0.02, 0.8 + i * 0.02))})">⭐</span>` : "";
+      return `<div class="page n" style="transform:rotateX(${-100 * (1 - outBack(p))}deg);opacity:${clamp(p * 4)}">` +
+             `<i class="ring" style="left:16px"></i><i class="ring" style="right:16px"></i>` +
+             `<div class="hd">${d}</div><div class="num">${Math.round(n * outCubic(seg(u, 0.3 + i * 0.08, 0.48 + i * 0.08)))}</div>` +
+             `<div class="fr">free slots</div>${star}</div>`;
+    }).join("");
+    return s + `<div class="cal">${pages}</div>`;
+  }},
+  { len: 2.8, fs: 20, label: 'Swim spaces, <span class="hl">lane by lane</span>', body: (u) => {
+    let s = py('swims = tb.search(tomorrow, type="swimming")',
+               `swims = tb.<span class="fn">search</span>(tomorrow, type=<span class="str">"swimming"</span>)`, u, 0.03, 0.18);
+    s += py('{a.name.split("/")[-1]: tb.availability(a, tomorrow)[0].spaces',
+            `{a.name.<span class="fn">split</span>(<span class="str">"/"</span>)[-<span class="gold">1</span>]: tb.<span class="fn">availability</span>(a, tomorrow)[<span class="gold">0</span>].spaces`, u, 0.2, 0.36);
+    s += cont(` <span class="kw">for</span> a <span class="kw">in</span> swims <span class="kw">if</span> <span class="str">"18.00"</span> <span class="kw">in</span> a.name}`, u, 0.38);
+    s += line(`{<span class="str">'fast'</span>: <span class="gold">4</span>, <span class="str">'med'</span>: <span class="gold">12</span>, <span class="str">'slow'</span>: <span class="gold">4</span>}`, u, 0.42);
+    if (u < 0.46) return s;
+    // the three 18:00 lanes race; the fast lane touches the wall first
+    const slide = outCubic(seg(u, 0.46, 0.56)), race = seg(u, 0.54, 0.88), tt = u * 2.8;
+    const lanes = LANES.map(([nm, sp, speed], i) => {
+      const x = 170 + 700 * clamp(race * speed);
+      let d = "M0 26";
+      for (let xx = 0; xx <= 930; xx += 20) d += ` L${xx} ${26 + Math.sin(xx / 34 + tt * 6 + i) * 3}`;
+      let art = `<path d="${d}" stroke="rgba(255,255,255,.2)" stroke-width="3" fill="none"/>`;
+      for (let k = 0; k < 6; k++) {
+        const ph = (tt * 1.6 + k / 6 + i * 0.33) % 1;
+        art += `<circle cx="${x - 8 - ph * 46}" cy="${34 - ph * 22}" r="${2 + ph * 3}" fill="none" stroke="rgba(255,255,255,${0.8 * (1 - ph)})" stroke-width="2"/>`;
+      }
+      if (i < 2) art += [...Array(47)].map((_, k) => `<circle cx="${k * 20 + 10}" cy="51" r="4" fill="${k % 6 < 3 ? "#ff6b6b" : "#fff"}"/>`).join("");
+      const trophy = i === 0 ? popIn('<span class="trophy">🏆</span>', u, 0.86, 0.94) : "";
+      return `<div class="plane"><svg viewBox="0 0 930 52">${art}</svg><span class="nm">${nm} · ${sp} spaces</span>` +
+             `<span class="sw" style="left:${x}px">🏊</span>${trophy}</div>`;
+    }).join("");
+    return s + `<div class="pool n" style="transform:translateX(${(1 - slide) * -980}px)">${lanes}<i class="finish"></i></div>`;
+  }},
+  { len: 3.0, label: 'Book it. <span class="hl">One line.</span>', ticketIn: 0.4, confirm: 0.56, body: (u) => {
+    let s = py("booking = tb.book(slots[0])", `booking = tb.<span class="fn">book</span>(slots[<span class="gold">0</span>])`, u, 0.03, 0.18);
+    s += py("booking", "booking", u, 0.2, 0.23);
+    s += line(`Booking(activity_id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>,\n        start=datetime.datetime(2026, 10, 1, 7, 0), ...)\n`, u, 0.25);
+    if (u < 0.28) return s;
+    // a departures board flips through letters to announce it
+    const msg = "COURT 1 · 07:00 · BOOKED", glyphs = "ABCDEFGHKMNOPRSTUVWXYZ0123456789";
+    const cells = [...msg].map((ch, i) => {
+      const p = seg(u, 0.28 + i * 0.008, 0.36 + i * 0.008), tick = Math.floor(u * 90);
+      const shown = p >= 1 || ch === " " ? ch : glyphs[Math.floor(noise(i, tick) * glyphs.length)];
+      return `<i style="transform:scaleY(${p < 1 ? 0.6 + 0.4 * noise(i + 3, tick) : 1});${p >= 1 && i > 17 ? "color:var(--green)" : ""}">${shown}</i>`;
+    }).join("");
+    return s + `<div class="board n">${cells}</div>`;
+  }},
+  { len: 2.5, label: 'Plans changed? <span class="hl">No problem.</span>', tear: 0.26, body: (u) => {
+    let s = py("tb.cancel(booking)", `tb.<span class="fn">cancel</span>(booking)`, u, 0.04, 0.2);
+    s += py("tb.bookings()", `tb.<span class="fn">bookings</span>()`, u, 0.5, 0.58);
+    s += line(`[]\n`, u, 0.61);
+    if (u >= 0.66) {   // the slot comes back: its ball bounces back onto the court
+      const h = 60 * (1 - outBounce(seg(u, 0.68, 0.86)));
+      s += `<span class="freed n" style="transform:scale(${outBack(seg(u, 0.66, 0.74))})"><span class="strip">${courtLines}` +
+           `<i class="bsh" style="left:13px;top:22px"></i><i class="ball" style="left:12px;top:${6 - h}px"></i></span>Court 1 · 07:00 is free again</span>`;
+    }
     return s;
   }},
-  { len: 2.1, label: 'Swim spaces, <span class="hl">live</span>', body: (u) => {
-    let s = py('[swim] = tb.availability("SFIT50MR18897", tomorrow)',
-               `[swim] = tb.<span class="fn">availability</span>(<span class="str">"SFIT50MR18897"</span>, tomorrow)`, u, 0.03, 0.24);
-    s += py("swim.start, swim.spaces", `swim.start, swim.spaces`, u, 0.27, 0.36);
-    s += line(`(datetime.datetime(2026, 10, 1, 18, 0), <span class="gold">5</span>)`, u, 0.39);
-    if (u < 0.43) return s;
-    // a pool lane slides in: rippling water, a lane rope, one swimmer trailing bubbles, five free spaces
-    const lp = outCubic(seg(u, 0.43, 0.56)), tt = u * 2.1, sx = 40 + 420 * seg(u, 0.46, 1);
-    let art = "";
-    for (let row = 0; row < 3; row++) {
-      let d = `M0 ${26 + row * 30}`;
-      for (let x = 0; x <= 900; x += 20) d += ` L${x} ${26 + row * 30 + Math.sin(x / 38 + tt * 6 + row) * 4}`;
-      art += `<path d="${d}" stroke="rgba(255,255,255,.22)" stroke-width="3" fill="none"/>`;
-    }
-    for (let i = 0; i < 9; i++) {
-      const ph = (tt * 1.4 + i / 9) % 1;
-      art += `<circle cx="${sx + 6 - ph * 50 - i * 3}" cy="${78 - ph * 64}" r="${2.5 + ph * 3.5}" fill="none" stroke="rgba(255,255,255,${0.8 * (1 - ph)})" stroke-width="2"/>`;
-    }
-    art += [...Array(45)].map((_, i) =>
-      `<circle cx="${i * 20 + 10}" cy="102" r="5" fill="${i % 6 < 3 ? "#ff6b6b" : "#fff"}"/>`).join("");
-    const pips = [0, 1, 2, 3, 4, 5].map((i) =>
-      `<i class="pip ${i < 5 ? "" : "off"}" style="transform:scale(${outBack(seg(u, 0.56 + i * 0.03, 0.64 + i * 0.03))})"></i>`).join("");
-    s += `<div class="lane" style="transform:translateX(${(1 - lp) * -960}px)"><svg viewBox="0 0 900 108">${art}</svg>` +
-         `<span class="swimmer" style="left:${sx}px">🏊</span>` +
-         `<span class="left">Swimfit 18:00 · 5 spaces</span><span class="pips">${pips}</span></div>`;
-    return s;
-  }},
-  { len: 2.5, label: 'Book it. <span class="hl">One line.</span>', ticketIn: 0.3, confirm: 0.48, body: (u) =>
-      py("booking = tb.book(slots[0])", `booking = tb.<span class="fn">book</span>(slots[<span class="gold">0</span>])`, u, 0.03, 0.2) +
-      py("booking", "booking", u, 0.22, 0.25) +
-      line(`Booking(activity_id=<span class="str">'SQUASHFREE2'</span>, name=<span class="str">'Squash Students'</span>,\n        start=datetime.datetime(2026, 10, 1, 7, 0), ...)\n`, u, 0.27),
-  },
-  { len: 2.3, label: 'Plans changed? <span class="hl">No problem.</span>', tear: 0.24, body: (u) =>
-      py("tb.cancel(booking)", `tb.<span class="fn">cancel</span>(booking)`, u, 0.03, 0.18) +
-      py("tb.bookings()", `tb.<span class="fn">bookings</span>()`, u, 0.5, 0.58) +
-      line(`[]\n`, u, 0.61) +
-      (u >= 0.66 ? `<span class="freed" style="transform:scale(${outBack(seg(u, 0.66, 0.76))})">` +
-        `<span class="c free" style="box-shadow:0 0 ${10 + 16 * bump((u * 3) % 1)}px #3ddc84"></span>` +
-        `Court 1 · 07:00 is free again</span>` : ""),
-  },
 ];
 
-const DEMO_START = 1.6;
+const DEMO_START = 2.2;
 let acc = DEMO_START;
 demos.forEach((d) => { d.a = acc; acc += d.len; d.b = acc; });
-const END_START = acc, END_HIT = END_START + 0.4;
-const DURATION = END_START + 2.2;
-const BOOK = demos[5], CANCEL = demos[6];
+const [LOGIN, SEARCH, GRIDS, WEEKS, SWIM, BOOK, CANCEL] = demos;
+const END_START = acc, END_HIT = END_START + 0.6;
+const DURATION = END_START + 3.3;
 const CONFIRM_T = BOOK.a + BOOK.len * BOOK.confirm;
+const LAMPS = [0.2, 0.4, 0.6, 0.8].map((f) => LOGIN.a + LOGIN.len * f);
+const LAMP_X = [400, 610, 820, 1030];
+// Between scenes the ball flies in from the camera, hits the wall (the terminal) and comes back.
+const IN = 0.5, OUT = 0.5;
+const HITS = demos.slice(1).map((d, i) => ({ t: d.a, dir: i % 2 ? -1 : 1,
+  x: [880, 420, 760, 520, 900, 450][i], y: [300, 380, 280, 420, 330, 300][i] }));
 
-// ---------------------------------------------------------------- background
-// A squash court from above, drawn as a line sketch.
-const court = (() => {
-  const svg = $("#court");
-  svg.innerHTML = `<g fill="none" stroke="#7fb2ff" stroke-linecap="round" stroke-width="2.5">
-    <path d="M150 40 H1130 V690 H150 Z"/><path d="M150 400 H1130"/><path d="M640 400 V690"/>
-    <path d="M150 560 H310 V400"/><path d="M1130 560 H970 V400"/></g>`;
-  const paths = [...svg.querySelectorAll("path")];
-  paths.forEach((p) => { p.dataset.len = p.getTotalLength(); p.style.strokeDasharray = p.dataset.len; });
-  return (p, o) => {
-    paths.forEach((path, k) => { path.style.strokeDashoffset = path.dataset.len * (1 - outCubic(seg(p, k * .1, 1))); });
-    svg.style.opacity = o;
-  };
-})();
-
-// Floodlight + confetti on the back canvas, impact dust on the top one.
-// Deterministic pseudo-random so every render is identical.
-const fx = (() => {
-  const back = $("#fx").getContext("2d"), top = $("#top").getContext("2d");
-  let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const colors = ["#f2b632", "#3ddc84", "#ff6b6b", "#a99bff", "#7fb2ff", "#ffe29a"];
-  const bits = Array.from({ length: 110 }, () => ({
-    a: rnd() * 6.28, v: 380 + rnd() * 520, sw: 20 + rnd() * 40,
-    ph: rnd() * 6.28, w: 7 + rnd() * 9, h: 3 + rnd() * 5, c: colors[Math.floor(rnd() * 6)], spin: 3 + rnd() * 8,
-  }));
-  const dust = Array.from({ length: 14 }, () => ({ a: Math.PI + rnd() * Math.PI, v: 60 + rnd() * 110, r: 3 + rnd() * 4 }));
-  const confetti = (t, [t0, x0, y0, o]) => {
-    const dt = t - t0;
-    if (dt < 0 || o <= 0) return;
-    back.globalAlpha = o;
-    for (const b of bits) {
-      const x = x0 + Math.cos(b.a) * b.v * dt * Math.exp(-dt * 1.6) + Math.sin(dt * 4 + b.ph) * b.sw * dt;
-      const y = y0 + Math.sin(b.a) * b.v * dt * Math.exp(-dt * 1.6) + 520 * dt * dt;
-      if (y > 740) continue;
-      back.save(); back.translate(x, y); back.rotate(dt * b.spin + b.ph);
-      back.fillStyle = b.c; back.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); back.restore();
-    }
-    back.globalAlpha = 1;
-  };
-  return (t, lightO, bursts, puff) => {
-    back.clearRect(0, 0, 1280, 720);
-    top.clearRect(0, 0, 1280, 720);
-    if (lightO > 0) {   // a floodlight drifting slowly over the court
-      const lx = 640 + 260 * Math.sin(t * 0.4), ly = 250 + 60 * Math.cos(t * 0.55);
-      const g = back.createRadialGradient(lx, ly, 0, lx, ly, 520);
-      g.addColorStop(0, `rgba(160, 200, 255, ${0.16 * lightO})`); g.addColorStop(1, "rgba(160, 200, 255, 0)");
-      back.fillStyle = g; back.fillRect(0, 0, 1280, 720);
-    }
-    bursts.forEach((b) => confetti(t, b));
-    if (puff) {   // chalk dust kicked up where the ball hits the terminal
-      const [x0, y0, p] = puff;
-      for (const d of dust) {
-        top.globalAlpha = 0.7 * (1 - p);
-        top.beginPath();
-        top.arc(x0 + Math.cos(d.a) * d.v * outCubic(p), y0 + Math.sin(d.a) * d.v * 0.5 * outCubic(p), d.r * (1 - p * 0.5), 0, 6.29);
-        top.fillStyle = "#dfe8ff"; top.fill();
-      }
-      top.globalAlpha = 1;
-    }
-  };
-})();
+// ---------------------------------------------------------------- the camera
+// Keyframes [time, zoom, focus x, focus y], eased between; plus a jolt on every hit and lamp.
+const CAM = [
+  [0, 1, 640, 360], [DEMO_START, 1, 640, 360], [LOGIN.b, 1.04, 640, 330],
+  [SEARCH.a + 0.5, 1, 640, 380], [GRIDS.a + 0.8, 1, 640, 420], [GRIDS.b - 0.3, 1.1, 640, 420],
+  [WEEKS.a + 0.5, 0.97, 640, 370], [SWIM.a + 0.5, 1, 640, 400], [SWIM.b - 0.1, 1.05, 700, 430],
+  [BOOK.a + 0.5, 1, 640, 380], [CONFIRM_T - 0.04, 1.02, 640, 440], [CONFIRM_T + 0.14, 1.1, 640, 470],
+  [BOOK.b - 0.1, 1.03, 640, 400], [CANCEL.b, 1, 640, 360], [END_START + 0.8, 0.86, 640, 330], [99, 0.86, 640, 330],
+];
+function cam(t) {
+  const i = Math.max(1, CAM.findIndex((k) => k[0] > t));
+  const [t0, s0, x0, y0] = CAM[i - 1], [t1, s1, x1, y1] = CAM[i];
+  const p = smooth(seg(t, t0, t1));
+  const c = { s: lerp(s0, s1, p), px: lerp(x0, x1, p), py: lerp(y0, y1, p), rx: 0, rz: 0 };
+  for (const h of HITS) { c.rx += 3.2 * decay(t - h.t); c.rz += 0.7 * h.dir * decay(t - h.t, 31); }
+  for (const lt of LAMPS) c.rz += 0.25 * decay(t - lt, 40, 12);
+  return c;
+}
+const toScreen = (c, x, y) => [c.px + (x - c.px) * c.s, c.py + (y - c.py) * c.s];
 
 // ---------------------------------------------------------------- the ball
-// Title: drops in, bounces twice along the floor, then flies up into the ball on the logo.
-const FLOOR = 560, LOGO_BALL = [672, 162], END_BALL = [668, 184], HIT = 0.9;
-const LEGS = [
-  { t0: 0.0, t1: 0.3, x0: -60, x1: 250, drop: true },
-  { t0: 0.3, t1: 0.56, x0: 250, x1: 460, h: 200 },
-  { t0: 0.56, t1: 0.74, x0: 460, x1: 600, h: 90 },
-  { t0: 0.74, t1: HIT, x0: 600, x1: LOGO_BALL[0], up: true },
+// Depth d: 0 at the camera, 1 at the front wall. Farther away = higher on the floor, smaller.
+const floorY = (d) => lerp(780, 610, d), rad = (d) => lerp(46, 15, d);
+const HIT = 1.38, LOGO_BALL = [672, 162], END_BALL = [668, 162];
+const LEGS = [   // the title: in from the side, two bounces up the court, then into the logo
+  { t0: 0.05, t1: 0.42, x0: -80, x1: 300, d0: 0.05, d1: 0.3, drop: true },
+  { t0: 0.42, t1: 0.8, x0: 300, x1: 470, d0: 0.3, d1: 0.58, h: 190 },
+  { t0: 0.8, t1: 1.1, x0: 470, x1: 590, d0: 0.58, d1: 0.8, h: 110 },
+  { t0: 1.1, t1: HIT, x0: 590, x1: LOGO_BALL[0], d0: 0.8, d1: 0.8, up: true },
 ];
-// Between scenes: the ball arcs in, bounces off the top of the terminal, and flies off.
-const TERM_TOP = 146, IN = 0.45, OUT = 0.45;
-const HITS = demos.slice(1).map((d, i) => ({ t: d.a, x: [860, 420, 760, 500, 880, 460][i] }));
 
-// [x, y, squash, shadow] for the ball at time t, or null when it's off screen.
+// {x, y, r, sq, sh: [x, y, rx, alpha] | null} in screen space, or null when off screen.
 function ball(t) {
   const leg = LEGS.find((l) => t >= l.t0 && t <= l.t1);
   if (leg) {
-    const p = (t - leg.t0) / (leg.t1 - leg.t0), x = lerp(leg.x0, leg.x1, p);
-    if (leg.drop) return [x, lerp(120, FLOOR, p * p), bump(seg(p, 0.9, 1)), 1];
-    if (leg.up) return [x, lerp(FLOOR, LOGO_BALL[1], outCubic(p)), 0, 1 - p];
-    return [x, FLOOR - leg.h * 4 * p * (1 - p), bump(seg(p, 0.92, 1)) + bump(seg(p, 0, 0.08)), 1];
+    const p = (t - leg.t0) / (leg.t1 - leg.t0), x = lerp(leg.x0, leg.x1, p), d = lerp(leg.d0, leg.d1, p);
+    let y, sq = 0, shA = 1;
+    if (leg.drop) { y = lerp(330, floorY(d), p * p); sq = bump(seg(p, 0.9, 1)); }
+    else if (leg.up) { y = lerp(floorY(d), LOGO_BALL[1], outCubic(p)); shA = 1 - p; }
+    else { y = floorY(d) - leg.h * 4 * p * (1 - p); sq = bump(seg(p, 0.93, 1)) + bump(seg(p, 0, 0.07)); }
+    const r = leg.up ? lerp(rad(d), 15, p) : rad(d), air = clamp((floorY(d) - y) / 220);
+    return { x, y, r, sq, sh: [x, floorY(d) + 4, rad(d) * 1.3 * (1 - 0.5 * air), 0.55 * (1 - air) * shA] };
   }
-  for (const [i, h] of HITS.entries()) {
-    // drops in from above, lands on the terminal's top edge, bounces up and out the top
-    const dir = i % 2 ? -1 : 1, from = h.x - dir * 420, y0 = TERM_TOP - 17;
-    if (t >= h.t - IN && t < h.t) {
+  for (const h of HITS) {
+    const [hx, hy] = toScreen(cam(h.t), h.x, h.y);
+    if (t >= h.t - IN && t < h.t) {   // from behind the camera, arcing onto the wall
       const p = (t - (h.t - IN)) / IN;
-      return [lerp(from, h.x, p), lerp(-60, y0, p * p), bump(seg(p, 0.88, 1)), 0];
+      const x = lerp(hx - h.dir * 380, hx, p), y = lerp(860, hy, p) - 170 * Math.sin(Math.PI * p);
+      return { x, y, r: lerp(74, 13, Math.pow(p, 0.7)), sq: bump(seg(p, 0.9, 1)), sh: [x, floorY(p), lerp(80, 16, p), 0.35 * (1 - p)] };
     }
-    if (t >= h.t && t < h.t + OUT) {
-      const p = (t - h.t) / OUT;
-      return [h.x + dir * 380 * p, y0 - 420 * p + 190 * p * p, bump(seg(p, 0, 0.12)), 0];
+    if (t >= h.t && t < h.t + OUT) {  // and back off it, towards the camera
+      const q = (t - h.t) / OUT;
+      const x = lerp(hx, hx + h.dir * 470, q), y = lerp(hy, 880, q) - 200 * Math.sin(Math.PI * q);
+      return { x, y, r: lerp(13, 84, Math.pow(q, 1.4)), sq: bump(seg(q, 0, 0.1)), sh: [x, floorY(1 - q), lerp(16, 90, q), 0.35 * q] };
     }
   }
-  if (t >= END_HIT - 0.55 && t < END_HIT) {   // the end: back into the ball on the logo
-    const p = (t - (END_HIT - 0.55)) / 0.55;
-    return [lerp(-60, END_BALL[0], p), lerp(620, END_BALL[1], p) - 200 * Math.sin(Math.PI * p), 0, 0];
+  if (t >= END_HIT - 0.6 && t < END_HIT) {   // the end: from the camera into the ball on the logo
+    const p = (t - (END_HIT - 0.6)) / 0.6;
+    return { x: lerp(1120, END_BALL[0], p), y: lerp(860, END_BALL[1], p) - 180 * Math.sin(Math.PI * p),
+             r: lerp(76, 14, Math.pow(p, 0.7)), sq: 0, sh: null };
   }
   return null;
 }
 
-// ---------------------------------------------------------------- one frame
-function render(t) {
-  const loopOut = inCubic(seg(t, DURATION - 0.22, DURATION));   // fade so the loop restarts cleanly
+// ---------------------------------------------------------------- the court
+// Seen from the back: side walls and floor in perspective, red lines, the tin under the wall.
+{
+  const boards = [...Array(11)].map((_, i) => { const x = 80 + i * 112; return `<path d="M${x} 610 L${640 + (x - 640) * 2.4} 1100"/>`; }).join("");
+  $("#court").innerHTML = `
+    <polygon points="80,20 80,610 -520,1100 -520,-520" fill="#0a1740"/>
+    <polygon points="1200,20 1200,610 1800,1100 1800,-520" fill="#0a1740"/>
+    <polygon points="80,20 1200,20 1800,-520 -520,-520" fill="#060e2a"/>
+    <polygon points="80,610 1200,610 1800,1100 -520,1100" fill="#0f2358"/>
+    <g stroke="#1c3a86" stroke-width="2" opacity=".6">${boards}</g>
+    <rect x="80" y="20" width="1120" height="590" fill="#12307a" stroke="#2a4a9a" stroke-width="2"/>
+    <line x1="80" y1="36" x2="1200" y2="36" stroke="#ff6b6b" stroke-width="4" opacity=".85"/>
+    <rect x="80" y="592" width="1120" height="18" fill="#ff6b6b" opacity=".8"/>
+    <g stroke="#ff6b6b" stroke-width="4" opacity=".75" fill="none">
+      <path d="M-4 680 H1284"/><path d="M640 680 V1100"/><path d="M-4 760 H260 V680"/><path d="M1284 760 H1020 V680"/>
+    </g>`;
+}
 
-  // the ball, squashing on every bounce, with a floor shadow in the title
-  const b = ball(t);
-  if (b) {
-    const [bx, by, squash, sh] = b, air = clamp((FLOOR - by) / 300);
-    set($("#ball"), { x: bx - 17, y: by - 17, s: 1 + 0.25 * squash, sy: 1 - 0.45 * squash });
-    set($("#shadow"), { x: bx - 22, y: FLOOR + 14, s: 1 - 0.6 * air, o: sh * (0.9 - 0.6 * air) });
-  } else {
-    set($("#ball"), { o: 0 });
-    set($("#shadow"), { o: 0 });
+// ---------------------------------------------------------------- lights, confetti, dust
+const dark = $("#dark").getContext("2d"), fg = $("#top").getContext("2d");
+let seed = 11; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+const COLORS = ["#f2b632", "#3ddc84", "#ff6b6b", "#a99bff", "#7fb2ff", "#ffe29a"];
+const BITS = Array.from({ length: 110 }, () => ({
+  a: rnd() * 6.28, v: 380 + rnd() * 520, sw: 20 + rnd() * 40,
+  ph: rnd() * 6.28, w: 7 + rnd() * 9, h: 3 + rnd() * 5, c: COLORS[Math.floor(rnd() * 6)], spin: 3 + rnd() * 8,
+}));
+const DUST = Array.from({ length: 16 }, () => ({ a: rnd() * 6.28, v: 50 + rnd() * 120, r: 2 + rnd() * 4 }));
+const lampOn = (t, lt) => t >= lt && !(t > lt + 0.04 && t < lt + 0.09);   // a flicker, then on
+
+// Darkness over the court, with the floodlights (and the title spotlight) cutting through it.
+function lights(t, spot) {
+  dark.clearRect(0, 0, 1280, 720);
+  const on = LAMPS.filter((lt) => lampOn(t, lt)).length;
+  dark.fillStyle = `rgba(3, 7, 20, ${0.82 * (1 - on / 4)})`;
+  dark.fillRect(0, 0, 1280, 720);
+  dark.globalCompositeOperation = "destination-out";
+  const g = dark.createRadialGradient(spot[0], spot[1], 0, spot[0], spot[1], spot[2]);
+  g.addColorStop(0, "rgba(0,0,0,.95)"); g.addColorStop(1, "rgba(0,0,0,0)");
+  dark.fillStyle = g; dark.fillRect(0, 0, 1280, 720);
+  LAMP_X.forEach((lx, i) => {
+    if (!lampOn(t, LAMPS[i])) return;
+    const cone = dark.createLinearGradient(0, 14, 0, 720);
+    cone.addColorStop(0, "rgba(0,0,0,.9)"); cone.addColorStop(1, "rgba(0,0,0,.2)");
+    dark.fillStyle = cone;
+    dark.beginPath(); dark.moveTo(lx - 30, 14); dark.lineTo(lx + 30, 14); dark.lineTo(lx + 300, 720); dark.lineTo(lx - 300, 720); dark.fill();
+  });
+  dark.globalCompositeOperation = "source-over";
+  LAMP_X.forEach((lx, i) => {   // the lamp housings on the ceiling
+    const lit = lampOn(t, LAMPS[i]);
+    dark.fillStyle = lit ? "#fff6d8" : "#1a2340";
+    dark.shadowColor = lit ? "rgba(255, 240, 200, .9)" : "transparent"; dark.shadowBlur = lit ? 30 : 0;
+    dark.beginPath(); dark.roundRect(lx - 36, 2, 72, 12, 5); dark.fill();
+  });
+  dark.shadowBlur = 0;
+}
+
+function confetti(t, [t0, x0, y0, o]) {
+  const dt = t - t0;
+  if (dt < 0 || o <= 0) return;
+  fg.globalAlpha = o;
+  for (const b of BITS) {
+    const x = x0 + Math.cos(b.a) * b.v * dt * Math.exp(-dt * 1.6) + Math.sin(dt * 4 + b.ph) * b.sw * dt;
+    const y = y0 + Math.sin(b.a) * b.v * dt * Math.exp(-dt * 1.6) + 520 * dt * dt;
+    if (y > 740) continue;
+    fg.save(); fg.translate(x, y); fg.rotate(dt * b.spin + b.ph);
+    fg.fillStyle = b.c; fg.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); fg.restore();
   }
+  fg.globalAlpha = 1;
+}
 
-  // title: the logo pops when the ball lands in it
-  const out = inCubic(seg(t, 1.38, 1.56));
+function drawBall(t) {
+  const b = ball(t);
+  if (!b) return;
+  if (b.sh && b.sh[3] > 0) {
+    fg.fillStyle = `rgba(0, 0, 0, ${b.sh[3]})`;
+    fg.beginPath(); fg.ellipse(b.sh[0], b.sh[1], b.sh[2], b.sh[2] * 0.28, 0, 0, 6.29); fg.fill();
+  }
+  for (let i = 6; i >= 1; i--) {   // motion blur: fading copies along the path
+    const p = ball(t - i * 0.006);
+    if (!p) continue;
+    fg.globalAlpha = 0.04 * (7 - i);
+    fg.fillStyle = "#ffe29a";
+    fg.beginPath(); fg.arc(p.x, p.y, p.r * 0.85, 0, 6.29); fg.fill();
+  }
+  fg.globalAlpha = 1;
+  // stretched along the direction of travel, squashed flat on impact
+  const prev = ball(t - 0.01) || b, speed = Math.hypot(b.x - prev.x, b.y - prev.y);
+  const st = 1 + Math.min(0.3, speed / 90), squashed = b.sq > 0.05;
+  fg.save();
+  fg.translate(b.x, b.y);
+  fg.rotate(squashed ? 0 : Math.atan2(b.y - prev.y, b.x - prev.x));
+  const g = fg.createRadialGradient(-b.r * 0.3, -b.r * 0.35, b.r * 0.1, 0, 0, b.r);
+  g.addColorStop(0, "#fff3c4"); g.addColorStop(0.55, "#f2b632"); g.addColorStop(1, "#c88a12");
+  fg.fillStyle = g; fg.shadowColor = "rgba(242, 182, 50, .7)"; fg.shadowBlur = b.r;
+  fg.beginPath();
+  if (squashed) fg.ellipse(0, 0, b.r * (1 + 0.3 * b.sq), b.r * (1 - 0.4 * b.sq), 0, 0, 6.29);
+  else fg.ellipse(0, 0, b.r * st, b.r / Math.sqrt(st), 0, 0, 6.29);
+  fg.fill();
+  fg.restore();
+}
+
+function impacts(t) {   // a ring and a puff of chalk dust where the ball hits the wall
+  for (const h of HITS) {
+    const dt = t - h.t;
+    if (dt < 0 || dt > 0.45) continue;
+    const [x, y] = toScreen(cam(h.t), h.x, h.y), p = dt / 0.45;
+    fg.strokeStyle = `rgba(255, 226, 154, ${0.8 * (1 - p)})`; fg.lineWidth = 4 * (1 - p) + 1;
+    fg.beginPath(); fg.arc(x, y, 14 + 110 * outCubic(p), 0, 6.29); fg.stroke();
+    fg.fillStyle = "#dfe8ff";
+    for (const d of DUST) {
+      fg.globalAlpha = 0.7 * (1 - p);
+      fg.beginPath(); fg.arc(x + Math.cos(d.a) * d.v * outCubic(p), y + Math.sin(d.a) * d.v * outCubic(p), d.r * (1 - 0.5 * p), 0, 6.29); fg.fill();
+    }
+    fg.globalAlpha = 1;
+  }
+}
+
+// ---------------------------------------------------------------- one frame
+let URL_POS = null;   // centre of the install command, measured once layout is ready
+function render(t) {
+  const loopOut = inCubic(seg(t, DURATION - 0.25, DURATION));   // fade so the loop restarts cleanly
+  const c = cam(t);
+  $("#world").style.transform =
+    `translate(${(1 - c.s) * (c.px - 640)}px, ${(1 - c.s) * (c.py - 360)}px) scale(${c.s}) rotateX(${c.rx}deg) rotateZ(${c.rz}deg)`;
+  $("#world").style.opacity = 1 - loopOut;
+
+  // lights: a spotlight chases the title ball, then opens up; the floodlights clunk on while you log in
+  const b = ball(t);
+  let spot = [640, 360, 820];
+  if (t < HIT) spot = b ? [b.x, b.y, 240] : [640, 400, 200];
+  else if (t < DEMO_START + 0.4) spot = [640, lerp(230, 360, seg(t, HIT + 0.3, DEMO_START + 0.4)), lerp(380, 820, seg(t, HIT, DEMO_START + 0.4))];
+  lights(t, spot);
+
+  // title
+  const out = inCubic(seg(t, 1.95, 2.15));
   const pop = seg(t, HIT - 0.02, HIT + 0.3);
   set($("#logo"), { s: t < HIT - 0.02 ? 0 : outBack(pop), r: (1 - pop) * -25, o: seg(t, HIT - 0.02, HIT + 0.04) });
   set($("#title .word"), { y: 34 * (1 - outCubic(seg(t, HIT, HIT + 0.24))), o: seg(t, HIT, HIT + 0.14) });
   set($("#tag"), { y: 20 * (1 - outCubic(seg(t, HIT + 0.12, HIT + 0.34))), o: seg(t, HIT + 0.12, HIT + 0.26) });
   set($("#title"), { y: -120 * out, s: 1 - 0.1 * out, o: 1 - out });
 
-  // demos
-  const termIn = outCubic(seg(t, 1.5, 1.72)), termOut = inCubic(seg(t, END_START - 0.05, END_START + 0.25));
+  // the terminal and the current scene
+  const termIn = outCubic(seg(t, 2.05, 2.32)), termOut = inCubic(seg(t, END_START - 0.05, END_START + 0.3));
   const cur = demos.findIndex((d) => t >= d.a && t < d.b);
   const d = demos[cur === -1 ? (t < DEMO_START ? 0 : demos.length - 1) : cur];
   const u = clamp((t - d.a) / d.len);
-  // the terminal dips when the ball hits it, and shakes when the booking is stamped
-  const hit = HITS.find((h) => t >= h.t && t < h.t + 0.3);
-  const dip = hit ? 14 * bump(seg(t, hit.t, hit.t + 0.3)) * (1 - seg(t, hit.t, hit.t + 0.3)) : 0;
   const k = seg(t, CONFIRM_T, CONFIRM_T + 0.14);
   const shake = k > 0 && k < 1 ? Math.sin(k * 40) * 9 * (1 - k) : 0;
-  set($("#term"), { x: shake, y: 90 * (1 - termIn) + 60 * termOut + dip, s: 0.94 + 0.06 * termIn - 0.06 * termOut,
+  const hitNow = HITS.find((h) => t >= h.t && t < h.t + 0.4);
+  const thud = hitNow ? 1 - 0.018 * bump(seg(t, hitNow.t, hitNow.t + 0.2)) : 1;
+  set($("#term"), { x: shake, y: 90 * (1 - termIn) + 60 * termOut, s: (0.94 + 0.06 * termIn - 0.06 * termOut) * thud,
                     o: termIn * (1 - termOut) });
-  $("#label").innerHTML = d.label;
+  const fading = d === CANCEL ? 0 : inCubic(seg(t, d.b - IN * 0.7, d.b));   // the old scene fades as the ball comes in
+  $("#body").style.fontSize = `${d.fs || 22}px`;
   $("#body").innerHTML = d.body(u);
-  // the old scene fades as the ball comes in, and the new one lands with the hit
-  const labelIn = outBack(seg(u, 0, 0.1)), labelOut = inCubic(seg(t, d.b - IN * 0.7, d.b));
-  const lastOut = d === demos[demos.length - 1] ? 0 : labelOut;
-  set($("#label"), { y: 24 * (1 - labelIn) - 20 * lastOut, s: 0.9 + 0.1 * labelIn,
-                     o: termIn * clamp(labelIn) * (1 - lastOut) * (1 - termOut) });
-  $("#body").style.opacity = 1 - lastOut * 0.9;
+  $("#body").style.opacity = 1 - 0.9 * fading;
+  $("#label").innerHTML = d.label;
+  const labelIn = outBack(seg(u, 0, 0.1));
+  set($("#label"), { y: 24 * (1 - labelIn) - 20 * fading, s: 0.9 + 0.1 * labelIn,
+                     o: termIn * clamp(labelIn) * (1 - fading) * (1 - termOut) });
 
   // scoreboard: a point to you on every hit
-  const points = cur === -1 ? (t >= END_START ? demos.length : 0) : cur + 1;
   const flip = HITS.find((h) => t >= h.t && t < h.t + 0.2);
-  $("#points").textContent = points;
-  set($("#points"), { sy: flip ? 1 - 0.8 * bump(seg(t, flip.t, flip.t + 0.2)) : 1 });
-  set($("#score"), { y: dip * 0.5, o: termIn * (1 - termOut) });
+  $("#points").textContent = cur === -1 ? (t >= END_START ? demos.length : 0) : cur + 1;
+  set($("#points"), { sy: flip ? 1 - 0.85 * bump(seg(t, flip.t, flip.t + 0.2)) : 1 });
+  set($("#score"), { y: -80 * (1 - termIn) - 80 * termOut, o: termIn * (1 - termOut) });
+  $("#score .live").style.opacity = Math.floor(t * 2) % 2 ? 0.35 : 1;
+
+  // the website: keeps loading, gets knocked back by every hit, and out by the last one... then peeks back
+  const hits = HITS.filter((h) => h.t > SEARCH.a);
+  const since = Math.min(4, hits.filter((h) => t >= h.t).length);
+  const jolt = hits.reduce((a, h) => a + 22 * decay(t - h.t, 30, 6), 0);
+  const knocked = outCubic(seg(t, hits[hits.length - 1].t, hits[hits.length - 1].t + 0.5));
+  const enter = outBack(seg(t, SEARCH.a + 0.35, SEARCH.a + 0.7)), peek = outBack(seg(t, END_START + 1.9, END_START + 2.3));
+  if (t < END_START) {
+    set($("#web"), { x: -300 * (1 - enter) - 28 * since - jolt - 520 * knocked, y: 160 * knocked,
+                     r: -3 * since - 0.3 * jolt - 40 * knocked, o: t < SEARCH.a + 0.35 ? 0 : 1 });
+  } else {
+    set($("#web"), { x: lerp(-420, -50, peek), y: 24, r: lerp(-20, 9, peek), o: peek > 0 ? 1 - loopOut : 0 });
+  }
+  $("#spin").style.transform = `rotate(${t * 400}deg)`;
+  $("#wfill").style.width = `${lerp(2, 5, seg(t, SEARCH.a, DURATION))}%`;
+  $("#wface").textContent = t > END_START ? "🫠" : since >= 3 ? "😵" : since >= 1 ? "😰" : "😓";
+  $("#wmsg").textContent = t > END_START ? "still loading…" : "Loading…";
 
   // the ticket: prints out when booked, gets stamped, then tears in half on cancel
   const tIn = seg(t, BOOK.a + BOOK.len * BOOK.ticketIn, BOOK.a + BOOK.len * BOOK.ticketIn + 0.35);
   const tear = seg(t, CANCEL.a + CANCEL.len * CANCEL.tear, CANCEL.a + CANCEL.len * CANCEL.tear + 0.55);
-  const tdip = t >= CANCEL.a && t < CANCEL.a + 0.3 ? dip : 0;
-  set($("#ticket"), { x: shake, y: 320 * (1 - outBack(tIn)) + tdip, r: 7 * (1 - tIn) - 2,
-                      o: t < BOOK.a ? 0 : clamp(tIn * 3) });
+  set($("#ticket"), { x: shake, y: 300 * (1 - outBack(tIn)), r: 7 * (1 - tIn) - 2, o: t < BOOK.a ? 0 : clamp(tIn * 3) });
   set($("#tmain"), { x: -60 * outCubic(tear), y: 420 * inCubic(tear), r: -16 * outCubic(tear), o: 1 - seg(tear, 0.6, 1) });
   set($("#tstub"), { x: 50 * outCubic(tear), y: 460 * inCubic(tear), r: 22 * outCubic(tear), o: 1 - seg(tear, 0.6, 1) });
   set($("#conf"), { s: t < CONFIRM_T ? 0 : 2.2 - 1.2 * outCubic(k), r: -10, o: t < CONFIRM_T ? 0 : clamp(k * 3) });
-  set($("#flash"), { o: t >= CONFIRM_T ? 0.3 * (1 - seg(t, CONFIRM_T, CONFIRM_T + 0.18)) : 0 });
 
-  // end card: the ball lands back in the logo
+  // action cam: viewfinder, shutter snap, flash (plus a little flash for each floodlight)
+  const vf = seg(t, BOOK.a + BOOK.len * 0.42, BOOK.a + BOOK.len * 0.46) * (1 - seg(t, BOOK.a + BOOK.len * 0.8, BOOK.a + BOOK.len * 0.86));
+  set($("#vf"), { s: 1.04 - 0.04 * vf, o: vf });
+  $("#rec").style.opacity = Math.floor(t * 3) % 2 ? 0.3 : 1;
+  const snap = bump(seg(t, CONFIRM_T - 0.08, CONFIRM_T + 0.06));
+  set($("#shT"), { sy: snap * 0.92 + 1e-3 });
+  set($("#shB"), { sy: snap * 0.92 + 1e-3 });
+  const lampFlash = LAMPS.reduce((a, lt) => a + (t >= lt && t < lt + 0.1 ? 0.1 * (1 - (t - lt) / 0.1) : 0), 0);
+  set($("#flash"), { o: (t >= CONFIRM_T ? 0.45 * (1 - seg(t, CONFIRM_T, CONFIRM_T + 0.22)) : 0) + lampFlash });
+
+  // end card: the ball lands back in the logo, then a cursor copies the install command
   const e = seg(t, END_HIT - 0.02, END_HIT + 0.3);
   set($("#endlogo"), { s: t < END_HIT - 0.02 ? 0 : outBack(e), sy: 1 - 0.15 * bump(seg(t, END_HIT, END_HIT + 0.14)),
                        r: (1 - e) * 20, o: seg(t, END_HIT - 0.02, END_HIT + 0.05) * (1 - loopOut) });
   set($("#end .word"), { y: 24 * (1 - outCubic(seg(t, END_HIT, END_HIT + 0.24))), o: seg(t, END_HIT, END_HIT + 0.14) * (1 - loopOut) });
+  const click = END_HIT + 1.45, press = bump(seg(t, click, click + 0.14));
   set($("#end .url"), { y: 20 * (1 - outCubic(seg(t, END_HIT + 0.12, END_HIT + 0.34))),
-                        s: 0.8 + 0.2 * outBack(seg(t, END_HIT + 0.12, END_HIT + 0.34)),
+                        s: (0.8 + 0.2 * outBack(seg(t, END_HIT + 0.12, END_HIT + 0.34))) * (1 - 0.05 * press),
                         o: seg(t, END_HIT + 0.12, END_HIT + 0.24) * (1 - loopOut) });
   set($("#end .sub"), { o: seg(t, END_HIT + 0.3, END_HIT + 0.45) * (1 - loopOut) });
+  if (!URL_POS) {
+    const url = $("#end .url"), end = $("#end");
+    URL_POS = [end.offsetLeft + url.offsetLeft + url.offsetWidth / 2, end.offsetTop + url.offsetTop + url.offsetHeight / 2];
+  }
+  const [ux, uy] = [URL_POS[0] + 60, URL_POS[1] + 4];
+  const mv = inOut(seg(t, END_HIT + 0.8, click - 0.05));
+  set($("#cursor"), { x: lerp(1200, ux, mv), y: lerp(760, uy, mv), s: 1 - 0.15 * press, o: t < END_HIT + 0.8 ? 0 : 1 - loopOut });
+  const toast = seg(t, click + 0.05, click + 0.3);
+  const pillRight = URL_POS[0] + $("#end .url").offsetWidth / 2;   // the toast pops up just right of the pill
+  set($("#toast"), { x: pillRight + 12, y: URL_POS[1] - 22 - 10 * outCubic(toast),
+                     s: 0.6 + 0.4 * outBack(toast), o: t < click + 0.05 ? 0 : clamp(toast * 3) * (1 - loopOut) });
 
-  // background: court lines, floodlight, confetti, and dust from each hit
-  const bgIn = seg(t, 0, 0.25);
-  court(seg(t, 0.05, 0.9), (0.2 * bgIn + 0.08 * seg(t, END_START, END_START + 0.4)) * (1 - loopOut));
-  const puffHit = HITS.find((h) => t >= h.t && t < h.t + 0.4);
-  fx(t, bgIn * (1 - loopOut), [
-    [HIT, LOGO_BALL[0], LOGO_BALL[1], 1 - seg(t, 1.6, 1.9)],
-    [CONFIRM_T, 870, 440, 1 - seg(t, BOOK.b, BOOK.b + 0.3)],
-    [END_HIT, END_BALL[0], END_BALL[1], 1 - loopOut],
-  ], puffHit ? [puffHit.x, TERM_TOP, seg(t, puffHit.t, puffHit.t + 0.4)] : null);
+  // the top layer: confetti, impacts, the ball, the click ripple
+  fg.clearRect(0, 0, 1280, 720);
+  const [bookX, bookY] = toScreen(c, 880, 490);
+  confetti(t, [HIT, LOGO_BALL[0], LOGO_BALL[1], 1 - seg(t, 2.0, 2.3)]);
+  confetti(t, [CONFIRM_T, bookX, bookY, 1 - seg(t, BOOK.b, BOOK.b + 0.3)]);
+  confetti(t, [END_HIT, END_BALL[0], END_BALL[1], 1 - loopOut]);
+  impacts(t);
+  drawBall(t);
+  if (t >= click && t < click + 0.45) {
+    const p = (t - click) / 0.45;
+    fg.strokeStyle = `rgba(255, 255, 255, ${0.8 * (1 - p)})`; fg.lineWidth = 3;
+    fg.beginPath(); fg.arc(ux, uy, 8 + 40 * outCubic(p), 0, 6.29); fg.stroke();
+  }
 }
 
 window.DURATION = DURATION;

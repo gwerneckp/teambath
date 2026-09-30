@@ -22,9 +22,11 @@ class Media:
     HERE = Path(__file__).parent
     ASSETS = HERE.parent
     FPS = 60
-    GIF_FPS = 20
+    GIF_FPS = 16
+    GIF_COLORS = 128
     GIF_WIDTH = 640
     SCALE = 1.5  # 1280x720 page -> 1920x1080 frames
+    STAGE = {"x": 0, "y": 0, "width": 1280, "height": 720}  # #stage sits at the page's top left
 
     def render(self):
         if not shutil.which("ffmpeg"):
@@ -40,7 +42,7 @@ class Media:
             for t in times:
                 page.evaluate(f"window.render({t})")
                 out = Path(tempfile.gettempdir()) / f"teambath-{t:05.2f}.png"
-                page.locator("#stage").screenshot(path=str(out))
+                page.screenshot(path=str(out), clip=self.STAGE)
                 print(out)
 
     @contextmanager
@@ -58,11 +60,10 @@ class Media:
     def _capture(self, frames: Path):
         with self._page() as page:
             duration = page.evaluate("window.DURATION")
-            stage = page.locator("#stage")
             count = round(duration * self.FPS)
             for i in range(count):
                 page.evaluate(f"window.render({i / self.FPS})")
-                stage.screenshot(path=str(frames / f"{i:04d}.png"))
+                page.screenshot(path=str(frames / f"{i:04d}.png"), clip=self.STAGE)
         print(f"captured {count} frames ({duration:.1f}s)")
 
     def _encode(self, frames: Path):
@@ -75,7 +76,7 @@ class Media:
         # changing every pixel of every frame, which would double the file size.
         gif = self.ASSETS / "demo.gif"
         palette = (f"fps={self.GIF_FPS},scale={self.GIF_WIDTH}:-1:flags=lanczos,split[a][b];"
-                   "[a]palettegen=max_colors=200:stats_mode=diff[p];"
+                   f"[a]palettegen=max_colors={self.GIF_COLORS}:stats_mode=diff[p];"
                    "[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle")
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mp4), "-vf", palette,
                         "-loop", "0", str(gif)], check=True)
