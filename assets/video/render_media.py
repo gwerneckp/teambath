@@ -71,12 +71,14 @@ class Media:
         subprocess.run(["ffmpeg", "-v", "error", "-y", *src, "-c:v", "libx264",
                         "-pix_fmt", "yuv420p", "-crf", "18", "-preset", "slow",
                         "-movflags", "+faststart", str(mp4)], check=True)
+        # The GIF comes from the MP4. Bayer dithering keeps the moving floodlight from
+        # changing every pixel of every frame, which would double the file size.
         gif = self.ASSETS / "demo.gif"
         palette = (f"fps={self.GIF_FPS},scale={self.GIF_WIDTH}:-1:flags=lanczos,split[a][b];"
                    "[a]palettegen=max_colors=200:stats_mode=diff[p];"
-                   "[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle")
-        subprocess.run(["ffmpeg", "-v", "error", "-y", *src, "-vf", palette, "-loop", "0",
-                        str(gif)], check=True)
+                   "[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle")
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(mp4), "-vf", palette,
+                        "-loop", "0", str(gif)], check=True)
         for f in (mp4, gif):
             print(f"{f.name}: {f.stat().st_size / 1e6:.1f} MB")
 
