@@ -4,6 +4,12 @@
 
 <h1 align="center">teambath</h1>
 
+<p align="center">
+  <a href="https://pypi.org/project/teambath/"><img src="https://img.shields.io/pypi/v/teambath" alt="PyPI"></a>
+  <a href="https://pypi.org/project/teambath/"><img src="https://img.shields.io/badge/python-3.11%2B-blue" alt="Python 3.11+"></a>
+  <a href="https://github.com/gwerneckp/teambath/blob/main/LICENSE"><img src="https://img.shields.io/pypi/l/teambath" alt="License"></a>
+</p>
+
 <p align="center"><b>Find a free court at Team Bath without clicking through the booking site.</b></p>
 
 <p align="center">
