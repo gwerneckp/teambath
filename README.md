@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" alt="teambath logo" width="128">
+  <img src="https://raw.githubusercontent.com/gwerneckp/teambath/main/assets/logo.svg" alt="teambath logo" width="128">
 </p>
 
 <h1 align="center">teambath</h1>
@@ -21,7 +21,7 @@ teambath does that clicking for you, from Python. It can check courts and classe
 ## Install
 
 ```bash
-pip install git+https://github.com/gwerneckp/teambath
+pip install teambath
 ```
 
 Requires Python 3.11+.
@@ -42,7 +42,7 @@ booking = tb.book(free[0])
 tb.cancel(booking)                              # changed your mind
 ```
 
-Use `tb.search(day, type="squash")` to find other activities and their ids, and `tb.bookings()` to see what you've booked. There are more scripts in [`examples/`](examples/).
+Use `tb.search(day, type="squash")` to find other activities and their ids, and `tb.bookings()` to see what you've booked. There are more scripts in [`examples/`](https://github.com/gwerneckp/teambath/blob/main/examples/).
 
 ## Good to know
 
@@ -59,8 +59,8 @@ uv run pytest                                               # offline, no accoun
 TEAMBATH_EMAIL=... TEAMBATH_PIN=... uv run pytest -m live   # read-only checks against the real site
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](https://github.com/gwerneckp/teambath/blob/main/CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE)
+[MIT](https://github.com/gwerneckp/teambath/blob/main/LICENSE)
